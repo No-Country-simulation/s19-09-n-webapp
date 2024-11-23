@@ -66,6 +66,7 @@ model User {
   remember_token String?
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
+  properties     Property[]
 
   @@index([email])
 }
@@ -90,6 +91,8 @@ model Property {
   location              Location?             @relation(fields: [location_id], references: [id])            
   near_universities     NearLocation[]
   photos                PropertyPhoto[]        
+  user_id               String
+  user                  User                  @relation(fields: [user_id],references: [id])
 
   @@index([min_rental_period, payment_by_period, is_furnished, is_services_included, rating])
 }
