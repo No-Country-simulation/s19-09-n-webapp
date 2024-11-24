@@ -5,7 +5,7 @@ export interface Property {
   description?: string,
   address?: string,
   city?: string,
-  propertyType?: "house" | "appartment",
+  propertyType?: "house" | "apartment",
   maxOccupants?: number,
   roomsAvailable?: number,
   price?: number,
