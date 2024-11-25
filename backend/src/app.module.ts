@@ -4,6 +4,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { DatabaseModule } from './database/database.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { DatabaseModule } from './database/database.module';
         limit: 60,
       },
     ]),
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
