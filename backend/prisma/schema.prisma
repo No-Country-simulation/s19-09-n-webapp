@@ -59,7 +59,7 @@ model User {
   last_name      String   @db.VarChar(64)
   email          String   @unique @db.VarChar(64)
   email_verified Boolean  @default(false)
-  password       String   @db.VarChar(255)
+  password       String?   @db.VarChar(255)
   is_owner       Boolean  @default(false)
   deleted        Boolean  @default(false)
   role           Role     @default(USER)
