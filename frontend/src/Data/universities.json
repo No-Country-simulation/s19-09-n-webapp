@@ -1,0 +1,39 @@
+[
+    {
+      "id": 1,
+      "name": "Universidad Nacional del Litoral",
+      "address": "Paraná 2455, Santa Fe",
+      "province": "Santa Fe",
+      "website": "http://www.unl.edu.ar"
+    },
+    {
+      "id": 2,
+      "name": "Universidad Nacional de Córdoba",
+      "address": "Av. Haya de la Torre S/N, Córdoba",
+      "province": "Córdoba",
+      "website": "http://www.unc.edu.ar"
+    } ,
+    {
+        "id": 2,
+        "name": "Universidad Nacional de Córdoba",
+        "address": "Av. Haya de la Torre S/N, Córdoba",
+        "province": "Córdoba",
+        "website": "http://www.unc.edu.ar"
+    } , 
+    {
+        "id": 2,
+        "name": "Universidad Nacional de Córdoba",
+        "address": "Av. Figueroa Alcorta 2263",
+        "province": "Buenos Aires",
+        "website": "http://www.derecho.uba.ar"
+    }, 
+    {
+        "id": 2,
+        "name": "Facultad de Ciencias Médicas",
+        "address": "Paraguay 2155, Buenos Aires",
+        "province": "Buenos Aires",
+        "website": "www.fmed.uba.ar"
+      }  
+
+  ]
+  
