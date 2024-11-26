@@ -1,14 +1,10 @@
 import PropertyCard from "../components/Properties/PropertyCard";
 import FiltersBar from "../components/Properties/FiltersBar";
-// import { Property } from "../types/propertyInterface";
 import { placeholderProperties } from "../utils/placeholderData";
 import Grid from "@mui/material/Grid2";
 
-/* interface PropertiesPageProps {
-  properties: Property[]
-} */
 
-export default function PropertiesPage(/* {properties}: PropertiesPageProps */) {
+export default function PropertiesPage() {
   return (
     <Grid container sx={{ mt: 3 }} spacing={2}>
       <Grid size={{ xs: 12, md: 4, lg: 3 }}>
