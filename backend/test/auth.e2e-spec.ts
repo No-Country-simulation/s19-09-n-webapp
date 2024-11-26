@@ -5,7 +5,6 @@ import { AppModule } from '../src/app.module';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { DatabaseService } from 'src/database/database.service';
 import { SystemRoles } from 'src/user/entities';
-import { JwtGuardBearer } from 'src/auth/guards';
 import * as bcrypt from 'bcrypt';
 
 const authPrefix = '/auth';
@@ -55,8 +54,6 @@ describe('AuthController (e2e)', () => {
     })
       .overrideProvider(DatabaseService)
       .useValue(prismaMock)
-      .overrideGuard(JwtGuardBearer)
-      .useValue({ canActivate: jest.fn(() => true) })
       .compile();
 
     app = moduleFixture.createNestApplication();
@@ -148,11 +145,29 @@ describe('AuthController (e2e)', () => {
   });
 
   describe('/auth/renew', () => {
-    it('(GET) should return "Unauthorized" if no token present', async () => {
+    it('(GET) should return "Unauthorized" if token is invalid', async () => {
       await request(app.getHttpServer())
         .get(authRoutes.RENEW)
         .set('Authorization', 'Bearer test-token')
         .expect(401);
+    });
+
+    it('(GET) should return User data if token valid', async () => {
+      prismaMock.user.findUnique.mockResolvedValue(returnedUser);
+      jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
+      //Paso 1: Login
+      const loginResponse = await request(app.getHttpServer())
+        .post(authRoutes.LOGIN)
+        .send({ email: 'email@example.com', password: '123456' });
+      const token = loginResponse.body.token;
+      expect(token).toBeDefined();
+      // Paso 2: Renew
+      const protectedResponse = await request(app.getHttpServer())
+        .get(authRoutes.RENEW)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(protectedResponse.status).toBe(200);
+      expect(protectedResponse.body).toBeDefined();
     });
   });
 });
