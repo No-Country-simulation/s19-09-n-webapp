@@ -4,13 +4,6 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 
 export default function Card() {
 
-    const img = styled("img")({
-      width: 200,
-      height: "100%",
-      objectFit: "cover",
-      objectPosition: "center",
-    })
-
   return (
     <Paper 
       sx={{ 
