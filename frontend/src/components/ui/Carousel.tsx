@@ -25,9 +25,9 @@ const items: CarouselItem[] = [
 function Carouselcard() {
   return (
     <Carousel
-      animation="slide" // Puedes cambiar la animación si lo deseas
+      animation="slide" 
       navButtonsAlwaysVisible={true} // Muestra los botones de navegación siempre
-      // Puedes personalizar más el carrusel con las props de 'react-material-ui-carousel'
+      
     >
       {items.map((item, index) => (
         <Paper key={index}>
