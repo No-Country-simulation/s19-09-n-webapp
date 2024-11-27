@@ -1,0 +1,15 @@
+export interface Property {
+  id?: number,
+  owner?: number,
+  title?: string,
+  description?: string,
+  address?: string,
+  city?: string,
+  propertyType?: "house" | "apartment",
+  maxOccupants?: number,
+  roomsAvailable?: number,
+  price?: number,
+  furnished?: boolean,
+  services?: boolean,
+  imgUrl?: string,
+}
