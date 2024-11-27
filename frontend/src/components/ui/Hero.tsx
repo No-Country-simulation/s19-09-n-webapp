@@ -1,4 +1,4 @@
-import { Container, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SearchBar from "./searchBar/SearchBar";
 
 export default function Hero() {
@@ -14,7 +14,6 @@ export default function Hero() {
         textAlign: "center",
       }}
     >
-      {" "}
       <SearchBar />
       <Typography variant="h2" sx={{ fontWeight: "400", padding: "2rem 4rem" }}>
         Conecta con tu nuevo hogar, encuentra a tu roomie ideal

@@ -8,7 +8,8 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import HouseIcon from "@mui/icons-material/House";
 import BedIcon from "@mui/icons-material/Bed";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 /* import Button from "@mui/material"; */
 
 function SearchBar() {
@@ -118,6 +119,9 @@ function SearchBar() {
       </FormControl>
       <Button type="submit" variant="contained">
         <SearchIcon />
+      </Button>
+      <Button type="submit" variant="contained">
+        <LocationOnIcon />
       </Button>
     </Box>
   );
