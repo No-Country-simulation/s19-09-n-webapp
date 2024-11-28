@@ -8,13 +8,9 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import HouseIcon from "@mui/icons-material/House";
 import BedIcon from "@mui/icons-material/Bed";
 import SearchIcon from "@mui/icons-material/Search";
-<<<<<<< HEAD
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Button } from "@mui/material";
-=======
-import { Button, Typography } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
->>>>>>> frontend
+
 /* import Button from "@mui/material"; */
 
 function SearchBar() {
