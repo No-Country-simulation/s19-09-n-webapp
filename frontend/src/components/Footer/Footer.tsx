@@ -2,7 +2,7 @@ import { Container, Grid2, Typography, Box } from "@mui/material";
 
 function Footer() {
   return (
-    <Box component="footer" sx={{ backgroundColor: "#f8f8f8", padding: 4 }}>
+    <Box component="footer" sx={{ backgroundColor: "#201e1e ", padding: 4 ,color:"white" }}>
       <Container>
         <Grid2 container spacing={8}>
           {/* Columna 1: Acerca de */}
