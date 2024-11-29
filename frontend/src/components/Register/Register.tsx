@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 function PageRegister() {
   return (
     <Container>
-      <Typography variant="h2" sx={{ marginTop: 6, marginBottom: 4 }}> Registro </Typography>
+      <Typography variant="h2" sx={{ marginTop: 6, marginBottom: 4 }}> ¡Bienvenido a Roomiefind! </Typography>
+      <Typography variant="h5" sx={{ marginTop: 1, marginBottom: 2 }}> Gracias por registrarte en nuestra plataforma. Ahora formas parte de una comunidad diseñada para ayudarte a encontrar el compañero de habitación ideal. </Typography>
+
       <Grid2 container >
         <Grid2 size={6}
           sx={{ backgroundColor: 'orange', display: { sm: 'none', md: 'block', xs: 'none' } }}
