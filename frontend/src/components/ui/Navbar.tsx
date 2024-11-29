@@ -41,7 +41,7 @@ export default function Navbar() {
             <NavLink href="register">Crea tu cuenta</NavLink>
             <NavLink href="login">Ingresa</NavLink>
             <NavLink href="#">Ayuda</NavLink>
-            <Button variant="outlined" href="login" sx={{ ml: 4 }}>
+            <Button variant="outlined" href="properties" sx={{ ml: 4 }}>
               Publica tu propiedad
               </Button>
             
