@@ -1,6 +1,6 @@
 import { FiltersInterface } from "../store/filtersStore";
 
-const endpoint = "http://https://s19-09-n-back.vercel.app/";
+const endpoint = "https://s19-09-n-back.vercel.app/";
 
 export async function getProperties(filters: FiltersInterface, page: number) {
   const url = new URL(endpoint);
