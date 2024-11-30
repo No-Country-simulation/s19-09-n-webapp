@@ -3,6 +3,7 @@ import { Exclude, Transform } from "class-transformer";
 
 import { PropertyOwner, PropertyPhoto } from "../types/real-estate.type";
 
+// FIXME: Review all property needed fields and their types.
 export class RealEstateProperty {
   id: string;
   title: string;
