@@ -84,7 +84,7 @@ model Property {
   services              ServicesOnProperty[]
   is_furnished          Boolean               @default(false)
   is_services_included  Boolean               @default(false)
-  rating                Int                   @db.SmallInt()
+  rating                Int?                  @db.SmallInt() @default(0)
   created_at            DateTime              @default(now())
   updated_at            DateTime              @updatedAt
   location_id           String                @unique
