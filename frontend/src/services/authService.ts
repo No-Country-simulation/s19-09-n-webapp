@@ -2,7 +2,7 @@ import { buildAuthReq } from "../utils/helpers/requestBuilders";
 
 const baseUrl = "https://s19-09-n-back.vercel.app/api/v1/auth"
 
-export async function register(registrationFields: object) {
+export async function signup(registrationFields: object) {
   const res = await fetch(baseUrl+ "/register", buildAuthReq(registrationFields));
   const data = res.json();
   return data;

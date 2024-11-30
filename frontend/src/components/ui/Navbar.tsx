@@ -2,7 +2,7 @@ import { AppBar, Box, Button, Container, Toolbar } from '@mui/material'
 import {Link} from "react-router-dom"
 import { styled } from '@mui/material/styles'
 import UserButton from './UserButton'
-import {redirect} from "react-router-dom"
+import { useNavigate } from "react-router";
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
@@ -29,6 +29,7 @@ const HomeButton = styled(Link)({
 
 
 export default function Navbar() {
+  const navigate = useNavigate();
   return (
     <StyledAppBar position="static">
       <Container maxWidth="lg">
@@ -47,7 +48,7 @@ export default function Navbar() {
 
           {/* Navigation section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Button variant="outlined" onClick={() => redirect("/")} sx={{ ml: 4 }}>
+            <Button variant="outlined" onClick={() => navigate("/properties")} sx={{ ml: 4 }}>
               Ver propiedades
             </Button>
             <NavLink to="login">Publicar mi propiedad</NavLink>
