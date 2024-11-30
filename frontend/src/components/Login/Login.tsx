@@ -4,33 +4,31 @@ import {
   TextField,
   Container,
   Grid2,
-  Snackbar,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Alert from "@mui/material/Alert";
 import { useUserStore } from "../../store/userStore";
 import { login } from "../../services/authService";
 import { redirect } from "react-router";
-// import { useState } from "react";
+import { useState } from "react";
+import { Toast } from "../ui/Toast";
 
 function PageLogin() {
   const { register, handleSubmit } = useForm();
   const logUser = useUserStore((state) => state.logUser);
-  // const [showsToast, setShowsToast] = useState(false);
+  const [showsToast, setShowsToast] = useState(false);
 
   function onLogin(loginFields: object) {
     login(loginFields).then((user) => {
       logUser(user);
-      Alert;
+      setShowsToast(true);
       redirect("/");
     });
   }
 
   return (
     <Container>
-      <Alert severity="success">This is a success Alert.</Alert>
       <Typography variant="h2" sx={{ marginTop: 6, marginBottom: 4 }}>
         {" "}
         Iniciar sesión{" "}
@@ -77,16 +75,12 @@ function PageLogin() {
             >
               Iniciar Sesión
             </Button>
-            <Snackbar
-              open={true}
-              autoHideDuration={2000}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              message="This Snackbar will be dismissed in 5 seconds."
-            >
-              <Alert severity="success" variant="filled">
-                ¡Sesión iniciada!
-              </Alert>
-            </Snackbar>
+            <Toast
+              open={showsToast}
+              setOpen={setShowsToast}
+              severity="success"
+              message="¡Sesión iniciada!"
+            />
           </Box>
         </Grid2>
       </Grid2>
