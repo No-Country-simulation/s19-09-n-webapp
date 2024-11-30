@@ -1,5 +1,6 @@
 import { AppBar, Box, Button, Container, Link, Toolbar } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import UserButton from './UserButton'
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
@@ -38,12 +39,13 @@ export default function Navbar() {
 
           {/* Navigation section */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <NavLink href="register">Crea tu cuenta</NavLink>
-            <NavLink href="login">Ingresa</NavLink>
-            <NavLink href="#">Ayuda</NavLink>
             <Button variant="outlined" href="properties" sx={{ ml: 4 }}>
-              Publica tu propiedad
+              Ver propiedades
               </Button>
+            <NavLink href="login">Publicar mi propiedad</NavLink>
+            <NavLink href="#">Ayuda</NavLink>
+            <UserButton></UserButton>
+            
             
           </Box>
         </Toolbar>
