@@ -30,8 +30,12 @@ function PageLogin() {
   return (
     <Container>
       <Typography variant="h2" sx={{ marginTop: 6, marginBottom: 4 }}>
+        ¡Bienvenido a Roomiefind!
+      </Typography>
+      <Typography variant="h5" sx={{ marginTop: 1, marginBottom: 2 }}>
         {" "}
-        Iniciar sesión{" "}
+        Encuentra a tu compañero de cuarto ideal o accede a tu cuenta para
+        gestionar tus preferencias y conexiones.{" "}
       </Typography>
       <Grid2 container>
         <Grid2
