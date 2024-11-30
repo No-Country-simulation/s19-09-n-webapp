@@ -73,7 +73,7 @@ model User {
 
 model Property {
   id                    String                @id @default(uuid())
-  title                 String                @db.VarChar(255) 
+  title                 String                @db.VarChar(255)
   address               String                @db.VarChar(255)
   city                  String                @db.VarChar(64)
   property_type         PropertyType          @default(ROOM)
@@ -81,16 +81,16 @@ model Property {
   payment_by_period     Decimal               @db.Decimal(10,2)
   min_rental_period     RentalPeriod          @default(MONTHLY)
   rooms                 RoomsOnProperty[]
-  services              ServicesOnProperty[]        
+  services              ServicesOnProperty[]
   is_furnished          Boolean               @default(false)
   is_services_included  Boolean               @default(false)
   rating                Int                   @db.SmallInt()
   created_at            DateTime              @default(now())
   updated_at            DateTime              @updatedAt
   location_id           String                @unique
-  location              Location?             @relation(fields: [location_id], references: [id])            
+  location              Location?             @relation(fields: [location_id], references: [id])
   near_universities     NearLocation[]
-  photos                PropertyPhoto[]        
+  photos                PropertyPhoto[]
   user_id               String
   user                  User                  @relation(fields: [user_id],references: [id])
 
@@ -99,20 +99,20 @@ model Property {
 
 model Room {
   id        String    @id @default(uuid())
-  type      RoomType  
-  quantity  Int       @default(1) @db.SmallInt 
+  type      RoomType
+  quantity  Int       @default(1) @db.SmallInt
   properties  RoomsOnProperty[]
 
   @@unique([type,quantity])
 }
 
 model RoomsOnProperty {
-  property_id   String    
-  property      Property   @relation(fields: [property_id], references: [id])  
-  room_id       String     
+  property_id   String
+  property      Property   @relation(fields: [property_id], references: [id])
+  room_id       String
   room          Room       @relation(fields: [room_id], references: [id])
 
-  @@id([property_id, room_id])  
+  @@id([property_id, room_id])
 }
 
 model Service {
@@ -122,10 +122,10 @@ model Service {
 }
 
 model ServicesOnProperty {
-  property_id   String    
-  property  Property      @relation(fields: [property_id], references: [id])  
-  service_id   String     
-  service  Service        @relation(fields: [service_id], references: [id])  
+  property_id   String
+  property  Property      @relation(fields: [property_id], references: [id])
+  service_id   String
+  service  Service        @relation(fields: [service_id], references: [id])
 
   @@id([property_id, service_id])
 }
@@ -145,8 +145,8 @@ model University{
   id                String                @id @default(uuid())
   name              String                @db.VarChar(255)
   location_id       String                @unique
-  location          Location              @relation(fields: [location_id], references: [id])   
-  near_properties   NearLocation[]               
+  location          Location              @relation(fields: [location_id], references: [id])
+  near_properties   NearLocation[]
 }
 
 model NearLocation{
