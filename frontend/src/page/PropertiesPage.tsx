@@ -1,25 +1,23 @@
-import Container from "@mui/material/Container";
 import PropertyCard from "../components/Properties/PropertyCard";
 import FiltersBar from "../components/Properties/FiltersBar";
-// import { Property } from "../types/propertyInterface";
-import { placeholderProperties } from "../utils/placeholderData";
+import { placeholderProperties } from "../Data/Properties";
 import Grid from "@mui/material/Grid2";
+import { usePropertiesQuery } from "../hooks/usePropertiesQuery";
 
-/* interface PropertiesPageProps {
-  properties: Property[]
-} */
 
-export default function PropertiesPage(/* {properties}: PropertiesPageProps */) {
+export default function PropertiesPage() {
+  const {currentPage} = usePropertiesQuery();
+  console.log(currentPage);
   return (
     <Grid container sx={{ mt: 3 }} spacing={2}>
-      <Grid size={{ xs: 12, md: 4, }}>
-        <FiltersBar></FiltersBar>
+      <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+        <FiltersBar/>
       </Grid>
-      <Grid size={{ xs: 12, md: 8,}}>
+      <Grid size={{ xs: 12, md: 8, lg: 9 }}>
         <Grid container spacing={2}>
           {placeholderProperties.map((property) => (
             <Grid
-              key={property.title}
+              key={property.id}
               size={{ xs: 12, sm: 6, lg: 4 }}
               sx={{ textAlign: "start" }}
             >
