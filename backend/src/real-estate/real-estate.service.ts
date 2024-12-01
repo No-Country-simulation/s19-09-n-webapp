@@ -1,42 +1,73 @@
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 
-import { RealEstateProperty } from './entities';
+import { RealEstateEntityWhitExclude } from './entities';
 import { DatabaseService } from 'src/database/database.service';
+import { FilterRealEstateDto } from './dto/filter-real-sate.dto';
 
 @Injectable()
 export class RealEstateService {
   constructor(private readonly dbService: DatabaseService){}
+/**
+ * Retrieves a list of real estate properties based on the provided filters.
+ * The function supports pagination and various filtering options such as city, property type,
+ * maximum occupants, price range, rental period, and whether the property is furnished or has services included
+ * If isn't provided it will return all the properties.
+ * Throws an error if there is an issue retrieving the properties.
+ *
+ * @param {FilterRealEstateDto} filters - The filters to apply when querying real estate properties.
+ * @returns {Promise<{data: RealEstateEntity[], total: number, page: number, totalPages: number}>} An object containing the filtered list of properties, total number of properties, current page, and total pages.
+ *
+ */
+  async  getAllRealEstates(filters: FilterRealEstateDto): Promise<{ data: RealEstateEntityWhitExclude[]; total: number; page: number; totalPages: number; }> {
+    const {
+      page,
+      limit,
+      city,
+      property_type,
+      max_occupants,
+      minPrice,
+      maxPrice,
+      rentalPeriod,
+      isFurnished,
+      isServicesIncluded
+    } = filters;
 
-  /**
-   * Retrieve all real estates with pagination.
-   *
-   * @param page Page number, defaults to 1.
-   * @param limit Number of items per page, defaults to 10.
-   * @returns An object with the following properties: data, total, page, totalPages.
-   */
-  // REVIEW: Data response relationship with real estates.
-  async  getAllRealEstates(page = 1, limit = 10) {
-    const take = Math.max(1, limit);
-    const skip = (Math.max(1, page) - 1 ) * take;
+    const where: any = {};
+    if(city) where.city = { contains: city, mode: 'insensitive' };
+    if(property_type) where.property_type = property_type;
+    if(max_occupants) where.max_occupants = { lte: max_occupants };
+    if(minPrice !== undefined && minPrice >= 0) where.payment_by_period = { gte: minPrice };
+    if(maxPrice !== undefined && maxPrice >= 0) where.payment_by_period = { lte: maxPrice };
+    if(rentalPeriod) where.min_rental_period = rentalPeriod;
+    if(isFurnished !== undefined) where.is_furnished = isFurnished;
+    if(isServicesIncluded !== undefined) where.is_services_included = isServicesIncluded;
+
+    const skip = (page - 1) * limit;
+    const take = limit;
 
     try{
       const [data, total] =  await Promise.all([
         this.dbService.property.findMany({
+          where,
           skip,
           take,
+          orderBy: { created_at: 'desc' },
           include: {
-            services: { include: { service: true } },
-            rooms: { include: { room: true } },
+            user: true,
+            location: true,
+            rooms: true,
+            services: true,
           },
         }),
         this.dbService.property.count(),
       ])
 
       return {
-        data,
+        data: plainToInstance(RealEstateEntityWhitExclude, data),
         total,
         page,
-        totalPages: Math.ceil(total / take),
+        totalPages: take > 0 ? Math.ceil(total / take) : 1,
       }
     } catch (error) {
       throw new Error(`Error retrieving real estates: ${error.message}`);
