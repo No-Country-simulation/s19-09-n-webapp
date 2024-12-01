@@ -73,7 +73,7 @@ model User {
 
 model Property {
   id                    String                @id @default(uuid())
-  title                 String                @db.VarChar(255) 
+  title                 String                @db.VarChar(255)
   address               String                @db.VarChar(255)
   city                  String                @db.VarChar(64)
   property_type         PropertyType          @default(ROOM)
@@ -86,9 +86,7 @@ model Property {
   is_services_included  Boolean               @default(false)
   rating                Int                   @db.SmallInt()
   created_at            DateTime              @default(now())
-  updated_at            DateTime              @updatedAt
-  location_id           String                @unique
-  location              Location?             @relation(fields: [location_id], references: [id])            
+  updated_at            DateTime              @updatedAt           
   near_universities     NearLocation[]
   photos                PropertyPhoto[]        
   user_id               String
@@ -130,22 +128,13 @@ model ServicesOnProperty {
   @@id([property_id, service_id])
 }
 
-model Location{
-  id           String     @id @default(uuid())
-  latitude     Decimal    @db.Decimal(10,6)
-  longitud     Decimal    @db.Decimal(10,6)
-  property     Property?
-  university   University?
-
-  @@unique([latitude,longitud])
-}
 
 
 model University{
   id                String                @id @default(uuid())
   name              String                @db.VarChar(255)
-  location_id       String                @unique
-  location          Location              @relation(fields: [location_id], references: [id])   
+  latitude          Decimal               @db.Decimal(10,6)
+  longitud          Decimal               @db.Decimal(10,6) 
   near_properties   NearLocation[]               
 }
 
