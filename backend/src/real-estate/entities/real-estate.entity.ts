@@ -1,63 +1,38 @@
 import { OmitType } from "@nestjs/mapped-types";
 import { Exclude, Transform } from "class-transformer";
+import { PropertyType, RentalPeriod, Room, Service, PropertyPhoto, Location, NearLocation } from '@prisma/client';
 
-import { PropertyOwner, PropertyPhoto } from "../types/real-estate.type";
+import { UserWithoutPassword } from "src/user/entities";
 
-// FIXME: Review all property needed fields and their types.
-export class RealEstateProperty {
+export class RealEstateEntity {
   id: string;
   title: string;
   address: string;
   city: string;
-  @Transform(({ value }) => value as PropertyTypes)
-  property_type: PropertyTypes;
+  @Transform(({ value }) => value as PropertyType)
+  property_type: PropertyType;
   max_occupants: number;
+  @Transform(({ value }) => value as number)
   payment_by_period: number;
-  @Transform(({ value }) => value as PropertyRentalPeriods)
-  min_rental_period: PropertyRentalPeriods
-  @Transform(({ value }) => value as PropertyRoms[])
-  roms: PropertyRoms[];
-  @Transform(({ value }) => value as PropertyServices[])
-  services: PropertyServices[];
+  @Transform(({ value }) => value as RentalPeriod)
+  min_rental_period: RentalPeriod;
   is_furnished: boolean;
   is_services_included: boolean;
   rating: number;
   created_at: Date;
   updated_at: Date;
-  near_university: boolean;
-  photos: PropertyPhoto[];
+  location?: Location;
+  near_universities?: NearLocation[];
+  services?: Service[];
+  rooms?: Room[];
+  photos?: PropertyPhoto[];
+  user_id: string;
+  user?: UserWithoutPassword;
 }
 
-export enum PropertyTypes {
-  APARTMENT = 'APARTMENT',
-  ROOM = 'ROOM',
-  HOUSE = 'HOUSE',
-}
-
-export enum PropertyServices {
-  INTERNET = 'INTERNET',
-  WATER = 'WATER',
-  CLEANING = 'CLEANING',
-  WASHING_MACHINE = 'WASHING_MACHINE',
-  AIR_CONDITIONER = 'AIR_CONDITIONER',
-  HEATER = 'HEATER',
-}
-
-export enum PropertyRoms {
-  BEDROOM = 'BEDROOM',
-  KITCHEN = 'KITCHEN',
-  LIVING = 'LIVING',
-  DINNING = 'DINNING',
-  LAUNDRY = 'LAUNDRY',
-  STUDY = 'STUDY',
-  GARAGE = 'GARAGE',
-  BATHROOM = 'BATHROOM',
-}
-
-export enum PropertyRentalPeriods {
-  WEEKLY = 'WEEKLY',
-  MONTHLY = 'MONTHLY',
-  TRIMESTERLY = 'TRIMESTERLY',
-  HALF_YEARLY = 'HALF_YEARLY',
-  YEARLY = 'YEARLY',
+export class RealEstateEntityWhitExclude extends OmitType(RealEstateEntity, ['updated_at', 'user_id']) {
+  @Exclude()
+  user_id: string
+  @Exclude()
+  updated_at: Date
 }
