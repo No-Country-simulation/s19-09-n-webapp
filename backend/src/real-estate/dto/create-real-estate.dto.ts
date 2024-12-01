@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PropertyType, RentalPeriod } from '@prisma/client';
-import { IsString, IsNumber, IsBoolean, IsEnum, Length, IsNotEmpty, Min, Matches } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsEnum, Length, IsNotEmpty, Min, Matches, IsOptional } from 'class-validator';
 
 export class CreateRealEstateDto {
   @ApiProperty({ example: 'title' })
@@ -49,8 +49,9 @@ export class CreateRealEstateDto {
 
   @ApiProperty({ example: 'location_id', required: false })
   @IsString()
+  @IsOptional()
   @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  location_id?: string;
+  location_id: string;
 
   @ApiProperty({ example: 'user_id' })
   @IsString()
@@ -62,5 +63,6 @@ export class UpdateRealEstateDto extends CreateRealEstateDto {
   @ApiProperty({ example: 4.5 })
   @IsNumber({ maxDecimalPlaces: 1 })
   @Min(0)
+  @IsOptional()
   rating: number;
 }
