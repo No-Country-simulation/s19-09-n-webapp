@@ -150,9 +150,9 @@ model NearLocation{
 }
 
 model PropertyPhoto{
-id            String      @id @default(uuid())
-photo_url     String      @db.Text
-property_id   String      @unique
-property      Property    @relation(fields: [property_id],references: [id])
+id                String      @id @default(uuid())
+photo_base_64     String      @db.Text
+property_id       String      @unique
+property          Property    @relation(fields: [property_id],references: [id])
 
 }
