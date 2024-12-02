@@ -53,6 +53,21 @@ enum ServiceType {
   HEATER
 }
 
+
+enum City {
+  CORDOBA
+  BUENOS_AIRES
+  MENDOZA
+  SALTA
+  TUCUMAN
+  JUJUY
+  CHACO
+  MISIONES
+  LA_RIOJA
+  SAN_JUAN
+  SAN_LUIS
+}
+
 model User {
   id             String   @id @default(uuid())
   name           String   @db.VarChar(64)
@@ -75,7 +90,7 @@ model Property {
   id                    String                @id @default(uuid())
   title                 String                @db.VarChar(255)
   address               String                @db.VarChar(255)
-  city                  String                @db.VarChar(64)
+  city                  City                  
   property_type         PropertyType          @default(ROOM)
   max_occupants         Int                   @db.SmallInt()
   payment_by_period     Decimal               @db.Decimal(10,2)
