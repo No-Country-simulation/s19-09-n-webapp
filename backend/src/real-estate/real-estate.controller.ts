@@ -1,25 +1,24 @@
 import {
-  Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res, UsePipes, ValidationPipe
+  Body, Controller, Delete, Get, Param, Patch, Post, Query, Res, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { RealEstateService } from './real-estate.service'
-import { FilterRealEstateDto } from './dto/filter-real-sate.dto';
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto/create-real-estate.dto';
+import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
 
 @Controller('real-estate')
 export class RealEstateController {
   constructor(private readonly realEstateService: RealEstateService) { }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
   async getAllProperties(@Query() filters: FilterRealEstateDto) {
     return this.realEstateService.getAllRealEstates(filters);
   }
 
 
   @Get('/my-properties/:id')
-  async getMyProperties(@Param('id') id: string) {
+  async getMyProperties(@Query() id: FilterRealEstateByUserIdDto) {
     return this.realEstateService.GetPropertiesByUserID(id);
   }
 
@@ -42,9 +41,9 @@ export class RealEstateController {
     return dto;
   }
 
-  // TODO: Service to delete a property
+
   @Delete('/delete/:id')
   deleteProperty(@Param('id') id: string, @Res() res: Response) {
-    res.status(HttpStatus.OK).send({});
+    return this.realEstateService.deleteRealEstate(id);
   }
 }
