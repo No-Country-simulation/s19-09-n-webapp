@@ -53,6 +53,21 @@ enum ServiceType {
   HEATER
 }
 
+
+enum City {
+  CORDOBA
+  BUENOS_AIRES
+  MENDOZA
+  SALTA
+  TUCUMAN
+  JUJUY
+  CHACO
+  MISIONES
+  LA_RIOJA
+  SAN_JUAN
+  SAN_LUIS
+}
+
 model User {
   id             String   @id @default(uuid())
   name           String   @db.VarChar(64)
@@ -73,9 +88,9 @@ model User {
 
 model Property {
   id                    String                @id @default(uuid())
-  title                 String                @db.VarChar(255) 
+  title                 String                @db.VarChar(255)
   address               String                @db.VarChar(255)
-  city                  String                @db.VarChar(64)
+  city                  City                  
   property_type         PropertyType          @default(ROOM)
   max_occupants         Int                   @db.SmallInt()
   payment_by_period     Decimal               @db.Decimal(10,2)
@@ -86,9 +101,7 @@ model Property {
   is_services_included  Boolean               @default(false)
   rating                Int                   @db.SmallInt()
   created_at            DateTime              @default(now())
-  updated_at            DateTime              @updatedAt
-  location_id           String                @unique
-  location              Location?             @relation(fields: [location_id], references: [id])            
+  updated_at            DateTime              @updatedAt           
   near_universities     NearLocation[]
   photos                PropertyPhoto[]        
   user_id               String
@@ -130,22 +143,13 @@ model ServicesOnProperty {
   @@id([property_id, service_id])
 }
 
-model Location{
-  id           String     @id @default(uuid())
-  latitude     Decimal    @db.Decimal(10,6)
-  longitud     Decimal    @db.Decimal(10,6)
-  property     Property?
-  university   University?
-
-  @@unique([latitude,longitud])
-}
 
 
 model University{
   id                String                @id @default(uuid())
   name              String                @db.VarChar(255)
-  location_id       String                @unique
-  location          Location              @relation(fields: [location_id], references: [id])   
+  latitude          Decimal               @db.Decimal(10,6)
+  longitud          Decimal               @db.Decimal(10,6) 
   near_properties   NearLocation[]               
 }
 
@@ -161,9 +165,9 @@ model NearLocation{
 }
 
 model PropertyPhoto{
-id            String      @id @default(uuid())
-photo_url     String      @db.Text
-property_id   String      @unique
-property      Property    @relation(fields: [property_id],references: [id])
+id                String      @id @default(uuid())
+photo_base_64     String      @db.Text
+property_id       String      @unique
+property          Property    @relation(fields: [property_id],references: [id])
 
 }
