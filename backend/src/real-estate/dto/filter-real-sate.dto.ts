@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PropertyType, RentalPeriod } from '@prisma/client';
-import { IsOptional, IsEnum, IsBoolean, IsString, IsInt, Min, IsNumber } from 'class-validator';
+import { IsOptional, IsEnum, IsBoolean, IsString, IsInt, Min, IsNumber, IsNotEmpty } from 'class-validator';
 
 
 export class FilterRealEstateDto {
@@ -51,6 +51,28 @@ export class FilterRealEstateDto {
   isServicesIncluded?: boolean;
 
   @ApiProperty({ example: 2, required: false })
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  @Min(1)
+  page: number = 1;
+
+  @ApiProperty({ example: 10, required: false })
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  @Min(1)
+  limit: number = 10;
+}
+
+
+export class FilterRealEstateByUserIdDto {
+  @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsInt()
   @Type(() => Number)
