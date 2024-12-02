@@ -17,12 +17,15 @@ export class RealEstateController {
     return this.realEstateService.getAllRealEstates(filters);
   }
 
-  // TODO: Service to get property by ID
+
+  @Get('/my-properties/:id')
+  async getMyProperties(@Param('id') id: string) {
+    return this.realEstateService.GetPropertiesByUserID(id);
+  }
+
   @Get(':id')
-  getProperty(@Param('id') id: string, @Res() res: Response) {
-    res.status(HttpStatus.OK).json({
-      id,
-    });
+  getProperty(@Param('id') id: string) {
+    return this.realEstateService.GetRealEstateById(id);
   }
 
   // TODO: Service to create a new entity of Property
