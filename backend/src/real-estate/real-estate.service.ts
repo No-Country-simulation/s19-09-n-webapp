@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { RealEstateEntityWhitExclude } from './entities';
 import { DatabaseService } from 'src/database/database.service';
 import { FilterRealEstateDto } from './dto/filter-real-sate.dto';
+import { CreateRealEstateDto } from './dto/create-real-estate.dto';
 
 @Injectable()
 export class RealEstateService {
@@ -54,7 +55,14 @@ export class RealEstateService {
           take,
           orderBy: { created_at: 'desc' },
           include: {
-            user: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                last_name: true,
+                email: true
+              }
+            },
             location: true,
             rooms: true,
             services: true,
@@ -74,4 +82,74 @@ export class RealEstateService {
     }
   }
 
+
+/**
+ * Retrieves a real estate property by its unique identifier.
+ *
+ * @param id - The unique identifier of the real estate property.
+ * @returns A promise that resolves to a RealEstateEntityWhitExclude instance
+ *          containing the property details, including associated user, location,
+ *          rooms, and services.
+ * @throws An error if the retrieval process fails.
+ */
+  async GetRealEstateById(id: string): Promise<RealEstateEntityWhitExclude> {
+    try {
+      const data = await this.dbService.property.findUnique({
+        where: { id },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              last_name: true,
+              email: true
+            }
+          },
+          location: true,
+          rooms: true,
+          services: true,
+        },
+      });
+
+      return plainToInstance(RealEstateEntityWhitExclude, data);
+    } catch (error) {
+      throw new Error(`Error retrieving real estate: ${error.message}`);
+    }
+  }
+
+
+
+  /**
+   * Retrieves a list of real estate properties associated with the given user id.
+   *
+   * @param id - The unique identifier of the user.
+   * @returns A promise that resolves to an array of RealEstateEntityWhitExclude
+   *          instances containing the associated properties, including user,
+   *          location, rooms, and services.
+   * @throws An error if the retrieval process fails.
+   */
+  async GetPropertiesByUserID(id: string): Promise<RealEstateEntityWhitExclude[]> {
+    try {
+      const data = await this.dbService.property.findMany({
+        where: { user_id: id },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              last_name: true,
+              email: true
+            }
+          },
+          location: true,
+          rooms: true,
+          services: true,
+        },
+      });
+
+      return plainToInstance(RealEstateEntityWhitExclude, data);
+    } catch (error) {
+      throw new Error(`Error retrieving real estate: ${error.message}`);
+    }
+  }
 }
