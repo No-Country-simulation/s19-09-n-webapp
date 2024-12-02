@@ -27,6 +27,12 @@ export class FilterRealEstateDto {
   @Type(() => Number)
   minPrice?: number;
 
+  @ApiProperty({ example: 4, required: false })
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  rating?: number;
+
   @ApiProperty({ example: 215, required: false })
   @IsOptional()
   @IsNumber()

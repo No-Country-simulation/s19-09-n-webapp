@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { RealEstateEntityWhitExclude } from './entities';
 import { DatabaseService } from 'src/database/database.service';
@@ -25,6 +25,7 @@ export class RealEstateService {
       page,
       limit,
       city,
+      rating,
       property_type,
       max_occupants,
       minPrice,
@@ -38,6 +39,7 @@ export class RealEstateService {
     if (city) where.city = { contains: city, mode: 'insensitive' };
     if (property_type) where.property_type = property_type;
     if (max_occupants) where.max_occupants = { lte: max_occupants };
+    if (rating) where.rating = { gte: rating };
     if (minPrice !== undefined && minPrice >= 0) where.payment_by_period = { gte: minPrice };
     if (maxPrice !== undefined && maxPrice >= 0) where.payment_by_period = { lte: maxPrice };
     if (rentalPeriod) where.min_rental_period = rentalPeriod;
@@ -115,13 +117,18 @@ export class RealEstateService {
         },
       });
 
+      if(!data) {
+        throw new HttpException({
+          message: 'Property not found or not exists.',
+        }, HttpStatus.NOT_FOUND);
+      };
       return plainToInstance(RealEstateEntityWhitExclude, data);
     } catch (error) {
       throw new HttpException({
         code: error.code,
         name: error.name,
-        message: error.meta.cause,
-      }, HttpStatus.BAD_REQUEST);
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.BAD_REQUEST);
     }
   }
 
