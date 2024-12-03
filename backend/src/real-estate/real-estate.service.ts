@@ -1,10 +1,11 @@
 import { plainToInstance } from 'class-transformer';
-import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 import { RealEstateEntityWhitExclude } from './entities';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateRealEstateDto } from './dto/create-real-estate.dto';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
+import { equals } from 'class-validator';
 
 @Injectable()
 export class RealEstateService {
@@ -36,7 +37,7 @@ export class RealEstateService {
     } = filters;
 
     const where: any = {};
-    if (city) where.city = { contains: city, mode: 'insensitive' };
+    if (city) where.city = { equals: city };
     if (property_type) where.property_type = property_type;
     if (max_occupants) where.max_occupants = { lte: max_occupants };
     if (rating) where.rating = { gte: rating };
@@ -56,18 +57,50 @@ export class RealEstateService {
           skip,
           take,
           orderBy: { created_at: 'desc' },
+          omit: {
+            user_id: true,
+            updated_at: true
+          },
           include: {
             user: {
               select: {
-                id: true,
                 name: true,
                 last_name: true,
                 email: true
               }
             },
-            location: true,
-            rooms: true,
-            services: true,
+            rooms: {
+              omit: {
+                property_id: true,
+                room_id: true
+              },
+              include: {
+                room: {
+                  select: {
+                    type: true,
+                    quantity: true
+                  }
+                }
+              }
+            },
+            services: {
+              omit: {
+                property_id: true,
+                service_id: true
+              },
+              include: {
+                service: {
+                  select: {
+                    type: true
+                  }
+                },
+              }
+            },
+            photos: {
+              omit: {
+                property_id: true,
+              }
+            }
           },
         }),
         this.dbService.property.count(),
@@ -83,8 +116,8 @@ export class RealEstateService {
       throw new HttpException({
         code: error.code,
         name: error.name,
-        message: error.meta.cause,
-      }, HttpStatus.BAD_REQUEST);
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -102,22 +135,68 @@ export class RealEstateService {
     try {
       const data = await this.dbService.property.findUnique({
         where: { id },
+        omit: {
+          user_id: true,
+          updated_at: true,
+        },
         include: {
           user: {
             select: {
-              id: true,
               name: true,
               last_name: true,
               email: true
             }
           },
-          location: true,
-          rooms: true,
-          services: true,
+          rooms: {
+            omit: {
+              property_id: true,
+              room_id: true
+            },
+            include: {
+              room: {
+                select: {
+                  type: true,
+                  quantity: true
+                }
+              }
+            }
+          },
+          services: {
+            omit: {
+              property_id: true,
+              service_id: true
+            },
+            include: {
+              service: {
+                select: {
+                  type: true
+                }
+              },
+            }
+          },
+          photos: {
+            omit: {
+              property_id: true,
+            }
+          },
+          near_universities: {
+            omit: {
+              id: true,
+              property_id: true,
+              university_id: true
+            },
+            include: {
+              university: {
+                select: {
+                  name: true,
+                }
+              }
+            }
+          },
         },
       });
 
-      if(!data) {
+      if (!data) {
         throw new HttpException({
           message: 'Property not found or not exists.',
         }, HttpStatus.NOT_FOUND);
@@ -167,9 +246,52 @@ export class RealEstateService {
                 email: true
               }
             },
-            location: true,
-            rooms: true,
-            services: true,
+            rooms: {
+              omit: {
+                property_id: true,
+                room_id: true
+              },
+              include: {
+                room: {
+                  select: {
+                    type: true,
+                    quantity: true
+                  }
+                }
+              }
+            },
+            services: {
+              omit: {
+                property_id: true,
+                service_id: true
+              },
+              include: {
+                service: {
+                  select: {
+                    type: true
+                  }
+                },
+              }
+            },
+            near_universities: {
+              omit: {
+                id: true,
+                property_id: true,
+                university_id: true
+              },
+              include: {
+                university: {
+                  select: {
+                    name: true,
+                  }
+                }
+              }
+            },
+            photos: {
+              omit: {
+                property_id: true,
+              }
+            }
           },
         }),
         await this.dbService.property.count({})
@@ -181,10 +303,11 @@ export class RealEstateService {
         totalPages: take > 0 ? Math.ceil(total / take) : 1,
       };
     } catch (error) {
+      Logger.error(error.stack);
       throw new HttpException({
         code: error.code,
         name: error.name,
-        message: error.meta.cause,
+        message: error.meta?.cause || error.message,
       }, HttpStatus.BAD_REQUEST);
     }
   }
@@ -201,7 +324,7 @@ export class RealEstateService {
     try {
       await this.dbService.property.delete({ where: { id } });
     } catch (error) {
-      if(error.code === 'P2025') {
+      if (error.code === 'P2025') {
         throw new HttpException({
           message: error.meta.cause,
           name: error.name,
