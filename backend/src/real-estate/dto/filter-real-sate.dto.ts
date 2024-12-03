@@ -5,12 +5,12 @@ import { IsOptional, IsEnum, IsBoolean, IsString, IsInt, Min, IsNumber, IsNotEmp
 
 
 export class FilterRealEstateDto {
-  @ApiProperty({ example: 'New York', required: false })
+  @ApiProperty({ example: 'BUENOS_AIRES', required: false })
   @IsOptional()
   @IsString()
   city?: string;
 
-  @ApiProperty({ example: 'APARTMENT', required: false })
+  @ApiProperty({ example: 'ROOM', required: false })
   @IsOptional()
   @IsEnum(PropertyType)
   property_type?: PropertyType;
@@ -21,25 +21,25 @@ export class FilterRealEstateDto {
   @Type(() => Number)
   max_occupants?: number;
 
-  @ApiProperty({ example: 145.50, required: false })
+  @ApiProperty({ example: 3000.00, required: false })
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   minPrice?: number;
 
-  @ApiProperty({ example: 4, required: false })
+  @ApiProperty({ example: 0, required: false })
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   rating?: number;
 
-  @ApiProperty({ example: 215, required: false })
+  @ApiProperty({ example: 5000.00, required: false })
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   maxPrice?: number;
 
-  @ApiProperty({ example: 'WEEKLY', required: false })
+  @ApiProperty({ example: 'MONTHLY', required: false })
   @IsOptional()
   @IsEnum(RentalPeriod)
   rentalPeriod?: RentalPeriod;
