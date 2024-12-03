@@ -3,6 +3,8 @@ import UniversityList from "./components/UniversityList/UniversityList";
 import RootLayout from "./layouts/RootLayout";
 import { PageHome, Login, Register, PropertiesPage } from "./page";
 
+
+
 export const routes = [
   {
     path: "/",
