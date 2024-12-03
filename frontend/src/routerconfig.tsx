@@ -6,6 +6,8 @@ import { PageHome, Login, Register, PropertiesPage } from "./page";
 import Dashboard from "./page/Dashboard";
 
 
+
+
 export const routes = [
   {
     path: "/",
