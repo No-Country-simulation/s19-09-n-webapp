@@ -47,12 +47,6 @@ export class CreateRealEstateDto {
   @IsBoolean()
   is_services_included: boolean;
 
-  @ApiProperty({ example: 'location_id', required: false })
-  @IsString()
-  @IsOptional()
-  @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  location_id: string;
-
   @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
   @IsString()
   @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
