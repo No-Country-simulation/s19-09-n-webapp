@@ -1,20 +1,26 @@
-import { Box, Button, TextField, Container, Grid2 } from "@mui/material";
-import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  TextField,
+  Container,
+  Grid2,
+} from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
-import { useUserStore } from "../../store/userStore";
-import { signup } from "../../services/authService";
+import { Link } from "react-router-dom";
+import { useUserStore } from "../store/userStore";
+import { login } from "../services/authService";
 import { redirect } from "react-router";
 import { useState } from "react";
-import { Toast } from "../ui/Toast";
+import { Toast } from "../components/ui/Toast";
 
-function PageRegister() {
+function PageLogin() {
   const { register, handleSubmit } = useForm();
   const logUser = useUserStore((state) => state.logUser);
   const [showsToast, setShowsToast] = useState(false);
 
-  function onRegister(registrationFields: object) {
-    signup(registrationFields).then((user) => {
+  function onLogin(loginFields: object) {
+    login(loginFields).then((user) => {
       logUser(user);
       setShowsToast(true);
       redirect("/");
@@ -24,16 +30,13 @@ function PageRegister() {
   return (
     <Container>
       <Typography variant="h2" sx={{ marginTop: 6, marginBottom: 4 }}>
-        {" "}
-        ¡Bienvenido a Roomiefind!{" "}
+        ¡Bienvenido a Roomiefind!
       </Typography>
       <Typography variant="h5" sx={{ marginTop: 1, marginBottom: 2 }}>
         {" "}
-        Gracias por registrarte en nuestra plataforma. Ahora formas parte de una
-        comunidad diseñada para ayudarte a encontrar el compañero de habitación
-        ideal.{" "}
+        Encuentra a tu compañero de cuarto ideal o accede a tu cuenta para
+        gestionar tus preferencias y conexiones.{" "}
       </Typography>
-
       <Grid2 container>
         <Grid2
           size={6}
@@ -44,37 +47,16 @@ function PageRegister() {
         ></Grid2>
         <Grid2 size={{ xs: 12, md: 6 }}>
           <Box component="form" marginTop={4} marginLeft={4}>
-            <Link to="/login">¿Ya tienes una cuenta? ¡Inicia sesión aquí!</Link>
-            <TextField
-              {...register("name")}
-              label="Nombre"
-              type="text"
-              variant="outlined"
-              fullWidth
-              helperText="Ingrese su Nombre"
-              margin="normal"
-
-              /*  error={true} */
-            />
-
-            <TextField
-              {...register("last_name")}
-              label="Apellido"
-              type="text"
-              variant="outlined"
-              fullWidth
-              helperText="Ingrese su Apellido"
-              margin="normal"
-
-              /*  error={true} */
-            />
+            <Link to="/register">
+              ¿Aún no tienes una cuenta? ¡Regístrate aquí!
+            </Link>
             <TextField
               {...register("email")}
               label="Email"
               type="email"
               variant="outlined"
               fullWidth
-              helperText="Ingrese Email"
+              helperText="Ingrese un correo válido"
               margin="normal"
 
               /*  error={true} */
@@ -85,24 +67,23 @@ function PageRegister() {
               type="password"
               variant="outlined"
               fullWidth
-              helperText="Ingrese una Contraseña"
+              helperText="Ingrese una contraseña válida"
               margin="normal"
-
-              /*  error={true} */
+              /*   error={true} */
             />
             <Button
-              onClick={handleSubmit(onRegister)}
+              onClick={handleSubmit(onLogin)}
               variant="outlined"
               color="inherit"
               sx={{ m: 6, backgroundColor: "blue", color: "white" }}
             >
-              Registrar usuario
+              Iniciar Sesión
             </Button>
             <Toast
               open={showsToast}
               setOpen={setShowsToast}
               severity="success"
-              message="¡Usuario registrado! Ya puedes continuar."
+              message="¡Sesión iniciada!"
             />
           </Box>
         </Grid2>
@@ -110,5 +91,4 @@ function PageRegister() {
     </Container>
   );
 }
-
-export default PageRegister
+export default PageLogin;

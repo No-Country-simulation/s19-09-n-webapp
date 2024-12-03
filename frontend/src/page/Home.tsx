@@ -1,11 +1,13 @@
-import Hero from "../ui/Hero";
-import ProvinceGrid from "../Buscador-img/ProvinceGrid";
-import ReviewCards from "../ui/ReviewCards";
+import Hero from "../components/ui/Hero";
+import ProvinceGrid from "../components/Buscador-img/ProvinceGrid";
+import ReviewCards from "../components/ui/ReviewCards";
 import { Box } from "@mui/system";
-import ExamplePage from "../ui/ExamplePage";
+import ExamplePage from "../components/ui/ExamplePage";
 import { Grid2, Typography } from "@mui/material";
-import properties from "../../Data/properties.json";
-import PropertyCard from "../ui/PropertyCard";
+import properties from "../Data/properties.json";
+import PropertyCard from "../components/ui/PropertyCard";
+
+
 function PageHome() {
   return (
     <div>
@@ -75,6 +77,7 @@ function PageHome() {
       <Box sx={{ m: 3 }}>
         <ReviewCards />
       </Box>
+
 
       <Box sx={{ m: 3 }}>
         <ProvinceGrid />

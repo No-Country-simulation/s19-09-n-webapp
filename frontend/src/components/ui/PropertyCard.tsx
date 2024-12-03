@@ -76,7 +76,7 @@ export default function PropertyCard({
           
           <Box display="flex" alignItems="center" gap={0.5}>
             <DirectionsCarFilledOutlined />
-            <Typography>{garages} Garage</Typography>
+            <Typography>{garages} </Typography>
           </Box>
         </Stack>
 
