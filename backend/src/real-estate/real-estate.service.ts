@@ -1,11 +1,10 @@
 import { plainToInstance } from 'class-transformer';
-import { HttpCode, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 
-import { RealEstateEntityWhitExclude } from './entities';
 import { DatabaseService } from 'src/database/database.service';
-import { CreateRealEstateDto } from './dto/create-real-estate.dto';
+import { RealEstateEntity, RealEstateEntityWhitExclude } from './entities';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
-import { equals } from 'class-validator';
+import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddServicesOnPropertyDto, CreateRealEstateDto, UpdateRealEstateDto } from './dto/create-real-estate.dto';
 
 @Injectable()
 export class RealEstateService {
@@ -21,6 +20,7 @@ export class RealEstateService {
    * @returns {Promise<{data: RealEstateEntity[], total: number, page: number, totalPages: number}>} An object containing the filtered list of properties, total number of properties, current page, and total pages.
    *
    */
+  // FIXME: Review why to return all results some data is missing and orther is mixed.
   async getAllRealEstates(filters: FilterRealEstateDto): Promise<{ data: RealEstateEntityWhitExclude[]; total: number; page: number; totalPages: number; }> {
     const {
       page,
@@ -338,4 +338,161 @@ export class RealEstateService {
       }, HttpStatus.BAD_REQUEST);
     }
   }
+
+
+  /**
+   * Creates a new real estate property.
+   *
+   * @param data - The details of the property to be created.
+   * @returns A promise that resolves to the newly created property as a RealEstateEntity.
+   * @throws An error if the creation process fails.
+   */
+  async createRealEstateService(data: CreateRealEstateDto) : Promise<RealEstateEntity> {
+    try {
+      const newProperty =await this.dbService.property.create({
+        data: {
+          title: data.title,
+          address: data.address,
+          city: data.city,
+          property_type: data.property_type,
+          max_occupants: data.max_occupants,
+          payment_by_period: data.payment_by_period,
+          min_rental_period: data.min_rental_period,
+          is_furnished: data.is_furnished,
+          is_services_included: data.is_services_included,
+          user_id: data.user_id,
+        }
+      });
+
+      return plainToInstance(RealEstateEntity, newProperty);
+    } catch (error) {
+      throw new HttpException({
+        code: error.code,
+        name: error.name,
+        message: "Something went wrong, the property was not created",
+        stack: error.meta?.cause || error.message,
+      },error.status || HttpStatus.BAD_REQUEST);
+    }
+  }
+
+
+/**
+ * Adds rooms to a real estate property by creating entries in the roomsOnProperty table.
+ *
+ * @param data - An array of AddRoomsOnPropertyDto objects containing the room details to be added.
+ * @param property_id - The unique identifier of the property to which the rooms are to be added.
+ * @returns A promise that resolves when all room entries have been created.
+ */
+  async addRoomsToRealEstateService(data: AddRoomsOnPropertyDto[], property_id: string) {
+    try {
+      const rooms = data.map((room) => {
+        return this.dbService.roomsOnProperty.create({
+          data: {
+            property_id: property_id,
+            room_id: room.room_id,
+          }
+        });
+      });
+      return await Promise.all(rooms);
+    } catch (error) {
+      throw new HttpException({
+        message: "The property was created but the rooms could not be added",
+        code: error.code,
+        name: error.name,
+        stack: error.meta?.cause || error.message,
+      }, HttpStatus.CONFLICT);
+    }
+  }
+
+
+  /**
+   * Adds services to a real estate property by creating entries in the servicesOnProperty table.
+   *
+   * @param data - An array of AddServicesOnPropertyDto objects containing the service details to be added.
+   * @param property_id - The unique identifier of the property to which the services are to be added.
+   * @returns A promise that resolves when all service entries have been created.
+   */
+  async addServicesToRealEstateService(data: AddServicesOnPropertyDto[], property_id: string) {
+    try {
+      const services = data.map((service) => {
+        return this.dbService.servicesOnProperty.create({
+          data: {
+            property_id: property_id,
+            service_id: service.service_id,
+          }
+        });
+      });
+
+     return await Promise.all(services);
+    } catch (error) {
+      throw new HttpException({
+        message: "The property was created but the services could not be added",
+        code: error.code,
+        name: error.name,
+        stack: error.meta?.cause || error.message,
+      }, HttpStatus.CONFLICT);
+    }
+  }
+
+
+/**
+ * Adds nearby universities to a real estate property by creating entries in the nearLocation table.
+ *
+ * @param data - An array of AddNearUniversityDto objects containing the details of the universities to be added.
+ * @param property_id - The unique identifier of the property to which the universities are to be added.
+ * @returns A promise that resolves when all university entries have been created.
+ */
+  async addNearUniversityToRealEstateService(data: AddNearUniversityDto[], property_id: string) {
+    try {
+      const universities = data.map((university) => {
+        return this.dbService.nearLocation.create({
+          data: {
+            property_id: property_id,
+            distance: university.distance,
+            university_id: university.university_id,
+          }
+        });
+      });
+
+      return await Promise.all(universities);
+    } catch (error) {
+      throw new HttpException({
+        message: "The property was created but the universities could not be added",
+        code: error.code,
+        name: error.name,
+        stack: error.meta?.cause || error.message,
+      },HttpStatus.CONFLICT);
+    }
+  }
+
+
+/**
+ * Adds photos to a real estate property by creating entries in the propertyPhoto table.
+ *
+ * @param data - An array of AddPropertyPhotoDto objects containing the photo details to be added.
+ * @param property_id - The unique identifier of the property to which the photos are to be added.
+ * @returns A promise that resolves when all photo entries have been created.
+ */
+  async addPhotoToRealEstateService(data: AddPropertyPhotoDto[], property_id: string) {
+    try {
+      const photos = data.map((photo) => {
+        return this.dbService.propertyPhoto.create({
+          data: {
+            property_id: property_id,
+            photo_base_64: photo.photo_url
+          }
+        });
+      });
+
+      return await Promise.all(photos);
+    } catch (error) {
+      throw new HttpException({
+        message: "The property was created but the photos could not be added",
+        code: error.code,
+        name: error.name,
+        stack: error.meta?.cause || error.message,
+      }, HttpStatus.CONFLICT);
+    }
+  }
+
 }
