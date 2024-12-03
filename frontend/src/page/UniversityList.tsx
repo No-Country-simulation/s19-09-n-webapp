@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid2, Card, CardContent, Typography, Link } from '@mui/material';
-import universities from '../../Data/universities.json';
+import universities from '../Data/universities.json';
 
 const UniversityList: React.FC = () => {
   const { province } = useParams<{ province: string }>();

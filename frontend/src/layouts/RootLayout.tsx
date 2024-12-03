@@ -9,11 +9,10 @@ export default function RootLayout() {
   return (
     <section>
       <Navbar />
-      <Box sx={{ m: 8 }} >
-      <Outlet/>
+      <Box sx={{ m: 8 }}>
+        <Outlet />
       </Box>
       <Footer />
     </section>
   );
 }
-
