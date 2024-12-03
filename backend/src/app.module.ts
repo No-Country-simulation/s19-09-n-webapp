@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { PhotosModule } from './photos/photos.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
     ]),
     UserModule,
     AuthModule,
+    PhotosModule,
   ],
   controllers: [AppController],
   providers: [
