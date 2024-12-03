@@ -4,13 +4,14 @@ import { ApiAcceptedResponse, ApiBadRequestResponse, ApiCreatedResponse, ApiNotF
 import { RealEstateService } from './real-estate.service'
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
+import { RealEstateEntityWhitExclude } from './entities';
 
 @Controller('real-estate')
 export class RealEstateController {
   constructor(private readonly realEstateService: RealEstateService) { }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'Success', type: [FilterRealEstateDto] })
+  @ApiResponse({ status: 200, description: 'Success'})
   @ApiBadRequestResponse({ description: 'Bad request' })
   async getAllProperties(@Query() filters: FilterRealEstateDto) {
     return this.realEstateService.getAllRealEstates(filters);
@@ -18,7 +19,7 @@ export class RealEstateController {
 
 
   @Get('/my-properties')
-  @ApiResponse({ status: 200, description: 'Success', type: [FilterRealEstateDto] })
+  @ApiResponse({ status: 200, description: 'Success' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   async getMyProperties(@Query() id: FilterRealEstateByUserIdDto) {
     return this.realEstateService.GetPropertiesByUserID(id);
