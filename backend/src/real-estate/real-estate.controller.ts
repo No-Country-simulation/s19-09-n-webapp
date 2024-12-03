@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiAcceptedResponse, ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiResponse } from '@nestjs/swagger';
 
 import { RealEstateService } from './real-estate.service'
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto';
@@ -11,7 +11,7 @@ export class RealEstateController {
   constructor(private readonly realEstateService: RealEstateService) { }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'Success'})
+  @ApiResponse({ status: 200, description: 'Success' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   async getAllProperties(@Query() filters: FilterRealEstateDto) {
     return this.realEstateService.getAllRealEstates(filters);
@@ -32,12 +32,29 @@ export class RealEstateController {
     return this.realEstateService.GetRealEstateById(id);
   }
 
-  // TODO: Service to create a new entity of Property
   @Post('/add')
+  @ApiBody({ type: CreateRealEstateDto })
   @ApiCreatedResponse({ description: 'Property created successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  createProperty(@Body() dto: CreateRealEstateDto) {
-    return dto;
+  async createProperty(@Body() data: CreateRealEstateDto) {
+    try {
+      const property = await this.realEstateService.createRealEstateService(data)
+
+      await Promise.all([
+        this.realEstateService.addRoomsToRealEstateService(data.rooms || [], property.id),
+        this.realEstateService.addPhotoToRealEstateService(data.photos || [], property.id),
+        this.realEstateService.addServicesToRealEstateService(data.services || [], property.id),
+        this.realEstateService.addNearUniversityToRealEstateService(data.near_universities || [], property.id),
+      ])
+
+    } catch (error) {
+      return new HttpException({
+        name: error.name,
+        code: error.code,
+        message: error.meta ? error.meta?.cause : error.message,
+        stack: error.stack
+      }, error.status);
+    }
   }
 
   // TODO: Service to update a property
