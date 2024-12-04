@@ -26,7 +26,11 @@ export class PhotosService {
             property_id: createPhotoDto.property_id,
           },
         });
-        return dbResponse ? plainToInstance(Photo, dbResponse) : null;
+        return dbResponse
+          ? plainToInstance(Photo, dbResponse, {
+              excludeExtraneousValues: true,
+            })
+          : null;
       }
       return null;
     } catch (error) {
@@ -50,7 +54,7 @@ export class PhotosService {
   async findOne(id: string) {
     try {
       const dbResponse = await this.prisma.propertyPhoto.findFirst({
-        where: { property_id: id },
+        where: { id: id },
       });
       return dbResponse ? plainToInstance(Photo, dbResponse) : null;
     } catch (error) {
@@ -64,7 +68,7 @@ export class PhotosService {
       const cloudResponse = await this.cloudinary.deleteImage(id);
       if (cloudResponse) {
         const dbResponse = await this.prisma.propertyPhoto.delete({
-          where: { property_id: id },
+          where: { id: id },
         });
         return !!dbResponse;
       }
