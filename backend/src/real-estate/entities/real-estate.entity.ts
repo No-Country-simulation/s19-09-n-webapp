@@ -22,6 +22,8 @@ export class RealEstateEntity {
   is_furnished: boolean;
   is_services_included: boolean;
   rating: number;
+  is_active: boolean;
+  is_available: boolean;
   created_at: Date;
   updated_at: Date;
   near_universities?: NearLocation[];
