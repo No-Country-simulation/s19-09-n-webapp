@@ -1,26 +1,77 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePhotoDto } from './dto/create-photo.dto';
-import { UpdatePhotoDto } from './dto/update-photo.dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { PrismaClient } from '@prisma/client';
+import { isApiResponse } from 'src/common';
+import { plainToInstance } from 'class-transformer';
+import { Photo } from './entities';
 
 @Injectable()
 export class PhotosService {
-  create(createPhotoDto: CreatePhotoDto) {
-    return 'This action adds a new photo';
+  constructor(
+    private cloudinary: CloudinaryService,
+    private prisma: PrismaClient,
+  ) {}
+  async create(createPhotoDto: CreatePhotoDto) {
+    try {
+      const cloudResponse = await this.cloudinary.uploadImage(
+        createPhotoDto.file,
+      );
+
+      if (isApiResponse(cloudResponse)) {
+        const dbResponse = await this.prisma.propertyPhoto.create({
+          data: {
+            photo_url: cloudResponse.secure_url,
+            photo_service_id: cloudResponse.public_id,
+            property_id: createPhotoDto.property_id,
+          },
+        });
+        return dbResponse ? plainToInstance(Photo, dbResponse) : null;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+      return 'No se pudo subir la imagen';
+    }
   }
 
-  findAll() {
-    return `This action returns all photos`;
+  async findAllByProperty(propertyId: string) {
+    try {
+      const dbResponse = await this.prisma.propertyPhoto.findMany({
+        where: { property_id: propertyId },
+      });
+      return dbResponse ? plainToInstance(Photo, dbResponse) : null;
+    } catch (error) {
+      console.log(error);
+      return 'Error al buscar la foto';
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} photo`;
+  async findOne(id: string) {
+    try {
+      const dbResponse = await this.prisma.propertyPhoto.findFirst({
+        where: { property_id: id },
+      });
+      return dbResponse ? plainToInstance(Photo, dbResponse) : null;
+    } catch (error) {
+      console.log(error);
+      return 'Error al buscar la foto';
+    }
   }
 
-  update(id: number, updatePhotoDto: UpdatePhotoDto) {
-    return `This action updates a #${id} photo`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} photo`;
+  async remove(id: string) {
+    try {
+      const cloudResponse = await this.cloudinary.deleteImage(id);
+      if (cloudResponse) {
+        const dbResponse = await this.prisma.propertyPhoto.delete({
+          where: { property_id: id },
+        });
+        return !!dbResponse;
+      }
+      throw Error('Error al eliminar en el cloud');
+    } catch (error) {
+      console.log(error);
+      return 'Error al eliminar la foto';
+    }
   }
 }
