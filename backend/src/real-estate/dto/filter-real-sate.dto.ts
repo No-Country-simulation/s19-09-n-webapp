@@ -73,11 +73,6 @@ export class FilterRealEstateDto {
 
 
 export class FilterRealEstateByUserIdDto {
-  @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
   @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsInt()
