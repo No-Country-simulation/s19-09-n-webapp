@@ -55,13 +55,12 @@ export class CreateRealEstateDto {
   @Length(1, 255)
   address: string;
 
-  @ApiProperty({ example: 'New York' })
+  @ApiProperty({ enum: City ,example: City.BUENOS_AIRES })
   @IsString()
   @IsNotEmpty()
-  @Length(1, 64)
   city: City;
 
-  @ApiProperty({ example: 'APARTMENT' })
+  @ApiProperty({ enum: PropertyType ,example: 'APARTMENT' })
   @IsEnum(PropertyType)
   property_type: PropertyType;
 
@@ -75,7 +74,7 @@ export class CreateRealEstateDto {
   @Min(0)
   payment_by_period: number;
 
-  @ApiProperty({ example: 'WEEKLY' })
+  @ApiProperty({ enum: RentalPeriod, example: 'MONTHLY' })
   @IsEnum(RentalPeriod)
   min_rental_period: RentalPeriod;
 
@@ -113,11 +112,6 @@ export class CreateRealEstateDto {
   @ValidateNested({ each: true })
   @Type(() => AddPropertyPhotoDto)
   photos: AddPropertyPhotoDto[];
-
-  @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
-  @IsString()
-  @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  user_id: string;
 }
 
 export class UpdateRealEstateDto extends CreateRealEstateDto {
@@ -127,4 +121,14 @@ export class UpdateRealEstateDto extends CreateRealEstateDto {
   @Max(5)
   @IsOptional()
   rating: number;
+
+  @ApiProperty({ example: true, required: false })
+  @IsBoolean()
+  @IsOptional()
+  is_active: boolean;
+
+  @ApiProperty({ example: true, required: false })
+  @IsBoolean()
+  @IsOptional()
+  is_available: boolean;
 }

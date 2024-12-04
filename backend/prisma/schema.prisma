@@ -104,6 +104,8 @@ model Property {
   updated_at           DateTime             @updatedAt
   near_universities    NearLocation[]
   photos               PropertyPhoto[]
+  is_active            Boolean              @default(true)
+  is_available         Boolean              @default(true)
   user_id              String
   user                 User                 @relation(fields: [user_id], references: [id])
 
