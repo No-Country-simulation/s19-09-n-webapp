@@ -1,7 +1,8 @@
 import { plainToInstance } from 'class-transformer';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 
 import { DatabaseService } from 'src/database/database.service';
+import { PropertyResponseFilter } from './Types/response.interface';
 import { RealEstateEntity, RealEstateEntityWhitExclude } from './entities';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
 import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddServicesOnPropertyDto, CreateRealEstateDto, UpdateRealEstateDto } from './dto/create-real-estate.dto';
@@ -9,6 +10,8 @@ import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddSe
 @Injectable()
 export class RealEstateService {
   constructor(private readonly dbService: DatabaseService) { }
+
+  // * Get all real estates ----------------------------------------------------------------------------------------------//
   /**
    * Retrieves a list of real estate properties based on the provided filters.
    * The function supports pagination and various filtering options such as city, property type,
@@ -20,8 +23,7 @@ export class RealEstateService {
    * @returns {Promise<{data: RealEstateEntity[], total: number, page: number, totalPages: number}>} An object containing the filtered list of properties, total number of properties, current page, and total pages.
    *
    */
-  // FIXME: Review why to return all results some data is missing and orther is mixed.
-  async getAllRealEstates(filters: FilterRealEstateDto): Promise<{ data: RealEstateEntityWhitExclude[]; total: number; page: number; totalPages: number; }> {
+  async getAllRealEstates(filters: FilterRealEstateDto): Promise<PropertyResponseFilter> {
     const {
       page,
       limit,
@@ -36,7 +38,7 @@ export class RealEstateService {
       isServicesIncluded
     } = filters;
 
-    const where: any = {};
+    const where: any = { is_active: true };
     if (city) where.city = { equals: city };
     if (property_type) where.property_type = property_type;
     if (max_occupants) where.max_occupants = { lte: max_occupants };
@@ -107,21 +109,17 @@ export class RealEstateService {
       ])
 
       return {
-        data: plainToInstance(RealEstateEntityWhitExclude, data),
-        total,
+        limit,
         page,
         totalPages: take > 0 ? Math.ceil(total / take) : 1,
+        data: plainToInstance(RealEstateEntityWhitExclude, data),
       }
     } catch (error) {
-      throw new HttpException({
-        code: error.code,
-        name: error.name,
-        message: error.meta?.cause || error.message,
-      }, error.status || HttpStatus.BAD_REQUEST);
+      throw error;
     }
   }
 
-
+  // * Get real estate by id ----------------------------------------------------------------------------------------------//
   /**
    * Retrieves a real estate property by its unique identifier.
    *
@@ -134,7 +132,7 @@ export class RealEstateService {
   async GetRealEstateById(id: string): Promise<RealEstateEntityWhitExclude> {
     try {
       const data = await this.dbService.property.findUnique({
-        where: { id },
+        where: { id , is_active: true },
         omit: {
           user_id: true,
           updated_at: true,
@@ -203,17 +201,11 @@ export class RealEstateService {
       };
       return plainToInstance(RealEstateEntityWhitExclude, data);
     } catch (error) {
-      throw new HttpException({
-        code: error.code,
-        name: error.name,
-        message: error.meta?.cause || error.message,
-      }, error.status || HttpStatus.BAD_REQUEST);
+      throw error;
     }
   }
 
-
-
-
+  // * Get real estate by user id ----------------------------------------------------------------------------------------------//
   /**
    * Retrieves a list of real estate properties associated with the given user
    * identifier. Supports pagination and sorting.
@@ -225,22 +217,21 @@ export class RealEstateService {
    *  properties, current page, and total pages.
    *
    */
-  async GetPropertiesByUserID(filters: FilterRealEstateByUserIdDto): Promise<{ data: RealEstateEntityWhitExclude[], page: number, totalPages: number }> {
-    const { id, page, limit } = filters;
+  async GetPropertiesByUserID(filters: FilterRealEstateByUserIdDto, id: string): Promise<PropertyResponseFilter> {
+    const { page, limit } = filters;
     const skip = (page - 1) * limit;
     const take = limit;
 
     try {
       const [data, total] = await Promise.all([
         await this.dbService.property.findMany({
-          where: { user_id: id },
+          where: { user_id: id, is_active: true },
           skip,
           take,
           orderBy: { created_at: 'desc' },
           include: {
             user: {
               select: {
-                id: true,
                 name: true,
                 last_name: true,
                 email: true
@@ -294,16 +285,16 @@ export class RealEstateService {
             }
           },
         }),
-        await this.dbService.property.count({})
+        await this.dbService.property.count({ where: { user_id: id } }),
       ])
 
       return {
-        data: plainToInstance(RealEstateEntityWhitExclude, data),
+        limit,
         page: page,
         totalPages: take > 0 ? Math.ceil(total / take) : 1,
+        data: plainToInstance(RealEstateEntityWhitExclude, data),
       };
     } catch (error) {
-      Logger.error(error.stack);
       throw new HttpException({
         code: error.code,
         name: error.name,
@@ -312,34 +303,29 @@ export class RealEstateService {
     }
   }
 
-
+  // * Delete real estate ----------------------------------------------------------------------------------------------//
   /**
-   * Deletes a real estate property by its unique identifier.
+   * Deletes a real estate property by setting its is_active property to false.
    *
-   * @param id - The unique identifier of the real estate property to delete.
-   * @returns A promise that resolves to void if the property was deleted successfully.
-   * @throws The error received from the database if the deletion fails.
+   * @param id - The unique identifier of the property to be deleted.
+   * @returns A promise that resolves to an object with a message property
+   *          containing the confirmation message.
+   * @throws An error if the deletion process fails.
    */
-  async deleteRealEstate(id: string): Promise<void> {
+  async deleteRealEstate(id: string): Promise<{ message: string}> {
     try {
-      await this.dbService.property.delete({ where: { id } });
+      await this.dbService.property.update({
+        where: { id },
+        data: { is_active: false },
+      })
+
+      return { message: 'Property deleted successfully' };
     } catch (error) {
-      if (error.code === 'P2025') {
-        throw new HttpException({
-          message: error.meta.cause,
-          name: error.name,
-          code: error.code,
-        }, HttpStatus.NOT_FOUND);
-      }
-      throw new HttpException({
-        code: error.code,
-        name: error.name,
-        message: error.meta.cause,
-      }, HttpStatus.BAD_REQUEST);
+      throw error;
     }
   }
 
-
+  // * Create real estate ----------------------------------------------------------------------------------------------//
   /**
    * Creates a new real estate property.
    *
@@ -347,9 +333,9 @@ export class RealEstateService {
    * @returns A promise that resolves to the newly created property as a RealEstateEntity.
    * @throws An error if the creation process fails.
    */
-  async createRealEstateService(data: CreateRealEstateDto) : Promise<RealEstateEntity> {
+  async createRealEstateService(data: CreateRealEstateDto, user_id: string): Promise<RealEstateEntity> {
     try {
-      const newProperty =await this.dbService.property.create({
+      const newProperty = await this.dbService.property.create({
         data: {
           title: data.title,
           address: data.address,
@@ -360,29 +346,24 @@ export class RealEstateService {
           min_rental_period: data.min_rental_period,
           is_furnished: data.is_furnished,
           is_services_included: data.is_services_included,
-          user_id: data.user_id,
+          user_id: user_id,
         }
       });
 
       return plainToInstance(RealEstateEntity, newProperty);
     } catch (error) {
-      throw new HttpException({
-        code: error.code,
-        name: error.name,
-        message: "Something went wrong, the property was not created",
-        stack: error.meta?.cause || error.message,
-      },error.status || HttpStatus.BAD_REQUEST);
+      throw error;
     }
   }
 
-
-/**
- * Adds rooms to a real estate property by creating entries in the roomsOnProperty table.
- *
- * @param data - An array of AddRoomsOnPropertyDto objects containing the room details to be added.
- * @param property_id - The unique identifier of the property to which the rooms are to be added.
- * @returns A promise that resolves when all room entries have been created.
- */
+  // * Add rooms to real estate ----------------------------------------------------------------------------------------------//
+  /**
+   * Adds rooms to a real estate property by creating entries in the roomsOnProperty table.
+   *
+   * @param data - An array of AddRoomsOnPropertyDto objects containing the room details to be added.
+   * @param property_id - The unique identifier of the property to which the rooms are to be added.
+   * @returns A promise that resolves when all room entries have been created.
+   */
   async addRoomsToRealEstateService(data: AddRoomsOnPropertyDto[], property_id: string) {
     try {
       const rooms = data.map((room) => {
@@ -404,7 +385,7 @@ export class RealEstateService {
     }
   }
 
-
+  // * Add services to real estate ----------------------------------------------------------------------------------------------//
   /**
    * Adds services to a real estate property by creating entries in the servicesOnProperty table.
    *
@@ -423,7 +404,7 @@ export class RealEstateService {
         });
       });
 
-     return await Promise.all(services);
+      return await Promise.all(services);
     } catch (error) {
       throw new HttpException({
         message: "The property was created but the services could not be added",
@@ -434,14 +415,14 @@ export class RealEstateService {
     }
   }
 
-
-/**
- * Adds nearby universities to a real estate property by creating entries in the nearLocation table.
- *
- * @param data - An array of AddNearUniversityDto objects containing the details of the universities to be added.
- * @param property_id - The unique identifier of the property to which the universities are to be added.
- * @returns A promise that resolves when all university entries have been created.
- */
+  // * Add nearby universities to real estate ----------------------------------------------------------------------------------------------//
+  /**
+   * Adds nearby universities to a real estate property by creating entries in the nearLocation table.
+   *
+   * @param data - An array of AddNearUniversityDto objects containing the details of the universities to be added.
+   * @param property_id - The unique identifier of the property to which the universities are to be added.
+   * @returns A promise that resolves when all university entries have been created.
+   */
   async addNearUniversityToRealEstateService(data: AddNearUniversityDto[], property_id: string) {
     try {
       const universities = data.map((university) => {
@@ -461,18 +442,18 @@ export class RealEstateService {
         code: error.code,
         name: error.name,
         stack: error.meta?.cause || error.message,
-      },HttpStatus.CONFLICT);
+      }, HttpStatus.CONFLICT);
     }
   }
 
-
-/**
- * Adds photos to a real estate property by creating entries in the propertyPhoto table.
- *
- * @param data - An array of AddPropertyPhotoDto objects containing the photo details to be added.
- * @param property_id - The unique identifier of the property to which the photos are to be added.
- * @returns A promise that resolves when all photo entries have been created.
- */
+  // * Add photos to real estate ----------------------------------------------------------------------------------------------//
+  /**
+   * Adds photos to a real estate property by creating entries in the propertyPhoto table.
+   *
+   * @param data - An array of AddPropertyPhotoDto objects containing the photo details to be added.
+   * @param property_id - The unique identifier of the property to which the photos are to be added.
+   * @returns A promise that resolves when all photo entries have been created.
+   */
   async addPhotoToRealEstateService(data: AddPropertyPhotoDto[], property_id: string) {
     try {
       const photos = data.map((photo) => {
@@ -492,6 +473,52 @@ export class RealEstateService {
         name: error.name,
         stack: error.meta?.cause || error.message,
       }, HttpStatus.CONFLICT);
+    }
+  }
+
+  // * Update real estate ----------------------------------------------------------------------------------------------//
+
+  /**
+   * Updates a real estate property by modifying the corresponding entries in the property table.
+   *
+   * @param property_id - The unique identifier of the property to be updated.
+   * @param user_id - The unique identifier of the user who is trying to update the property.
+   * @param data - An UpdateRealEstateDto object containing the new values for the property.
+   * @returns A promise that resolves with a message indicating whether the property was updated successfully or not.
+   * @throws HttpException if the user does not have permission to update the property or if the property does not exist.
+   */
+  async updateRealEstateService(property_id: string, user_id: string, data: UpdateRealEstateDto,): Promise<RealEstateEntityWhitExclude> {
+    try {
+      const Property = await this.dbService.property.findUnique({ where: { id: property_id } });
+
+      if (Property && Property.user_id !== user_id) {
+        throw new HttpException({
+          message: "Access denied, the user does not have permission to update this property",
+          code: HttpStatus.FORBIDDEN,
+          name: "ForbiddenException",
+        }, HttpStatus.FORBIDDEN);
+      } else if (!Property) throw new NotFoundException("Property not found");
+
+      const property = await this.dbService.property.update({
+        where: { id: property_id },
+        data: {
+          title: data.title,
+          address: data.address,
+          city: data.city,
+          property_type: data.property_type,
+          max_occupants: data.max_occupants,
+          payment_by_period: data.payment_by_period,
+          min_rental_period: data.min_rental_period,
+          is_furnished: data.is_furnished,
+          is_services_included: data.is_services_included,
+          rating: data.rating,
+          is_available: data.is_available
+        }
+      });
+
+      return plainToInstance(RealEstateEntityWhitExclude, property);
+    } catch (error) {
+      throw error;
     }
   }
 
