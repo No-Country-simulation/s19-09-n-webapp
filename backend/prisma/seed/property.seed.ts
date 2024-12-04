@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { image1 } from './images.seed';
 const prisma = new PrismaClient();
 
 export async function seedProperties() {
@@ -79,7 +78,9 @@ export async function seedProperties() {
 
     await prisma.propertyPhoto.create({
       data: {
-        photo_base_64: image1,
+        photo_url:
+          'https://res.cloudinary.com/dc4mh81id/image/upload/v1733338356/roomiefind/we79theq5kvj4dseao1h.jpg',
+        photo_service_id: 'roomiefind/we79theq5kvj4dseao1h',
         property_id: property1_user_1.id,
       },
     });
