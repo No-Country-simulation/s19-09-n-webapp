@@ -1,44 +1,69 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiResponse } from '@nestjs/swagger';
 
-import { RealEstateService } from './real-estate.service'
+import { JwtGuardBearer } from 'src/auth/guards';
+import { RealEstateService } from './real-estate.service';
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
-import { RealEstateEntityWhitExclude } from './entities';
 
 @Controller('real-estate')
 export class RealEstateController {
   constructor(private readonly realEstateService: RealEstateService) { }
 
+  // * Get all properties -----------------------------------------------------------------------------//
   @Get()
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 200, description: 'Success', type: CreateRealEstateDto })
   @ApiBadRequestResponse({ description: 'Bad request' })
   async getAllProperties(@Query() filters: FilterRealEstateDto) {
     return this.realEstateService.getAllRealEstates(filters);
   }
 
-
+  // * Get all my properties ---------------------------------------------------------------------------//
   @Get('/my-properties')
-  @ApiResponse({ status: 200, description: 'Success' })
+  @UseGuards(JwtGuardBearer)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Success', type: [CreateRealEstateDto] })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  async getMyProperties(@Query() id: FilterRealEstateByUserIdDto) {
-    return this.realEstateService.GetPropertiesByUserID(id);
+  async getMyProperties(@Query() filter: FilterRealEstateByUserIdDto, @Req() req: any) {
+    try {
+      return this.realEstateService.GetPropertiesByUserID(filter, req.user.id);
+    } catch (error) {
+      throw new HttpException({
+        name: error.name,
+        code: error.code,
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
+  // * Get one property by id --------------------------------------------------------------------------//
   @Get(':id')
+  @ApiResponse({ status: 200, description: 'Success', type: CreateRealEstateDto })
   @ApiNotFoundResponse({ description: 'Property not found or not exists' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   getProperty(@Param('id') id: string) {
-    return this.realEstateService.GetRealEstateById(id);
+    try {
+      return this.realEstateService.GetRealEstateById(id);
+    } catch (error) {
+      throw new HttpException({
+        name: error.name,
+        code: error.code,
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
+  // * Create a new property --------------------------------------------------------------------------//
   @Post('/add')
+  @UseGuards(JwtGuardBearer)
+  @ApiBearerAuth()
   @ApiBody({ type: CreateRealEstateDto })
   @ApiCreatedResponse({ description: 'Property created successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  async createProperty(@Body() data: CreateRealEstateDto) {
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async createProperty(@Body() data: CreateRealEstateDto, @Req() req: any) {
     try {
-      const property = await this.realEstateService.createRealEstateService(data)
+      const property = await this.realEstateService.createRealEstateService(data, req.user.id);
 
       await Promise.all([
         this.realEstateService.addRoomsToRealEstateService(data.rooms || [], property.id),
@@ -48,28 +73,48 @@ export class RealEstateController {
       ])
 
     } catch (error) {
-      return new HttpException({
+      throw new HttpException({
         name: error.name,
         code: error.code,
-        message: error.meta ? error.meta?.cause : error.message,
-        stack: error.stack
-      }, error.status);
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  // TODO: Service to update a property
-  @Patch('/update/:id')
+  // * Update a property ---------------------------------------------------------------------------//
+  @Patch('/update/:property_id')
+  @UseGuards(JwtGuardBearer)
+  @ApiBearerAuth()
   @ApiAcceptedResponse({ description: 'Property updated successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  updateProperty(@Param('id') id: string, @Body() dto: UpdateRealEstateDto) {
-    return dto;
+  updateProperty(@Param('property_id') property_id: string, @Body() body: UpdateRealEstateDto, @Req() req: any) {
+    try {
+      return this.realEstateService.updateRealEstateService(property_id, req.user.id, body);
+    } catch (error) {
+      return new HttpException({
+        name: error.name,
+        code: error.code,
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-
+  // * Delete a property ---------------------------------------------------------------------------//
   @Delete('/delete/:id')
+  @UseGuards(JwtGuardBearer)
+  @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'Property not found or not exists' })
   deleteProperty(@Param('id') id: string) {
-    return this.realEstateService.deleteRealEstate(id);
+    try {
+      return this.realEstateService.deleteRealEstate(id);
+    } catch (error) {
+      return new HttpException({
+        name: error.name,
+        code: error.code,
+        message: error.meta?.cause || error.message,
+      }, error.status || HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
 }
