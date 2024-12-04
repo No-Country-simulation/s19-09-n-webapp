@@ -10,3 +10,4 @@ export { default as Dashboard } from "./Dashboard.tsx";
 export { default as DashboardData } from "./DashboardData.tsx";
 export { default as DashboardRentals } from "./DahboardRentals.tsx";
 export { default as DashboardProperties } from "./DashboardProperties.tsx";
+export {default as PropertyPage} from "./FinalPropertyPage.tsx";
