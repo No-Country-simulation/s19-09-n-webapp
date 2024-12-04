@@ -55,12 +55,12 @@ export class CreateRealEstateDto {
   @Length(1, 255)
   address: string;
 
-  @ApiProperty({ enum: City ,example: City.BUENOS_AIRES })
+  @ApiProperty({ enum: City, example: City.BUENOS_AIRES })
   @IsString()
   @IsNotEmpty()
   city: City;
 
-  @ApiProperty({ enum: PropertyType ,example: 'APARTMENT' })
+  @ApiProperty({ enum: PropertyType, example: 'APARTMENT' })
   @IsEnum(PropertyType)
   property_type: PropertyType;
 
@@ -121,11 +121,6 @@ export class UpdateRealEstateDto extends CreateRealEstateDto {
   @Max(5)
   @IsOptional()
   rating: number;
-
-  @ApiProperty({ example: true, required: false })
-  @IsBoolean()
-  @IsOptional()
-  is_active: boolean;
 
   @ApiProperty({ example: true, required: false })
   @IsBoolean()
