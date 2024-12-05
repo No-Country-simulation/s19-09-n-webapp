@@ -2,7 +2,8 @@ import { AppBar, Box, Button, Container, Toolbar } from '@mui/material'
 import {Link} from "react-router-dom"
 import { styled } from '@mui/material/styles'
 import UserButton from './UserButton'
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router"
+import ModalProperties from "./ModalProperties";
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
@@ -52,8 +53,10 @@ export default function Navbar() {
               Ver propiedades
             </Button>
             <NavLink to="login">Publicar mi propiedad</NavLink>
-            <NavLink to="#">Ayuda</NavLink>
-            <UserButton></UserButton>
+            <NavLink to="#"><ModalProperties/></NavLink>
+            <UserButton> 
+              
+            </UserButton>
           </Box>
         </Toolbar>
       </Container>
