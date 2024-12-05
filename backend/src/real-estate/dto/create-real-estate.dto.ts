@@ -113,17 +113,3 @@ export class CreateRealEstateDto {
   @Type(() => AddPropertyPhotoDto)
   photos: AddPropertyPhotoDto[];
 }
-
-export class UpdateRealEstateDto extends CreateRealEstateDto {
-  @ApiProperty({ example: 4, required: false })
-  @IsNumber()
-  @Min(0)
-  @Max(5)
-  @IsOptional()
-  rating: number;
-
-  @ApiProperty({ example: true, required: false })
-  @IsBoolean()
-  @IsOptional()
-  is_available: boolean;
-}
