@@ -2,12 +2,12 @@ import { plainToInstance } from 'class-transformer';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 
 import { DatabaseService } from 'src/database/database.service';
+import { UpdateRealEstateDto } from './dto/update-real-estate.dto'
 import { PropertyResponseFilter } from './Types/response.interface';
 import { RealEstateEntity, RealEstateEntityWhitExclude } from './entities';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
-import { UpdateRealEstateDto } from './dto/update-real-estate.dto'
 import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddServicesOnPropertyDto, CreateRealEstateDto } from './dto/create-real-estate.dto';
-import { RoomsOnProperty } from '@prisma/client';
+
 
 @Injectable()
 export class RealEstateService {
@@ -488,7 +488,6 @@ export class RealEstateService {
   }
 
   // * Update real estate ----------------------------------------------------------------------------------------------//
-
   /**
    * Updates a real estate property by modifying the corresponding entries in the property table.
    *
