@@ -87,9 +87,27 @@ export class RealEstateController {
   @ApiBearerAuth()
   @ApiAcceptedResponse({ description: 'Property updated successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  updateProperty(@Param('property_id') property_id: string, @Body() body: UpdateRealEstateDto, @Req() req: any) {
+  /**
+   * Updates a property.
+   *
+   * @param property_id The id of the property to be updated.
+   * @param body The data to be updated.
+   * @param req The request object.
+   * @returns A promise that resolves to an object with a message property containing the confirmation message.
+   * @throws An error if the update process fails.
+   */
+  async updateProperty(@Param('property_id') property_id: string, @Body() body: UpdateRealEstateDto, @Req() req: any) {
     try {
-      return this.realEstateService.updateRealEstateService(property_id, req.user.id, body);
+      this.realEstateService.updateRealEstateService(property_id, req.user.id, body);
+
+      await Promise.all([
+        this.realEstateService.addRoomsToRealEstateService(body.rooms || [], property_id),
+        this.realEstateService.addPhotoToRealEstateService(body.photos || [], property_id),
+        this.realEstateService.addServicesToRealEstateService(body.services || [], property_id),
+        this.realEstateService.addNearUniversityToRealEstateService(body.near_universities || [], property_id),
+      ])
+
+      return { message: 'Property updated successfully' };
     } catch (error) {
       return new HttpException({
         name: error.name,
@@ -100,14 +118,14 @@ export class RealEstateController {
   }
 
   // * Delete a property ---------------------------------------------------------------------------//
-  @Delete('/delete/:id')
+  @Delete('/delete/:property_id')
   @UseGuards(JwtGuardBearer)
   @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'Property not found or not exists' })
-  deleteProperty(@Param('id') id: string) {
+  deleteProperty(@Param('property_id') property_id: string, @Req() req: any) {
     try {
-      return this.realEstateService.deleteRealEstate(id);
+      return this.realEstateService.deleteRealEstate(property_id, req.user.id);
     } catch (error) {
       return new HttpException({
         name: error.name,
