@@ -5,7 +5,9 @@ import { DatabaseService } from 'src/database/database.service';
 import { PropertyResponseFilter } from './Types/response.interface';
 import { RealEstateEntity, RealEstateEntityWhitExclude } from './entities';
 import { FilterRealEstateByUserIdDto, FilterRealEstateDto } from './dto/filter-real-sate.dto';
-import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddServicesOnPropertyDto, CreateRealEstateDto, UpdateRealEstateDto } from './dto/create-real-estate.dto';
+import { UpdateRealEstateDto } from './dto/update-real-estate.dto'
+import { AddNearUniversityDto, AddPropertyPhotoDto, AddRoomsOnPropertyDto, AddServicesOnPropertyDto, CreateRealEstateDto } from './dto/create-real-estate.dto';
+import { RoomsOnProperty } from '@prisma/client';
 
 @Injectable()
 export class RealEstateService {
@@ -132,7 +134,7 @@ export class RealEstateService {
   async GetRealEstateById(id: string): Promise<RealEstateEntityWhitExclude> {
     try {
       const data = await this.dbService.property.findUnique({
-        where: { id , is_active: true },
+        where: { id, is_active: true },
         omit: {
           user_id: true,
           updated_at: true,
@@ -312,10 +314,20 @@ export class RealEstateService {
    *          containing the confirmation message.
    * @throws An error if the deletion process fails.
    */
-  async deleteRealEstate(id: string): Promise<{ message: string}> {
+  async deleteRealEstate(property_id: string, user_id: string): Promise<{ message: string }> {
     try {
+      const Property = await this.dbService.property.findUnique({ where: { id: property_id } });
+
+      if (Property && Property.user_id !== user_id) {
+        throw new HttpException({
+          message: "Access denied, the user does not have permission to delete this property",
+          code: HttpStatus.FORBIDDEN,
+          name: "ForbiddenException",
+        }, HttpStatus.FORBIDDEN);
+      } else if (!Property) throw new NotFoundException("Property not found");
+
       await this.dbService.property.update({
-        where: { id },
+        where: { id: property_id },
         data: { is_active: false },
       })
 
@@ -366,15 +378,15 @@ export class RealEstateService {
    */
   async addRoomsToRealEstateService(data: AddRoomsOnPropertyDto[], property_id: string) {
     try {
-      const rooms = data.map((room) => {
-        return this.dbService.roomsOnProperty.create({
-          data: {
-            property_id: property_id,
-            room_id: room.room_id,
-          }
-        });
-      });
-      return await Promise.all(rooms);
+      const roomsOnProperty = await this.dbService.roomsOnProperty.findMany({ where: { property_id } });
+      if (roomsOnProperty.length > 0) await this.dbService.roomsOnProperty.deleteMany({ where: { property_id } });
+
+      const rooms = data.map((room) => ({
+        property_id,
+        room_id: room.room_id
+      }))
+
+      await this.dbService.roomsOnProperty.createMany({ data: rooms });
     } catch (error) {
       throw new HttpException({
         message: "The property was created but the rooms could not be added",
@@ -395,16 +407,16 @@ export class RealEstateService {
    */
   async addServicesToRealEstateService(data: AddServicesOnPropertyDto[], property_id: string) {
     try {
-      const services = data.map((service) => {
-        return this.dbService.servicesOnProperty.create({
-          data: {
-            property_id: property_id,
-            service_id: service.service_id,
-          }
-        });
-      });
+      const servicesOnProperty = await this.dbService.servicesOnProperty.findMany({ where: { property_id } });
+      if (servicesOnProperty.length > 0) await this.dbService.servicesOnProperty.deleteMany({ where: { property_id } });
 
-      return await Promise.all(services);
+      const services = data.map((service) => ({
+        property_id,
+        service_id: service.service_id
+      }))
+
+      await this.dbService.servicesOnProperty.createMany({ data: services });
+
     } catch (error) {
       throw new HttpException({
         message: "The property was created but the services could not be added",
@@ -425,17 +437,16 @@ export class RealEstateService {
    */
   async addNearUniversityToRealEstateService(data: AddNearUniversityDto[], property_id: string) {
     try {
-      const universities = data.map((university) => {
-        return this.dbService.nearLocation.create({
-          data: {
-            property_id: property_id,
-            distance: university.distance,
-            university_id: university.university_id,
-          }
-        });
-      });
+      const nearLocation = await this.dbService.nearLocation.findMany({ where: { property_id } });
+      if (nearLocation.length > 0) await this.dbService.nearLocation.deleteMany({ where: { property_id } });
 
-      return await Promise.all(universities);
+      const universities = data.map((university) => ({
+        property_id,
+        distance: university.distance,
+        university_id: university.university_id
+      }))
+
+      await this.dbService.nearLocation.createMany({ data: universities });
     } catch (error) {
       throw new HttpException({
         message: "The property was created but the universities could not be added",
@@ -456,16 +467,16 @@ export class RealEstateService {
    */
   async addPhotoToRealEstateService(data: AddPropertyPhotoDto[], property_id: string) {
     try {
-      const photos = data.map((photo) => {
-        return this.dbService.propertyPhoto.create({
-          data: {
-            property_id: property_id,
-            photo_base_64: photo.photo_url
-          }
-        });
-      });
+      const propertyPhoto = await this.dbService.propertyPhoto.findMany({ where: { property_id } });
+      if (propertyPhoto.length > 0) await this.dbService.propertyPhoto.deleteMany({ where: { property_id } });
 
-      return await Promise.all(photos);
+      const photos = data.map((photo) => ({
+        property_id,
+        photo_base_64: photo.photo_url
+      }))
+
+      await this.dbService.propertyPhoto.createMany({ data: photos });
+
     } catch (error) {
       throw new HttpException({
         message: "The property was created but the photos could not be added",
