@@ -8,5 +8,6 @@ import { PrismaClient } from '@prisma/client';
   imports: [CloudinaryModule],
   controllers: [PhotosController],
   providers: [PhotosService, PrismaClient],
+  exports: [PhotosService],
 })
 export class PhotosModule {}
