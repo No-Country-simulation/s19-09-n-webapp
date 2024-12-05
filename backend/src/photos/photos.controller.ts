@@ -1,16 +1,32 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  UseInterceptors,
+  Body,
+  UploadedFile,
+} from '@nestjs/common';
 import { PhotosService } from './photos.service';
-import { CreatePhotoDto } from './dto/create-photo.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CreatePhotoDtoWithoutFile } from './dto/create-photo.dto';
 
 @Controller('photos')
 export class PhotosController {
   constructor(private readonly photosService: PhotosService) {}
 
   @Post()
-  create(@Body() createPhotoDto: CreatePhotoDto) {
-    return this.photosService.create(createPhotoDto);
+  @UseInterceptors(FileInterceptor('photo'))
+  create(
+    @Body() createPhoto: CreatePhotoDtoWithoutFile,
+    @UploadedFile() photo: Express.Multer.File,
+  ) {
+    return this.photosService.create({
+      property_id: createPhoto.property_id,
+      photo: photo,
+    });
   }
-
   @Get('/property/:propertyId')
   findAll(@Param('propertyId') propertyId: string) {
     return this.photosService.findAllByProperty(propertyId);

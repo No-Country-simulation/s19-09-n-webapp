@@ -14,28 +14,35 @@ export class PhotosService {
   ) {}
   async create(createPhotoDto: CreatePhotoDto) {
     try {
-      const cloudResponse = await this.cloudinary.uploadImage(
-        createPhotoDto.file,
-      );
+      const existsPropertyId = await this.prisma.property.findFirst({
+        where: { id: createPhotoDto.property_id },
+      });
+      if (existsPropertyId) {
+        const cloudResponse = await this.cloudinary.uploadImage(
+          createPhotoDto.photo,
+        );
 
-      if (isApiResponse(cloudResponse)) {
-        const dbResponse = await this.prisma.propertyPhoto.create({
-          data: {
-            photo_url: cloudResponse.secure_url,
-            photo_service_id: cloudResponse.public_id,
-            property_id: createPhotoDto.property_id,
-          },
-        });
-        return dbResponse
-          ? plainToInstance(Photo, dbResponse, {
+        if (isApiResponse(cloudResponse)) {
+          const dbResponse = await this.prisma.propertyPhoto.create({
+            data: {
+              photo_url: cloudResponse.secure_url,
+              photo_service_id: cloudResponse.public_id,
+              property_id: createPhotoDto.property_id,
+            },
+          });
+          if (dbResponse) {
+            return plainToInstance(Photo, dbResponse, {
               excludeExtraneousValues: true,
-            })
-          : null;
+            });
+          }
+          //Delete photo on the cloud
+          await this.cloudinary.deleteImage(cloudResponse.public_id);
+          return Error('Error al crear una foto en la db');
+        }
       }
-      return null;
+      throw Error('Id de propiedad invalido o inexistente');
     } catch (error) {
       console.log(error);
-      return 'No se pudo subir la imagen';
     }
   }
 
@@ -47,7 +54,6 @@ export class PhotosService {
       return dbResponse ? plainToInstance(Photo, dbResponse) : null;
     } catch (error) {
       console.log(error);
-      return 'Error al buscar la foto';
     }
   }
 
@@ -59,7 +65,6 @@ export class PhotosService {
       return dbResponse ? plainToInstance(Photo, dbResponse) : null;
     } catch (error) {
       console.log(error);
-      return 'Error al buscar la foto';
     }
   }
 

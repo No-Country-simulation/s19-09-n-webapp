@@ -87,7 +87,7 @@ model User {
 }
 
 model Property {
-  id                    String                @id @default(uuid())
+  id                    String                @id @default(uuid()) 
   title                 String                @db.VarChar(255)
   address               String                @db.VarChar(255)
   city                  City                  
@@ -168,7 +168,7 @@ model PropertyPhoto{
 id                String      @id @default(uuid())
 photo_url         String      @db.Text
 photo_service_id  String
-property_id       String      @unique
+property_id       String      
 property          Property    @relation(fields: [property_id],references: [id])
 
 }
