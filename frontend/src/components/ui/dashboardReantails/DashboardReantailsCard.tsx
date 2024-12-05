@@ -1,5 +1,14 @@
-import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Stack,
+  Chip,
+  Button,
+} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
+import theme from "../../../theme/Theme";
 
 import {
   BathtubOutlined,
@@ -8,14 +17,12 @@ import {
   DirectionsCarFilledOutlined,
   WaterDropOutlined,
   LocalGasStationOutlined,
-  WhatsApp,
-  Email,
 } from "@mui/icons-material";
 
 interface PropertyCardProps {
-  price: number;
-  title: string;
   location: string;
+  from: Date;
+  to: Date;
   rooms: number;
   bathrooms: number;
   balconies: number;
@@ -25,10 +32,10 @@ interface PropertyCardProps {
   imageUrls: string[]; // Cambiamos imageUrl a imageUrls para manejar múltiples imágenes
 }
 
-export default function PropertyCard2({
-  price,
-  title,
+export default function DashboardReantailsCard({
   location,
+  from,
+  to,
   rooms,
   bathrooms,
   balconies,
@@ -39,10 +46,30 @@ export default function PropertyCard2({
 }: PropertyCardProps) {
   return (
     <Card
-      sx={{ display: "flex", borderRadius: 2, maxWidth: 700, maxHeight: 280 }}
+      sx={{
+        margin: "1rem",
+        display: "flex",
+        alignItems: "center",
+        border: 2,
+        borderRadius: 2,
+        borderStyle: "solid",
+        borderColor: theme.palette.primary.main,
+        maxWidth: 600,
+        paddingRight: "1rem",
+        boxShadow: (theme) => `
+      0px 1px 3px ${theme.palette.primary.main}80, 
+      0px 1px 1px ${theme.palette.primary.main}60, 
+      0px 2px 1px -1px ${theme.palette.primary.main}50
+    `,
+      }}
     >
       {/* Carrusel a la izquierda */}
-      <Box sx={{ width: 300, height: 300, overflow: "hidden" }}>
+      <Box
+        sx={{
+          width: 250,
+          overflow: "hidden",
+        }}
+      >
         <Carousel
           autoPlay={true}
           animation="slide"
@@ -66,19 +93,31 @@ export default function PropertyCard2({
       </Box>
 
       {/* Contenido a la derecha */}
-      <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
-        <CardContent>
-          <Typography variant="h5" color="primary" gutterBottom>
-            ${price.toLocaleString()}
-          </Typography>
-
-          <Typography variant="h6" gutterBottom>
-            {title}
-          </Typography>
-
-          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+      <Box sx={{ display: "flex", flex: 1 }}>
+        <CardContent sx={{ paddingRight: 0 }}>
+          <Typography
+            variant="h5"
+            color={theme.palette.secondary.main}
+            gutterBottom
+            sx={{ textAlign: "left" }}
+          >
             {location}
           </Typography>
+
+          <Box sx={{ display: "flex", flex: 1 }}>
+            <Box sx={{ display: "flex", flex: 1, paddingRight: "1rem" }}>
+              <Typography sx={{ paddingRight: "0.25rem" }}>Desde:</Typography>
+              <Typography color="text.secondary" gutterBottom>
+                {from.toLocaleDateString()}
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", flex: 1 }}>
+              <Typography sx={{ paddingRight: "0.25rem" }}>Hasta:</Typography>
+              <Typography color="text.secondary" gutterBottom>
+                {to.toLocaleDateString()}
+              </Typography>
+            </Box>
+          </Box>
 
           <Stack direction="row" spacing={1} sx={{ my: 1 }}>
             <Box display="flex" alignItems="center" gap={0.5}>
@@ -120,16 +159,17 @@ export default function PropertyCard2({
               />
             )}
           </Stack>
-
-          <Stack direction="row" spacing={1}>
-            <Chip
-              icon={<WhatsApp />}
-              label="WhatsApp"
-              clickable
-              color="success"
-            />
-            <Chip icon={<Email />} label="Email" clickable color="primary" />
-          </Stack>
+          <Box sx={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: "2rem",
+              }}
+            >
+              Finalizar renta
+            </Button>
+          </Box>
         </CardContent>
       </Box>
     </Card>
