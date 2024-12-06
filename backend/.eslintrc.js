@@ -28,7 +28,7 @@ module.exports = {
       },
     ],
     "prettier/prettier": [
-      error,
+      'error',
       {
         "endOfLine": "auto"
       }
