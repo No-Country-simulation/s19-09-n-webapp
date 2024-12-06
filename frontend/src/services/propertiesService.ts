@@ -1,5 +1,5 @@
 import { FiltersInterface } from "../store/filtersStore";
-import { buildUserPropertiesReq } from "../utils/helpers/requestBuilders";
+import { buildUserReq } from "../utils/helpers/requestBuilders";
 
 const endpoint = "https://s19-09-n-back.vercel.app/";
 
@@ -22,7 +22,31 @@ export async function getProperty(id: number) {
 }
 
 export async function getUserProperties(token: string) {
-  const res = await fetch(`${endpoint}/`, buildUserPropertiesReq("GET", token));
+  const res = await fetch(`${endpoint}/`, buildUserReq("GET", token));
+  const data = await res.json();
+  return data;
+}
+
+export async function postProperty(inputs: object, token: string) {
+  const res = await fetch(
+    `${endpoint}/`,
+    buildUserReq("POST", token, inputs)
+  );
+  const data = await res.json();
+  return data;
+}
+
+export async function patchProperty(id: number, inputs: object, token: string) {
+  const res = await fetch(
+    `${endpoint}//${id}`,
+    buildUserReq("PATCH", token, inputs)
+  );
+  const data = await res.json();
+  return data;
+}
+
+export async function getUserRentals(token: string) {
+  const res = await fetch(`${endpoint}/`, buildUserReq("GET", token));
   const data = await res.json();
   return data;
 }

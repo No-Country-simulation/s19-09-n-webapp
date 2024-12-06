@@ -8,7 +8,7 @@ export function buildAuthReq(fields: object): RequestInit {
   };
 }
 
-export function buildUserPropertiesReq(
+export function buildUserReq(
   method: string,
   token: string,
   inputs?: object
@@ -18,7 +18,10 @@ export function buildUserPropertiesReq(
   };
   const reqHeaders = new Headers();
   reqHeaders.append("Authorization", `Bearer ${token}`);
-  if (inputs) reqHeaders.append("Content-Type", "application/json");
+  if (inputs) {
+    reqHeaders.append("Content-Type", "application/json");
+    reqInit.body = JSON.stringify(inputs);
+  }
   reqInit.headers = reqHeaders;
   return reqInit;
 }
