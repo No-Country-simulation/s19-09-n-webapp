@@ -1,4 +1,5 @@
 import { FiltersInterface } from "../store/filtersStore";
+import { buildUserPropertiesReq } from "../utils/helpers/requestBuilders";
 
 const endpoint = "https://s19-09-n-back.vercel.app/";
 
@@ -20,8 +21,8 @@ export async function getProperty(id: number) {
   return data;
 }
 
-export async function getUserProperties() {
-  const res = await fetch(`${endpoint}/`);
+export async function getUserProperties(token: string) {
+  const res = await fetch(`${endpoint}/`, buildUserPropertiesReq("GET", token));
   const data = await res.json();
   return data;
 }

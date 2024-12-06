@@ -2,7 +2,7 @@
 import UniversityList from "./page/UniversityList";
 import DashboardLayout from "./layouts/DashboardLayout";
 import RootLayout from "./layouts/RootLayout";
-import { PageHome, Login, Register, PropertiesPage, PropertyPage } from "./page";
+import { PageHome, Login, Register, PropertiesPage, PropertyPage, DashboardProperties } from "./page";
 import Dashboard from "./page/Dashboard";
 
 
@@ -26,6 +26,7 @@ export const routes = [
     element: <DashboardLayout />,
     children: [
       { index: true, element: <Dashboard /> },
+      {path: "/dashboard/properties", element: <DashboardProperties/>},
 
 
     ]
