@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { RealEstateModule } from './real-estate/real-estate.module';
 import { PhotosModule } from './photos/photos.module';
 
 @Module({
@@ -20,6 +21,7 @@ import { PhotosModule } from './photos/photos.module';
     UserModule,
     AuthModule,
     PhotosModule,
+    RealEstateModule,
   ],
   controllers: [AppController],
   providers: [
