@@ -2,12 +2,14 @@ import PropertyCard from "../components/Properties/PropertyCard";
 import FiltersBar from "../components/Properties/FiltersBar";
 import { placeholderProperties } from "../Data/Properties";
 import Grid from "@mui/material/Grid2";
-import { usePropertiesQuery } from "../hooks/usePropertiesQuery";
+import { useProperties } from "../hooks/useProperties";
 
 
 export default function PropertiesPage() {
-  const {currentPage} = usePropertiesQuery();
-  console.log(currentPage);
+  const {propertiesQuery} = useProperties();
+
+  if(propertiesQuery.isLoading) return <p>Loading</p>;
+
   return (
     <Grid container sx={{ mt: 3 }} spacing={2}>
       <Grid size={{ xs: 12, md: 4, lg: 3 }}>
