@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, PropertyType, RentalPeriod } from '@prisma/client';
-import { IsString, IsNumber, IsBoolean, IsEnum, Length, IsNotEmpty, Min, Matches, IsOptional, Max, IsArray, ValidateNested } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsEnum, Length, IsNotEmpty, Min, Matches, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
 
 export class AddServicesOnPropertyDto {
