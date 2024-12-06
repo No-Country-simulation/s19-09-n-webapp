@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+import { hashPassword } from '../../src/common/hash.common';
+
 const prisma = new PrismaClient();
 
 export async function seedUsers() {
+  const hashedPassword = hashPassword('SecurePassword123!');
   try {
     await prisma.user.upsert({
       where: { email: 'alice@gmail.com' },
@@ -11,7 +14,7 @@ export async function seedUsers() {
         name: 'Alice',
         last_name: 'Cooper',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: false,
         deleted: false,
         role: 'USER',
@@ -27,7 +30,7 @@ export async function seedUsers() {
         name: 'Bob',
         last_name: 'Johnson',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: false,
         deleted: false,
         role: 'USER',
@@ -43,7 +46,7 @@ export async function seedUsers() {
         name: 'Eve',
         last_name: 'Williams',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: false,
         deleted: false,
         role: 'USER',
@@ -59,7 +62,7 @@ export async function seedUsers() {
         name: 'Maria',
         last_name: 'Garcia',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: true,
         deleted: false,
         role: 'USER',
@@ -74,7 +77,7 @@ export async function seedUsers() {
         name: 'Luis',
         last_name: 'Garcia',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: true,
         deleted: false,
         role: 'USER',
@@ -89,7 +92,7 @@ export async function seedUsers() {
         name: 'Juan',
         last_name: 'Perez',
         email_verified: true,
-        password: 'SecurePassword123!',
+        password: hashedPassword,
         is_owner: true,
         deleted: false,
         role: 'USER',
@@ -105,7 +108,7 @@ export async function seedUsers() {
         name: 'MODERATOR',
         last_name: 'MODERATOR',
         email_verified: true,
-        password: 'Moderator1234',
+        password: hashPassword('Moderator1234'),
         is_owner: false,
         deleted: false,
         role: 'MODERATOR',
@@ -121,7 +124,7 @@ export async function seedUsers() {
         name: 'ADMIN',
         last_name: 'ADMIN',
         email_verified: true,
-        password: 'Admin1234',
+        password: hashPassword('Admin1234'),
         is_owner: false,
         deleted: false,
         role: 'ADMIN',
