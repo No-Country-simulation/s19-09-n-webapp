@@ -11,6 +11,10 @@ interface EnvVariables {
 
   JWT_SECRET: string;
   JWT_DURATION: string;
+
+  CLOUDINARY_KEY: string;
+  CLOUDINARY_SECRET: string;
+  CLOUDINARY_NAME: string;
 }
 
 const envValidationSchema = Joi.object({
@@ -24,6 +28,9 @@ const envValidationSchema = Joi.object({
   DATABASE_URL: Joi.string().uri().required(),
   JWT_SECRET: Joi.string().min(8).required(),
   JWT_DURATION: Joi.string().default('1d'),
+  CLOUDINARY_KEY: Joi.string().required(),
+  CLOUDINARY_SECRET: Joi.string().required(),
+  CLOUDINARY_NAME: Joi.string().required(),
 }).unknown(true);
 
 const { error, value } = envValidationSchema.validate({
@@ -49,5 +56,10 @@ export const envs = {
   jwt: {
     secret: envVars.JWT_SECRET,
     duration: envVars.JWT_DURATION,
+  },
+  cloudinary: {
+    name: envVars.CLOUDINARY_NAME,
+    key: envVars.CLOUDINARY_KEY,
+    secret: envVars.CLOUDINARY_SECRET,
   },
 };
