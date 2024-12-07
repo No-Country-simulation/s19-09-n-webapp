@@ -1,4 +1,4 @@
-import { RealEstateEntityWhitExclude } from "../entities";
+import { RealEstateEntityWhitExclude } from '../entities';
 
 export interface PropertyResponseFilter {
   data: RealEstateEntityWhitExclude[];
