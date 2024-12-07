@@ -1,8 +1,15 @@
+import {
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+  IsString,
+  IsInt,
+  Min,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PropertyType, RentalPeriod } from '@prisma/client';
-import { IsOptional, IsEnum, IsBoolean, IsString, IsInt, Min, IsNumber } from 'class-validator';
-
 
 export class FilterRealEstateDto {
   @ApiProperty({ example: 'BUENOS_AIRES', required: false })
@@ -21,7 +28,7 @@ export class FilterRealEstateDto {
   @Type(() => Number)
   max_occupants?: number;
 
-  @ApiProperty({ example: 3000.00, required: false })
+  @ApiProperty({ example: 3000.0, required: false })
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
@@ -33,7 +40,7 @@ export class FilterRealEstateDto {
   @Type(() => Number)
   rating?: number;
 
-  @ApiProperty({ example: 5000.00, required: false })
+  @ApiProperty({ example: 5000.0, required: false })
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
@@ -70,7 +77,6 @@ export class FilterRealEstateDto {
   @Min(1)
   limit: number = 10;
 }
-
 
 export class FilterRealEstateByUserIdDto {
   @ApiProperty({ example: 1, required: false })
