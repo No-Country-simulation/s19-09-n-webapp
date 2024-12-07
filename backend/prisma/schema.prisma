@@ -168,7 +168,7 @@ model PropertyPhoto{
 id                String      @id @default(uuid())
 photo_url         String      @db.Text
 photo_service_id  String
-property_id       String      
+property_id       String
 property          Property    @relation(fields: [property_id],references: [id])
 
 }
