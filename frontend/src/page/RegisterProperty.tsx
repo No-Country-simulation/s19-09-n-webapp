@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Grid2,
   Button,
   TextField,
   FormControl,
@@ -26,6 +27,8 @@ interface Property {
   security: string[];
   images: File[];
 }
+
+
 
 const RegisterProperty: React.FC = () => {
   const [property, setProperty] = useState<Property>({
@@ -76,7 +79,7 @@ const RegisterProperty: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
+      <Box sx={{ my: 2 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Cargar Propiedad
         </Typography>
@@ -118,15 +121,41 @@ const RegisterProperty: React.FC = () => {
           />
 
           <TextareaAutosize
-            aria-label="Descripción de la propiedad"
-            placeholder="Descripción de la propiedad"
-            name="description"
+            label="Descripción de la propiedad"            
+            placeholder="Descripción"           
             value={property.description}
             onChange={handleInputChange}
             minRows={5}
             style={{ width: '100%', marginTop: '1rem' }}
+            
           />
 
+          <Grid2 container spacing={1}>
+          <Grid2 item xs={12} sm={9} md={6}>
+
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Amenidades
+          </Typography>
+          <FormGroup>
+            {['Piscina', 'Asaderas', 'Sala de Eventos', 'Co-work', 'Gimnasio', 'Sala de Juegos'].map((service) => (
+              <FormControlLabel
+                key={service}
+                control={
+                  <Checkbox
+                    checked={property.services.includes(service)}
+                    onChange={handleCheckboxChange}
+                    name="services"
+                    value={service}
+                  />
+                }
+                label={service}
+              />
+            ))}
+          </FormGroup>
+          </Grid2>
+
+          
+          <Grid2 item xs={12} sm={6} md={3}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Servicios Activos
           </Typography>
@@ -146,6 +175,10 @@ const RegisterProperty: React.FC = () => {
               />
             ))}
           </FormGroup>
+          </Grid2>
+
+          
+          <Grid2 item xs={12} sm={6} md={3}>
 
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Entidades Cercanas
@@ -166,6 +199,10 @@ const RegisterProperty: React.FC = () => {
               />
             ))}
           </FormGroup>
+          </Grid2>
+
+          
+          <Grid2 item xs={12} sm={6} md={3}>
 
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Seguridad
@@ -186,6 +223,8 @@ const RegisterProperty: React.FC = () => {
               />
             ))}
           </FormGroup>
+          </Grid2>
+          </Grid2>
 
           <Button variant="contained" component="label" sx={{ mt: 2 }}>
             Subir Imágenes
@@ -197,6 +236,7 @@ const RegisterProperty: React.FC = () => {
               onChange={handleImageChange}
             />
           </Button>
+
 
           {property.images.length > 0 && (
             <ImageList cols={3} rowHeight={100} sx={{ mt: 2 }}>
