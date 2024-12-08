@@ -52,6 +52,7 @@ export class RealEstateController {
     type: CreateRealEstateDto,
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async getAllProperties(@Query() filters: FilterRealEstateDto) {
     try {
       return this.realEstateService.getAllRealEstates(filters);
@@ -77,6 +78,7 @@ export class RealEstateController {
     type: [CreateRealEstateDto],
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async getMyProperties(
     @Query() filter: FilterRealEstateByUserIdDto,
     @Req() req: any,
@@ -128,6 +130,7 @@ export class RealEstateController {
   @ApiCreatedResponse({ description: 'Property created successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async createProperty(@Body() data: CreateRealEstateDto, @Req() req: any) {
     try {
       await this.realEstateService.createRealEstateService(data, req.user.id);
@@ -181,6 +184,8 @@ export class RealEstateController {
   @ApiBearerAuth()
   @ApiAcceptedResponse({ description: 'Property updated successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Property not found or not exists' })
   async updateProperty(
     @Param('property_id') property_id: string,
     @Body() body: UpdateRealEstateDto,
@@ -207,6 +212,28 @@ export class RealEstateController {
     }
   }
 
+  @Delete('/delete-photo/:photo_id')
+  @UseGuards(JwtGuardBearer)
+  @ApiBearerAuth()
+  @ApiAcceptedResponse({ description: 'Photo deleted successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Photo not found or not exists' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  deletePhoto(@Param('photo_id') photo_id: string) {
+    try {
+      this.PhotosService.remove(photo_id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          name: error.name,
+          code: error.code,
+          message: error.meta?.cause || error.message,
+        },
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   // * Delete a property ---------------------------------------------------------------------------//
   @Delete('/delete/:property_id')
   @UseGuards(JwtGuardBearer)
@@ -217,7 +244,7 @@ export class RealEstateController {
     try {
       return this.realEstateService.deleteRealEstate(property_id, req.user.id);
     } catch (error) {
-      return new HttpException(
+      throw new HttpException(
         {
           name: error.name,
           code: error.code,
