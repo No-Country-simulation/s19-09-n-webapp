@@ -10,7 +10,9 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiAcceptedResponse,
@@ -21,6 +23,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import {
@@ -31,6 +34,8 @@ import { JwtGuardBearer } from 'src/auth/guards';
 import { PhotosService } from 'src/photos/photos.service';
 import { RealEstateService } from './real-estate.service';
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
 
 @Controller('real-estate')
 export class RealEstateController {
@@ -127,6 +132,36 @@ export class RealEstateController {
     try {
       await this.realEstateService.createRealEstateService(data, req.user.id);
       return { message: 'Property created successfully' };
+    } catch (error) {
+      throw new HttpException(
+        {
+          name: error.name,
+          code: error.code,
+          message: error.meta || error.meta?.cause || error.message,
+          stack: error.stack,
+        },
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  // * Add a photo to a property --------------------------------------------------------------------------//
+  @Post('/:property_id/uploads')
+  @ApiBearerAuth()
+  @ApiBody({ type: CreatePhotoDto })
+  @ApiCreatedResponse({ description: 'Photo uploaded successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @UseGuards(JwtGuardBearer)
+  @UseInterceptors(FileInterceptor('file'))
+  uploadPhotoOnProperty(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('property_id') property_id: string,
+  ) {
+    try {
+      this.PhotosService.create({ photo: file, property_id });
+
+      return { message: 'Photo uploaded successfully' };
     } catch (error) {
       throw new HttpException(
         {
