@@ -146,42 +146,26 @@ export class RealEstateController {
   @ApiBearerAuth()
   @ApiAcceptedResponse({ description: 'Property updated successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  /**
-   * Updates a property.
-   *
-   * @param property_id The id of the property to be updated.
-   * @param body The data to be updated.
-   * @param req The request object.
-   * @returns A promise that resolves to an object with a message property containing the confirmation message.
-   * @throws An error if the update process fails.
-   */
   async updateProperty(
     @Param('property_id') property_id: string,
     @Body() body: UpdateRealEstateDto,
     @Req() req: any,
   ) {
-    const failedUploads: string[] = [];
     try {
-      this.realEstateService.updateRealEstateService(
+      await this.realEstateService.updateRealEstateService(
         property_id,
         req.user.id,
         body,
       );
 
-      if (failedUploads.length) {
-        throw new HttpException(
-          `Failed to upload following photos: ${failedUploads.join(', ')}`,
-          HttpStatus.CONFLICT,
-        );
-      }
-
       return { message: 'Property updated successfully' };
     } catch (error) {
-      return new HttpException(
+      throw new HttpException(
         {
           name: error.name,
           code: error.code,
-          message: error.meta?.cause || error.message,
+          message: error.meta || error.meta?.cause || error.message,
+          stack: error.stack,
         },
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );

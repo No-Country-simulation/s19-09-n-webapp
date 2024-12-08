@@ -427,12 +427,15 @@ export class RealEstateService {
   }
 
   // * Add rooms to real estate ----------------------------------------------------------------------------------------------//
+
   /**
    * Adds rooms to a real estate property by creating entries in the roomsOnProperty table.
    *
+   * @param tx - The Prisma transaction client for executing database operations.
    * @param data - An array of AddRoomsOnPropertyDto objects containing the room details to be added.
    * @param property_id - The unique identifier of the property to which the rooms are to be added.
-   * @returns A promise that resolves when all room entries have been created.
+   * @returns A promise that resolves to a count of the number of rooms added.
+   * @throws An error if the addition process fails.
    */
   async addRoomsToRealEstateService(
     tx: Prisma.TransactionClient,
@@ -455,12 +458,15 @@ export class RealEstateService {
   }
 
   // * Add services to real estate ----------------------------------------------------------------------------------------------//
+
   /**
    * Adds services to a real estate property by creating entries in the servicesOnProperty table.
    *
+   * @param tx - The Prisma transaction client for executing database operations.
    * @param data - An array of AddServicesOnPropertyDto objects containing the service details to be added.
    * @param property_id - The unique identifier of the property to which the services are to be added.
-   * @returns A promise that resolves when all service entries have been created.
+   * @returns A promise that resolves to a count of the number of services added.
+   * @throws An error if the addition process fails.
    */
   async addServicesToRealEstateService(
     tx: Prisma.TransactionClient,
@@ -486,9 +492,11 @@ export class RealEstateService {
   /**
    * Adds nearby universities to a real estate property by creating entries in the nearLocation table.
    *
+   * @param tx - The Prisma transaction client for executing database operations.
    * @param data - An array of AddNearUniversityDto objects containing the details of the universities to be added.
    * @param property_id - The unique identifier of the property to which the universities are to be added.
-   * @returns A promise that resolves when all university entries have been created.
+   * @returns A promise that resolves to a count of the number of universities added
+   * @throws An error if the addition process fails.
    */
   async addNearUniversityToRealEstateService(
     tx: Prisma.TransactionClient,
@@ -552,14 +560,20 @@ export class RealEstateService {
   // }
 
   // * Update real estate ----------------------------------------------------------------------------------------------//
+
   /**
-   * Updates a real estate property by modifying the corresponding entries in the property table.
+   * Updates an existing real estate property with new details.
+   * The function checks if the user has permission to update the property
+   * and if the property exists before proceeding with the update.
+   * It updates the main property details as well as associated rooms,
+   * services, and nearby universities.
    *
    * @param property_id - The unique identifier of the property to be updated.
-   * @param user_id - The unique identifier of the user who is trying to update the property.
-   * @param data - An UpdateRealEstateDto object containing the new values for the property.
-   * @returns A promise that resolves with a message indicating whether the property was updated successfully or not.
-   * @throws HttpException if the user does not have permission to update the property or if the property does not exist.
+   * @param user_id - The unique identifier of the user attempting the update.
+   * @param data - An UpdateRealEstateDto object containing the new property details.
+   * @returns A promise that resolves to the updated property as a RealEstateEntityWhitExclude.
+   * @throws A HttpException if the user does not have permission to update the property.
+   * @throws A NotFoundException if the property is not found.
    */
   async updateRealEstateService(
     property_id: string,
@@ -571,7 +585,9 @@ export class RealEstateService {
         where: { id: property_id },
       });
 
-      if (Property && Property.user_id !== user_id) {
+      if (!Property) throw new NotFoundException('Property not found');
+
+      if (Property.user_id !== user_id) {
         throw new HttpException(
           {
             message:
@@ -581,26 +597,39 @@ export class RealEstateService {
           },
           HttpStatus.FORBIDDEN,
         );
-      } else if (!Property) throw new NotFoundException('Property not found');
+      }
 
-      const property = await this.dbService.property.update({
-        where: { id: property_id },
-        data: {
-          title: data.title,
-          address: data.address,
-          city: data.city,
-          property_type: data.property_type,
-          max_occupants: data.max_occupants,
-          payment_by_period: data.payment_by_period,
-          min_rental_period: data.min_rental_period,
-          is_furnished: data.is_furnished,
-          is_services_included: data.is_services_included,
-          rating: data.rating,
-          is_available: data.is_available,
-        },
+      const { rooms, services, near_universities, ...property } = data;
+
+      const result = await this.dbService.$transaction(async (tx) => {
+        const propertyToUpdate = await tx.property.update({
+          where: { id: property_id },
+          data: property,
+        });
+
+        if (rooms) {
+          await tx.roomsOnProperty.deleteMany({ where: { property_id } });
+          await this.addRoomsToRealEstateService(tx, rooms, property_id);
+        }
+
+        if (services) {
+          await tx.servicesOnProperty.deleteMany({ where: { property_id } });
+          await this.addServicesToRealEstateService(tx, services, property_id);
+        }
+
+        if (near_universities) {
+          await tx.nearLocation.deleteMany({ where: { property_id } });
+          await this.addNearUniversityToRealEstateService(
+            tx,
+            near_universities,
+            property_id,
+          );
+        }
+
+        return propertyToUpdate;
       });
 
-      return plainToInstance(RealEstateEntityWhitExclude, property);
+      return plainToInstance(RealEstateEntityWhitExclude, result);
     } catch (error) {
       throw error;
     }
