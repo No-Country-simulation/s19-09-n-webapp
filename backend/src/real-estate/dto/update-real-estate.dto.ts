@@ -9,10 +9,10 @@ export class UpdateRealEstateDto extends PartialType(CreateRealEstateDto) {
   @Min(0)
   @Max(5)
   @IsOptional()
-  rating: number;
+  rating?: number;
 
   @ApiProperty({ example: true, required: false })
   @IsBoolean()
   @IsOptional()
-  is_available: boolean;
+  is_available?: boolean;
 }
