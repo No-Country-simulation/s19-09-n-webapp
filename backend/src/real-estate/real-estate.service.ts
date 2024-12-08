@@ -20,6 +20,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { UpdateRealEstateDto } from './dto/update-real-estate.dto';
 import { PropertyResponseFilter } from './Types/response.interface';
 import { RealEstateEntity, RealEstateEntityWhitExclude } from './entities';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RealEstateService {
@@ -385,22 +386,41 @@ export class RealEstateService {
     user_id: string,
   ): Promise<RealEstateEntity> {
     try {
-      const newProperty = await this.dbService.property.create({
-        data: {
-          title: data.title,
-          address: data.address,
-          city: data.city,
-          property_type: data.property_type,
-          max_occupants: data.max_occupants,
-          payment_by_period: data.payment_by_period,
-          min_rental_period: data.min_rental_period,
-          is_furnished: data.is_furnished,
-          is_services_included: data.is_services_included,
-          user_id: user_id,
-        },
+      const { rooms, services, near_universities, ...NewProperty } = data;
+
+      const result = await this.dbService.$transaction(async (tx) => {
+        const property = await tx.property.create({
+          data: { ...NewProperty, user_id },
+        });
+
+        const [addedRooms, addedServices, addedNearUniversities] =
+          await Promise.all([
+            this.addRoomsToRealEstateService(tx, rooms, property.id),
+            this.addServicesToRealEstateService(tx, services, property.id),
+            this.addNearUniversityToRealEstateService(
+              tx,
+              near_universities,
+              property.id,
+            ),
+          ]);
+
+        if (
+          addedRooms.count === 0 ||
+          addedServices.count === 0 ||
+          addedNearUniversities.count === 0
+        ) {
+          throw new HttpException(
+            {
+              message: "Someting went wrong the property won't be created",
+            },
+            HttpStatus.CONFLICT,
+          );
+        }
+
+        return property;
       });
 
-      return plainToInstance(RealEstateEntity, newProperty);
+      return plainToInstance(RealEstateEntity, result);
     } catch (error) {
       throw error;
     }
@@ -415,34 +435,22 @@ export class RealEstateService {
    * @returns A promise that resolves when all room entries have been created.
    */
   async addRoomsToRealEstateService(
+    tx: Prisma.TransactionClient,
     data: AddRoomsOnPropertyDto[],
     property_id: string,
   ) {
     try {
-      const roomsOnProperty = await this.dbService.roomsOnProperty.findMany({
-        where: { property_id },
-      });
-      if (roomsOnProperty.length > 0)
-        await this.dbService.roomsOnProperty.deleteMany({
-          where: { property_id },
-        });
-
       const rooms = data.map((room) => ({
         property_id,
         room_id: room.room_id,
       }));
 
-      await this.dbService.roomsOnProperty.createMany({ data: rooms });
+      return await tx.roomsOnProperty.createMany({
+        data: rooms,
+        skipDuplicates: true,
+      });
     } catch (error) {
-      throw new HttpException(
-        {
-          message: 'The property was created but the rooms could not be added',
-          code: error.code,
-          name: error.name,
-          stack: error.meta?.cause || error.message,
-        },
-        HttpStatus.CONFLICT,
-      );
+      throw error;
     }
   }
 
@@ -455,36 +463,22 @@ export class RealEstateService {
    * @returns A promise that resolves when all service entries have been created.
    */
   async addServicesToRealEstateService(
+    tx: Prisma.TransactionClient,
     data: AddServicesOnPropertyDto[],
     property_id: string,
   ) {
     try {
-      const servicesOnProperty =
-        await this.dbService.servicesOnProperty.findMany({
-          where: { property_id },
-        });
-      if (servicesOnProperty.length > 0)
-        await this.dbService.servicesOnProperty.deleteMany({
-          where: { property_id },
-        });
-
       const services = data.map((service) => ({
         property_id,
         service_id: service.service_id,
       }));
 
-      await this.dbService.servicesOnProperty.createMany({ data: services });
+      return await tx.servicesOnProperty.createMany({
+        data: services,
+        skipDuplicates: true,
+      });
     } catch (error) {
-      throw new HttpException(
-        {
-          message:
-            'The property was created but the services could not be added',
-          code: error.code,
-          name: error.name,
-          stack: error.meta?.cause || error.message,
-        },
-        HttpStatus.CONFLICT,
-      );
+      throw error;
     }
   }
 
@@ -497,36 +491,22 @@ export class RealEstateService {
    * @returns A promise that resolves when all university entries have been created.
    */
   async addNearUniversityToRealEstateService(
+    tx: Prisma.TransactionClient,
     data: AddNearUniversityDto[],
     property_id: string,
   ) {
     try {
-      const nearLocation = await this.dbService.nearLocation.findMany({
-        where: { property_id },
-      });
-      if (nearLocation.length > 0)
-        await this.dbService.nearLocation.deleteMany({
-          where: { property_id },
-        });
-
       const universities = data.map((university) => ({
         property_id,
         distance: university.distance,
         university_id: university.university_id,
       }));
 
-      await this.dbService.nearLocation.createMany({ data: universities });
+      return await tx.nearLocation.createMany({
+        data: universities,
+      });
     } catch (error) {
-      throw new HttpException(
-        {
-          message:
-            'The property was created but the universities could not be added',
-          code: error.code,
-          name: error.name,
-          stack: error.meta?.cause || error.message,
-        },
-        HttpStatus.CONFLICT,
-      );
+      throw error;
     }
   }
 
