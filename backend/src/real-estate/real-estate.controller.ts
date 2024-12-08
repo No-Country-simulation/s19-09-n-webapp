@@ -5,7 +5,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
   Param,
   Patch,
   Post,
@@ -108,7 +107,8 @@ export class RealEstateController {
         {
           name: error.name,
           code: error.code,
-          message: error.meta?.cause || error.message,
+          message: error.meta || error.meta?.cause || error.message,
+          stack: error.stack,
         },
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -116,7 +116,7 @@ export class RealEstateController {
   }
 
   // * Create a new property --------------------------------------------------------------------------//
-  @Post('/add')
+  @Post('/create')
   @UseGuards(JwtGuardBearer)
   @ApiBearerAuth()
   @ApiBody({ type: CreateRealEstateDto })
@@ -125,50 +125,15 @@ export class RealEstateController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async createProperty(@Body() data: CreateRealEstateDto, @Req() req: any) {
     try {
-      const failedUploads: string[] = [];
-      const property = await this.realEstateService.createRealEstateService(
-        data,
-        req.user.id,
-      );
-
-      await Promise.all([
-        this.realEstateService.addRoomsToRealEstateService(
-          data.rooms || [],
-          property.id,
-        ),
-        this.realEstateService.addServicesToRealEstateService(
-          data.services || [],
-          property.id,
-        ),
-        this.realEstateService.addNearUniversityToRealEstateService(
-          data.near_universities || [],
-          property.id,
-        ),
-        data.photos.map(async (photo) => {
-          try {
-            await this.PhotosService.create({
-              photo: photo.photo,
-              property_id: property.id,
-            });
-          } catch (error) {
-            failedUploads.push(photo.photo.originalname);
-            Logger.debug(error);
-          }
-        }),
-      ]);
-
-      if (failedUploads.length) {
-        throw new HttpException(
-          `Failed to upload the following photos: ${failedUploads.join(', ')}`,
-          HttpStatus.CONFLICT,
-        );
-      }
+      await this.realEstateService.createRealEstateService(data, req.user.id);
+      return { message: 'Property created successfully' };
     } catch (error) {
       throw new HttpException(
         {
           name: error.name,
           code: error.code,
-          message: error.meta?.cause || error.message,
+          message: error.meta || error.meta?.cause || error.message,
+          stack: error.stack,
         },
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -202,32 +167,6 @@ export class RealEstateController {
         req.user.id,
         body,
       );
-
-      await Promise.all([
-        this.realEstateService.addRoomsToRealEstateService(
-          body.rooms || [],
-          property_id,
-        ),
-        this.realEstateService.addServicesToRealEstateService(
-          body.services || [],
-          property_id,
-        ),
-        this.realEstateService.addNearUniversityToRealEstateService(
-          body.near_universities || [],
-          property_id,
-        ),
-        body.photos.map(async (photo) => {
-          try {
-            await this.PhotosService.create({
-              photo: photo.photo,
-              property_id: property_id,
-            });
-          } catch (error) {
-            failedUploads.push(photo.photo.originalname);
-            Logger.debug(error);
-          }
-        }),
-      ]);
 
       if (failedUploads.length) {
         throw new HttpException(
