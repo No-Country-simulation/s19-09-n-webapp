@@ -1,7 +1,7 @@
-import { FiltersInterface } from "../store/filtersStore";
+import { FiltersInterface } from "../types/filtersInterface";
 import { buildUserReq } from "../utils/helpers/requestBuilders";
 
-const endpoint = "https://s19-09-n-back.vercel.app/";
+const endpoint = "https://s19-09-n-back.vercel.app/api/v1/real-estate";
 
 export async function getProperties(filters: FiltersInterface, page: number) {
   const url = new URL(endpoint);
@@ -28,10 +28,7 @@ export async function getUserProperties(token: string) {
 }
 
 export async function postProperty(inputs: object, token: string) {
-  const res = await fetch(
-    `${endpoint}/`,
-    buildUserReq("POST", token, inputs)
-  );
+  const res = await fetch(`${endpoint}/`, buildUserReq("POST", token, inputs));
   const data = await res.json();
   return data;
 }
