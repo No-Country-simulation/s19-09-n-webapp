@@ -14,7 +14,6 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, PropertyType, RentalPeriod } from '@prisma/client';
-import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
 
 export class AddServicesOnPropertyDto {
   @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
@@ -137,10 +136,4 @@ export class CreateRealEstateDto {
   @ValidateNested({ each: true })
   @Type(() => AddNearUniversityDto)
   near_universities: AddNearUniversityDto[];
-
-  @ApiProperty({ type: [CreatePhotoDto] })
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreatePhotoDto)
-  photos: CreatePhotoDto[];
 }
