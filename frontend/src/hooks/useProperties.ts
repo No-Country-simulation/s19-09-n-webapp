@@ -1,10 +1,10 @@
-import { getProperties } from "../services/propertiesService";
-import { useFiltersStore } from "../store/filtersStore";
-import { useQuery } from "@tanstack/react-query";
+import { useFilters } from "./useFilters";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getProperties } from "../services/propertiesService";
 
 export function useProperties() {
-  const filters = useFiltersStore(state => state.filters);
+  const {filters} = useFilters();
   const [page, setPage] = useState(1);
 
   const propertiesQuery = useQuery({

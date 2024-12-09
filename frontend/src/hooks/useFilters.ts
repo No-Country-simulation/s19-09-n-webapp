@@ -6,15 +6,27 @@ export function useFilters() {
   const [params, setParams] = useSearchParams();
 
   const filters = {
-    city: params.get("city") as FiltersInterface["city"],
-    property_type: params.get(
-      "property_type"
-    ) as FiltersInterface["property_type"],
-    rentalPeriod: params.get(
-      "rentalPeriod"
-    ) as FiltersInterface["rentalPeriod"],
-    isFurnished: params.get("isFurnished"),
-    isServicesIncluded: params.get("isServicesIncluded"),
+    city: params.get("city")
+      ? (params.get("city") as FiltersInterface["city"])
+      : undefined,
+    property_type: params.get("property_type")
+      ? (params.get("property_type") as FiltersInterface["property_type"])
+      : undefined,
+    rentalPeriod: params.get("rentalPeriod")
+      ? (params.get("rentalPeriod") as FiltersInterface["rentalPeriod"])
+      : undefined,
+    isFurnished:
+      params.get("isFurnished") === "true"
+        ? true
+        : params.get("isFurnished") === "false"
+          ? false
+          : undefined,
+    isServicesIncluded:
+      params.get("isServicesIncluded") === "true"
+        ? true
+        : params.get("isServicesIncluded") === "false"
+          ? false
+          : undefined,
     minPrice: params.get("minPrice")
       ? parseInt(params.get("minPrice") as string)
       : undefined,

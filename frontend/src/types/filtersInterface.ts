@@ -23,5 +23,5 @@ export interface FiltersInterface {
   minPrice?: number;
   maxPrice?: number;
   max_occupants?: number;
-  rating?: number;
+  rating?: 1 | 2 | 3 | 4 | 5;
 }
