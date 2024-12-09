@@ -50,10 +50,10 @@ export default function DashboardReantailsCard({
         margin: "1rem",
         display: "flex",
         alignItems: "center",
-        border: 2,
         borderRadius: 2,
+        /*         border: 2,
         borderStyle: "solid",
-        borderColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main, */
         maxWidth: 600,
         paddingRight: "1rem",
         boxShadow: (theme) => `
@@ -71,7 +71,7 @@ export default function DashboardReantailsCard({
         }}
       >
         <Carousel
-          autoPlay={true}
+          autoPlay={false}
           animation="slide"
           indicators={false}
           navButtonsAlwaysVisible={true}

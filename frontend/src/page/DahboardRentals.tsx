@@ -7,7 +7,7 @@ export default function DahboardRentals() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
+        paddingLeft: "3rem",
       }}
     >
       <DashboardReantailsCard
@@ -23,6 +23,7 @@ export default function DahboardRentals() {
         imageUrls={[
           "https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         ]}
       />
       <DashboardReantailsCard
@@ -38,6 +39,7 @@ export default function DahboardRentals() {
         imageUrls={[
           "https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         ]}
       />
       <DashboardReantailsCard
@@ -53,6 +55,7 @@ export default function DahboardRentals() {
         imageUrls={[
           "https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         ]}
       />
     </Box>

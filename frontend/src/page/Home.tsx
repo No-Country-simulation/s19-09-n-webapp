@@ -7,23 +7,19 @@ import { Grid2, Typography } from "@mui/material";
 import properties from "../Data/properties.json";
 import PropertyCard from "../components/ui/PropertyCard";
 
-
 function PageHome() {
   return (
     <div>
-      <Box sx={{ m: 3 }}>
+      <Box>
         <Hero />
       </Box>
-      <Box sx={{ m: 3 }}>
-        <Typography
-          variant="h2"
-          sx={{ fontWeight: "400", padding: "2rem 4rem" }}
-        >
-           Encuentra a tu roomie ideal
+      <Box sx={{ my: 3 }}>
+        <Typography variant="h4">
+          Publicaciones recientes (prox: titulo y carrusel en mismo cont)
         </Typography>
-        <Typography variant="h6" sx={{ padding: "2rem 4rem" }}>
-        La solución confiable para encontrar y compartir hogares..
-        </Typography>
+        {/*      <Typography variant="h6" sx={{ padding: "2rem 4rem" }}>
+          La solución confiable para encontrar y compartir hogares..
+        </Typography> */}
 
         <Grid2 container spacing={2} sx={{ justifyContent: "center" }}>
           {properties.map((property, index) => (
@@ -44,7 +40,14 @@ function PageHome() {
           ))}
         </Grid2>
       </Box>
-      <Box sx={{ m: 3 }}>
+      <Box
+        sx={{
+          minHeight: "507px",
+          my: 3,
+          borderRadius: "8px",
+          overflow: "hidden",
+        }}
+      >
         <ExamplePage />
       </Box>
       <Box sx={{ m: 3 }}>
@@ -77,7 +80,6 @@ function PageHome() {
       <Box sx={{ m: 3 }}>
         <ReviewCards />
       </Box>
-
 
       <Box sx={{ m: 3 }}>
         <ProvinceGrid />
