@@ -3,7 +3,7 @@ import { useFiltersStore } from "../store/filtersStore";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-export function usePropertiesQuery() {
+export function useProperties() {
   const filters = useFiltersStore(state => state.filters);
   const [page, setPage] = useState(1);
 
