@@ -35,7 +35,7 @@ import { PhotosService } from 'src/photos/photos.service';
 import { RealEstateService } from './real-estate.service';
 import { CreateRealEstateDto, UpdateRealEstateDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
+import { UploadImageRealEstateDto } from './dto/upload-image-real-estate.dto';
 
 @Controller('real-estate')
 export class RealEstateController {
@@ -151,12 +151,12 @@ export class RealEstateController {
   // * Add a photo to a property --------------------------------------------------------------------------//
   @Post('/:property_id/uploads')
   @ApiBearerAuth()
-  @ApiBody({ type: CreatePhotoDto })
+  @ApiBody({ type: UploadImageRealEstateDto })
   @ApiCreatedResponse({ description: 'Photo uploaded successfully' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @UseGuards(JwtGuardBearer)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('photo'))
   uploadPhotoOnProperty(
     @UploadedFile() file: Express.Multer.File,
     @Param('property_id') property_id: string,
