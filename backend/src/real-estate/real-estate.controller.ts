@@ -158,11 +158,11 @@ export class RealEstateController {
   @UseGuards(JwtGuardBearer)
   @UseInterceptors(FileInterceptor('photo'))
   uploadPhotoOnProperty(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() photo: Express.Multer.File,
     @Param('property_id') property_id: string,
   ) {
     try {
-      this.PhotosService.create({ photo: file, property_id });
+      this.PhotosService.create({ photo: photo, property_id });
 
       return { message: 'Photo uploaded successfully' };
     } catch (error) {
