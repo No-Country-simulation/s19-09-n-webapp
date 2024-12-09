@@ -156,19 +156,18 @@ model University {
 model NearLocation {
   id            String     @id @default(uuid())
   distance      Int        @db.Integer()
-  property_id   String     @unique
+  property_id   String
   property      Property   @relation(fields: [property_id], references: [id])
-  university_id String     @unique
+  university_id String
   university    University @relation(fields: [university_id], references: [id])
 
   @@unique([property_id, university_id])
 }
 
-model PropertyPhoto{
-id                String      @id @default(uuid())
-photo_url         String      @db.Text
-photo_service_id  String
-property_id       String      
-property          Property    @relation(fields: [property_id],references: [id])
-
+model PropertyPhoto {
+  id               String   @id @default(uuid())
+  photo_url        String   @db.Text
+  photo_service_id String
+  property_id      String
+  property         Property @relation(fields: [property_id], references: [id])
 }

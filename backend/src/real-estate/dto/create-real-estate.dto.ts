@@ -1,45 +1,75 @@
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsEnum,
+  Length,
+  IsNotEmpty,
+  Min,
+  Matches,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, PropertyType, RentalPeriod } from '@prisma/client';
-import { IsString, IsNumber, IsBoolean, IsEnum, Length, IsNotEmpty, Min, Matches, IsOptional, IsArray, ValidateNested } from 'class-validator';
-
 
 export class AddServicesOnPropertyDto {
   @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  service_id: string
+  @Matches(
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    { message: 'Invalid UUID format' },
+  )
+  service_id: string;
 }
 
 export class AddRoomsOnPropertyDto {
   @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  room_id: string
+  @Matches(
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    { message: 'Invalid UUID format' },
+  )
+  room_id: string;
 }
 
 export class AddNearUniversityDto {
   @ApiProperty({ example: '359b7ae1-d394-4341-ab4a-a96c2c447513' })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, { message: 'Invalid UUID format' })
-  university_id: string
+  @Matches(
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    { message: 'Invalid UUID format' },
+  )
+  university_id: string;
 
   @ApiProperty({ example: 350 })
   @IsNumber()
   @Min(0)
-  distance: number
+  distance: number;
 }
 
-
 export class AddPropertyPhotoDto {
-  @ApiProperty({ example: 'https://www.construyehogar.com/wp-content/uploads/2016/01/Frachada-principal-casa-moderna-madera.jpg' })
+  @ApiProperty({
+    example:
+      'https://www.construyehogar.com/wp-content/uploads/2016/01/Frachada-principal-casa-moderna-madera.jpg',
+  })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(:[0-9]{1,5})?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$/, { message: 'Invalid URL format' })
-  photo_url: string
+  @Matches(
+    /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(:[0-9]{1,5})?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$/,
+    { message: 'Invalid URL format' },
+  )
+  photo_url: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsNotEmpty()
+  photo_service_id: string;
 }
 
 export class CreateRealEstateDto {
@@ -69,7 +99,7 @@ export class CreateRealEstateDto {
   @Min(1)
   max_occupants: number;
 
-  @ApiProperty({ example: 145.50 })
+  @ApiProperty({ example: 145.5 })
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   payment_by_period: number;
@@ -106,10 +136,4 @@ export class CreateRealEstateDto {
   @ValidateNested({ each: true })
   @Type(() => AddNearUniversityDto)
   near_universities: AddNearUniversityDto[];
-
-  @ApiProperty({ type: [AddPropertyPhotoDto] })
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AddPropertyPhotoDto)
-  photos: AddPropertyPhotoDto[];
 }
