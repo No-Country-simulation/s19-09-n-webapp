@@ -1,5 +1,6 @@
 export interface FiltersInterface {
   city?:
+  | ""
     | "BUENOS_AIRES"
     | "CHACO"
     | "CORDOBA"
@@ -11,17 +12,18 @@ export interface FiltersInterface {
     | "SAN_JUAN"
     | "SAN_LUIS"
     | "TUCUMAN";
-  property_type?: "APARTMENT" | "HOUSE" | "ROOM";
+  property_type?: "" | "APARTMENT" | "HOUSE" | "ROOM";
   rentalPeriod?:
+  | ""
     | "WEEKLY"
     | "MONTHLY"
     | "TRIMESTERLY"
     | "HALF_YEARLY"
     | "YEARLY";
-  isFurnished?: boolean;
-  isServicesIncluded?: boolean;
-  minPrice?: number;
-  maxPrice?: number;
-  max_occupants?: number;
-  rating?: 1 | 2 | 3 | 4 | 5;
+  isFurnished?: boolean | string;
+  isServicesIncluded?: boolean | string;
+  minPrice?: number | "";
+  maxPrice?: number | "";
+  max_occupants?: number | "";
+  rating?: number | "";
 }

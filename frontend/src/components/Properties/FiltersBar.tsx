@@ -21,11 +21,18 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import WeekendOutlinedIcon from '@mui/icons-material/WeekendOutlined';
 import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { useFilters } from "../../hooks/useFilters";
 
 export default function FiltersBar() {
-  const { register, handleSubmit } = useForm();
+  const {filters, updateFilters, resetFilters} = useFilters();
+  const { register, handleSubmit } = useForm({defaultValues: filters});
+
   return (
-    <Container sx={{ height: 800, bgcolor: "#eee", borderRadius: 1 }}>
+    <Container
+      component="form"
+      onSubmit={handleSubmit(updateFilters)}
+      sx={{ height: 800, bgcolor: "#eee", borderRadius: 1 }}
+    >
       <Typography variant="h6" sx={{ textAlign: "start", pt: 3, mb: 1 }}>
         Filtrar por:
       </Typography>
@@ -161,7 +168,7 @@ export default function FiltersBar() {
             </span>
           </InputLabel>
           <OutlinedInput
-          {...register("minPrice")}
+            {...register("minPrice")}
             sx={{ maxWidth: 88 }}
             size="small"
             label={`${filterLabels.minPrice.label}__`}
@@ -178,7 +185,7 @@ export default function FiltersBar() {
             </span>
           </InputLabel>
           <OutlinedInput
-          {...register("maxPrice")}
+            {...register("maxPrice")}
             sx={{ maxWidth: 88 }}
             size="small"
             label={`${filterLabels.maxPrice.label}__`}
@@ -196,7 +203,7 @@ export default function FiltersBar() {
           </span>
         </InputLabel>
         <OutlinedInput
-        {...register("maxOccupants")}
+          {...register("max_occupants")}
           size="small"
           label={`${filterLabels.maxOccupants.label}___`}
         />
@@ -207,17 +214,18 @@ export default function FiltersBar() {
         sx={{ my: 1, textAlign: "start", width: "100%", pl: 1 }}
       >
         <FormLabel>{filterLabels.rating.label}</FormLabel>
-        <Rating defaultValue={0} />
+        <Rating name="rating" />
       </FormControl>
+
       <Button
+      type="submit"
         variant="contained"
         fullWidth
         sx={{ my: 1 }}
-        onClick={() => handleSubmit(() => {})}
       >
         Buscar
       </Button>
-      <Button variant="outlined" color="error" fullWidth sx={{ my: 1 }}>
+      <Button type="button" onClick={resetFilters} variant="outlined" color="error" fullWidth sx={{ my: 1 }}>
         Reestablecer filtros
       </Button>
     </Container>

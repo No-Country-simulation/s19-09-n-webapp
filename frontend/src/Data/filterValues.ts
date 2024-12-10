@@ -2,7 +2,7 @@ export const filterLabels = {
   city: {
     label: "Provincia",
     cities: {
-      Todas: undefined,
+      Todas: "",
       "Buenos Aires": "BUENOS_AIRES",
       Chaco: "CHACO",
       Córdoba: "CORDOBA",
@@ -19,7 +19,7 @@ export const filterLabels = {
   type: {
     label: "Categoría",
     types: {
-      Todas: undefined,
+      Todas: "",
       Departamento: "APARTMENT",
       Casa: "HOUSE",
       Habitación: "ROOM",
@@ -28,7 +28,7 @@ export const filterLabels = {
   period: {
     label: "Estadía",
     periods: {
-      Todas: undefined,
+      Todas: "",
       Semanal: "WEEKLY",
       Mensual: "MONTHLY",
       Trimestral: "TRIMESTERLY",
@@ -41,7 +41,7 @@ export const filterLabels = {
     values: {
       Sí: true,
       No: false,
-      Todos: undefined,
+      Todos: "",
     },
   },
   hasServices: {
@@ -49,7 +49,7 @@ export const filterLabels = {
     values: {
       Sí: true,
       No: false,
-      Todos: undefined,
+      Todos: "",
     },
   },
   minPrice: { label: "Mín." },
