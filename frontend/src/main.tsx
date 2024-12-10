@@ -10,7 +10,6 @@ import "@fontsource/nunito/300.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/500.css";
 import "@fontsource/nunito/700.css";
-import { Container } from "@mui/system";
 
 const queryClient = new QueryClient({
   defaultOptions: {
