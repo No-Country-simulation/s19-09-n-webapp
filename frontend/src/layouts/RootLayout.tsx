@@ -1,18 +1,16 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/ui/Navbar";
 import Footer from "../components/Footer/Footer";
-import { Box } from "@mui/system";
-
-
+import { Box, Container } from "@mui/system";
 
 export default function RootLayout() {
   return (
-    <section>
+    <Container maxWidth="xl">
       <Navbar />
-      <Box sx={{ m: 8 }}>
+      <Box>
         <Outlet />
       </Box>
       <Footer />
-    </section>
+    </Container>
   );
 }

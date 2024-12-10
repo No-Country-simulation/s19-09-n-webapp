@@ -3,13 +3,14 @@ import ReactDOM from "react-dom/client";
 import AppRouter from "./Router";
 import "./index.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Importamos las typografías
 import theme from "./theme/Theme.tsx";
 import "@fontsource/nunito/300.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/500.css";
 import "@fontsource/nunito/700.css";
+import { Container } from "@mui/system";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,8 +18,8 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 30,
       retry: 1,
-    }
-  }
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

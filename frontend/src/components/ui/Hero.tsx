@@ -7,8 +7,7 @@ export default function Hero() {
       sx={{
         overflow: "hidden",
         height: "70vh",
-        /*  backgroundImage: `URL('https://www.hanak-nabytek.cz/fileadmin/_processed_/e/6/csm_hanak-studentsky-pokoj-stul-skrin-postel-1_26d9e7d9d6.jpg.webp')`, */
-        background: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), URL('https://cdn-sl-a1.scape.com/sites/default/files/2024-04/hero%201%20%282%29_1.jpg')`,
+        background: `linear-gradient(rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.6)), URL('https://cdn-sl-a1.scape.com/sites/default/files/2024-04/hero%201%20%282%29_1.jpg')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",

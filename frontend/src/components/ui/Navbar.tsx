@@ -6,7 +6,9 @@ import { useNavigate } from "react-router";
 import  logo  from '../../../public/logo_roomieFind.png'
 
 
+
 import ModalProperties from "./ModalProperties";
+
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
