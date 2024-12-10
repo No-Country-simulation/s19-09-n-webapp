@@ -2,11 +2,8 @@
 import UniversityList from "./page/UniversityList";
 import DashboardLayout from "./layouts/DashboardLayout";
 import RootLayout from "./layouts/RootLayout";
-<<<<<<< HEAD
-import { PageHome, Login, Register, PropertiesPage,  } from "./page";
-=======
 import { PageHome, Login, Register, PropertiesPage, PropertyPage, DashboardProperties } from "./page";
->>>>>>> origin/frontend
+
 import Dashboard from "./page/Dashboard";
 import RegisterProperty from "./page/RegisterProperty"
 
