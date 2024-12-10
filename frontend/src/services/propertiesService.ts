@@ -7,10 +7,11 @@ const endpoint = "https://s19-09-n-back.vercel.app/api/v1/real-estate";
 export async function getProperties(filters: FiltersInterface, page: number) {
   const url = new URL(endpoint);
   for (const [filter, value] of Object.entries(filters)) {
-    if (value !== undefined) url.searchParams.append(filter, String(value));
+    if (value !== undefined && value !== null && value !== "" && value !== 0)
+      url.searchParams.append(filter, String(value));
   }
   url.searchParams.append("page", String(page));
-  console.log(url.href);
+  console.log("Enviar al back:",url.href);
   // const res = await fetch(url.href);
   // const data = await res.json();
   return placeholderProperties;

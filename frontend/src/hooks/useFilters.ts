@@ -44,7 +44,7 @@ export function useFilters() {
   const updateFilters = useCallback((filters: FiltersInterface) => {
     const newParams = new URLSearchParams();
       for (const [key, value] of Object.entries(filters)) {
-        if (value !== undefined && value !== "") newParams.set(key, value);
+        if (value !== undefined && value !== null && value !== "" && value !== 0) newParams.set(key, value);
       }
       setParams(newParams);
   }, [setParams]);
@@ -54,5 +54,5 @@ export function useFilters() {
     setParams(emptyParams);
     }, [setParams]);
 
-  return {filters, updateFilters, resetFilters};
+  return {params, filters, updateFilters, resetFilters};
 }

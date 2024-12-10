@@ -1,3 +1,17 @@
+import { FiltersInterface } from "../types/filtersInterface";
+
+export const emptyFilters: FiltersInterface = {
+  city: "",
+  property_type: "",
+  rentalPeriod: "",
+  isFurnished: "",
+  isServicesIncluded: "",
+  minPrice: "",
+  maxPrice: "",
+  max_occupants: "",
+  rating: "",
+}
+
 export const filterLabels = {
   city: {
     label: "Provincia",

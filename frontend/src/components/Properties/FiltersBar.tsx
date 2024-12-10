@@ -24,9 +24,10 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { useFilters } from "../../hooks/useFilters";
 
 export default function FiltersBar() {
-  const {filters, updateFilters, resetFilters} = useFilters();
-  const { register, handleSubmit } = useForm({defaultValues: filters});
-
+  const {params, filters, updateFilters, resetFilters} = useFilters();
+  const { register, handleSubmit } = useForm();
+  console.log(params)
+  console.log(filters)
   return (
     <Container
       component="form"
@@ -44,10 +45,14 @@ export default function FiltersBar() {
             {filterLabels.city.label}
           </span>
         </InputLabel>
-        <Select label={`${filterLabels.city.label}____`} {...register("city")}>
+        <Select
+          defaultValue={filters.city}
+          label={`${filterLabels.city.label}____`}
+          {...register("city")}
+        >
           {Object.entries(filterLabels.city.cities).map(([key, value]) => (
             <MenuItem key={key} value={value}>
-              {value !== undefined ? key : <em>{key}</em>}
+              {value !== "" ? key : <em>{key}</em>}
             </MenuItem>
           ))}
         </Select>
@@ -61,12 +66,13 @@ export default function FiltersBar() {
           </span>
         </InputLabel>
         <Select
+          defaultValue={filters.property_type}
           label={`${filterLabels.type.label}____`}
           {...register("property_type")}
         >
           {Object.entries(filterLabels.type.types).map(([key, value]) => (
             <MenuItem key={key} value={value}>
-              {value !== undefined ? key : <em>{key}</em>}
+              {value !== "" ? key : <em>{key}</em>}
             </MenuItem>
           ))}
         </Select>
@@ -80,12 +86,13 @@ export default function FiltersBar() {
           </span>
         </InputLabel>
         <Select
+          defaultValue={filters.rentalPeriod}
           label={`${filterLabels.period.label}____`}
           {...register("rentalPeriod")}
         >
           {Object.entries(filterLabels.period.periods).map(([key, value]) => (
             <MenuItem key={key} value={value}>
-              {value !== undefined ? key : <em>{key}</em>}
+              {value !== "" ? key : <em>{key}</em>}
             </MenuItem>
           ))}
         </Select>
@@ -104,10 +111,11 @@ export default function FiltersBar() {
             {filterLabels.hasFurniture.label}
           </span>
         </FormLabel>
-        <RadioGroup row defaultValue={undefined} {...register("isFurnished")}>
+        <RadioGroup row defaultValue={filters.isFurnished} {...register("isFurnished")}>
           {Object.entries(filterLabels.hasFurniture.values).map(
             ([key, value]) => (
               <FormControlLabel
+              key={key}
                 value={value}
                 control={<Radio size="small" />}
                 label={key}
@@ -132,12 +140,13 @@ export default function FiltersBar() {
         </FormLabel>
         <RadioGroup
           row
-          defaultValue={undefined}
+          defaultValue={filters.isServicesIncluded}
           {...register("isServicesIncluded")}
         >
           {Object.entries(filterLabels.hasServices.values).map(
             ([key, value]) => (
               <FormControlLabel
+              key={key}
                 value={value}
                 control={<Radio size="small" />}
                 label={key}
@@ -168,6 +177,7 @@ export default function FiltersBar() {
             </span>
           </InputLabel>
           <OutlinedInput
+          defaultValue={filters.minPrice}
             {...register("minPrice")}
             sx={{ maxWidth: 88 }}
             size="small"
@@ -185,6 +195,7 @@ export default function FiltersBar() {
             </span>
           </InputLabel>
           <OutlinedInput
+          defaultValue={filters.maxPrice}
             {...register("maxPrice")}
             sx={{ maxWidth: 88 }}
             size="small"
@@ -203,6 +214,7 @@ export default function FiltersBar() {
           </span>
         </InputLabel>
         <OutlinedInput
+        defaultValue={filters.max_occupants}
           {...register("max_occupants")}
           size="small"
           label={`${filterLabels.maxOccupants.label}___`}
@@ -217,15 +229,17 @@ export default function FiltersBar() {
         <Rating name="rating" />
       </FormControl>
 
+      <Button type="submit" variant="contained" fullWidth sx={{ my: 1 }}>
+        Buscar
+      </Button>
       <Button
-      type="submit"
-        variant="contained"
+        type="reset"
+        onClick={resetFilters}
+        variant="outlined"
+        color="error"
         fullWidth
         sx={{ my: 1 }}
       >
-        Buscar
-      </Button>
-      <Button type="button" onClick={resetFilters} variant="outlined" color="error" fullWidth sx={{ my: 1 }}>
         Reestablecer filtros
       </Button>
     </Container>
