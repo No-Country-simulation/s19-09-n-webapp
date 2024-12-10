@@ -3,6 +3,8 @@ import {Link} from "react-router-dom"
 import { styled } from '@mui/material/styles'
 import UserButton from './UserButton'
 import { useNavigate } from "react-router";
+import  logo  from '../../../public/logo_roomieFind.png'
+
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
@@ -11,7 +13,7 @@ const StyledAppBar = styled(AppBar)({
 })
 
 const NavLink = styled(Link)({
-  color: '#333',
+  color: '#6F2DA8',
   fontWeight: 'bold',
   textDecoration: 'none',
   fontSize: '14px',
@@ -24,7 +26,7 @@ const NavLink = styled(Link)({
 const HomeButton = styled(Link)({
   fontWeight: "bold",
   fontSize: "24px",
-  color: "#604CC3",
+  color: "#6F2DA8",
 });
 
 
@@ -37,18 +39,18 @@ export default function Navbar() {
           {/* Logo section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <HomeButton to="/" sx={{ textDecoration: "none" }}>
-              ROOMIEFIND{" "}
+              RoomieFind{" "}
             </HomeButton>
-            {/* <img 
-              src="/placeholder.svg?height=32&width=100" 
-              alt="Mercado Libre"
-              style={{ height: '32px', marginLeft: '8px' }}
-            /> */}
+             <img 
+              src= {logo}
+              alt="RoomieFind"
+              style={{ height: '40px', marginLeft: '8px' }}
+            /> 
           </Box>
 
           {/* Navigation section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Button variant="outlined" onClick={() => navigate("/properties")} sx={{ ml: 4 }}>
+            <Button variant="contained" onClick={() => navigate("/properties")} sx={{ ml: 4 ,color: "white" }}>
               Ver propiedades
             </Button>
             <NavLink to="login">Publicar mi propiedad</NavLink>
