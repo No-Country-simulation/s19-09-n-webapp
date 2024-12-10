@@ -1,7 +1,7 @@
 import { 
   Box, 
   Typography, 
-  Grid, 
+  Grid2, 
   Button, 
   Paper, 
   Divider 
@@ -67,9 +67,9 @@ function PropiedadPage() {
         <Navbar/>
       </Box>
 
-      <Grid container spacing={2} p={2}>
+      <Grid2 container spacing={2} p={2}>
         {/* Carousel de imágenes */}
-        <Grid item xs={12} md={6}>
+        <Grid2 item xs={12} md={6}>
           <Carousel>
             {propiedad.imagenes.map((imagen, index) => (
               <Paper key={index}>
@@ -77,10 +77,10 @@ function PropiedadPage() {
               </Paper>
             ))}
           </Carousel>
-        </Grid>
+        </Grid2>
 
         {/* Información de la propiedad */}
-        <Grid item xs={12} md={6}>
+        <Grid2 item xs={12} md={6}>
           <Typography variant="h4">{propiedad.titulo}</Typography>
           <Typography variant="subtitle1">{propiedad.direccion}</Typography>
           <Typography variant="h6" color="primary">
@@ -94,17 +94,17 @@ function PropiedadPage() {
               <li key={index}>{servicio}</li>
             ))}
           </ul>
-        </Grid>
+        </Grid2>
 
         {/* Mapa y requisitos */}
-        <Grid item xs={12} md={6}>
+        <Grid2 item xs={12} md={6}>
           {/* Reemplaza esto con tu componente de mapa */}
           <Paper sx={{ height: 300 }}>
             <Typography variant="h6">Mapa - Ubicación: {propiedad.ubicacion.lat}, {propiedad.ubicacion.lng}</Typography>
           </Paper>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={6}>
+        <Grid2 item xs={12} md={6}>
           <Typography variant="h6">Requisitos para arrendar:</Typography>
           <ul>
             {propiedad.requisitos.map((requisito, index) => (
@@ -119,18 +119,18 @@ function PropiedadPage() {
               Cerrar
             </Button>
           </Box>
-        </Grid>
+        </Grid2>
 
         {/* Caracteristicas */}
-        <Grid item xs={12}>
+        <Grid2 item xs={12}>
           <Typography variant="h6">Características:</Typography>
           <ul>
             {propiedad.caracteristicas.map((caracteristica, index) => (
               <li key={index}>{caracteristica}</li>
             ))}
           </ul>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Pie de página (puedes reemplazar esto con tu propia implementación) */}
       <Box sx={{ bgcolor: 'grey.300', p: 2, mt: 2 }}>
