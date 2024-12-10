@@ -54,13 +54,8 @@ export default function DashboardReantailsCard({
         /*         border: 2,
         borderStyle: "solid",
         borderColor: theme.palette.primary.main, */
-        maxWidth: 600,
+        /*  maxWidth: 600, */
         paddingRight: "1rem",
-        boxShadow: (theme) => `
-      0px 1px 3px ${theme.palette.primary.main}80, 
-      0px 1px 1px ${theme.palette.primary.main}60, 
-      0px 2px 1px -1px ${theme.palette.primary.main}50
-    `,
       }}
     >
       {/* Carrusel a la izquierda */}
