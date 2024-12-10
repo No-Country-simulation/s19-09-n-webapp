@@ -48,7 +48,7 @@ export default function Navbar() {
              <img 
               src= {logo}
               alt="RoomieFind"
-              style={{ height: '40px', marginLeft: '8px' }}
+              
             /> 
           </Box>
 

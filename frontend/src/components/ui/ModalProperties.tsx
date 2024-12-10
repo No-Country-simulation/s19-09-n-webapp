@@ -3,7 +3,7 @@ import {
   Button,
   Modal,
   Box,
-  Typography,
+  
 } from '@mui/material';
 import RegisterProperty from '../../page/RegisterProperty'; // Asegúrate de que la ruta sea correcta
 
