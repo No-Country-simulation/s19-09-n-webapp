@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import UserButton from "./UserButton";
 import { useNavigate } from "react-router";
-import logo from "../../../public/logo_roomieFind.png";
+import logo from "../../../public/navBarLogo.png";
 
 import ModalProperties from "./ModalProperties";
 

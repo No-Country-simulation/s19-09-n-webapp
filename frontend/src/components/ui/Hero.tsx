@@ -11,13 +11,31 @@ export default function Hero() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "2rem",
       }}
     >
       <SearchBar />
-      <Typography variant="h2" sx={{ fontWeight: "400", padding: "2rem 4rem" }}>
+      <Typography
+        variant="h2"
+        sx={{
+          fontWeight: "400",
+          padding: { xs: "1rem", md: "2rem 4rem" }, // Ajusta el padding según el tamaño
+          fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" }, // Cambia el tamaño de fuente
+        }}
+      >
         Conecta con tu nuevo hogar, encuentra a tu roomie ideal
       </Typography>
-      <Typography variant="h6" sx={{ padding: "2rem 4rem" }}>
+      <Typography
+        variant="h6"
+        sx={{
+          padding: { xs: "1rem", md: "2rem 4rem" }, // Ajusta el padding
+          fontSize: { xs: "0.9rem", sm: "1rem", md: "1.25rem" }, // Cambia el tamaño de fuente
+        }}
+      >
         En Roomiefind encontrarás alojamiento para estudiantes: espacios seguros
         y asequibles cerca de universidades, ya sea compartidos, privados o
         temporales, en casas de familias o departamentos.

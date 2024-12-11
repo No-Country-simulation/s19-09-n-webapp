@@ -1,13 +1,36 @@
-import { Box } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import properties from "../Data/properties.json";
+
+import DashboardReantailsCard from "../components/dashboard/DashboardReantailsCard";
+
+export default function DashboardProperties() {
+  return (
+    <Grid container spacing={2} sx={{ mx: 4 }}>
+      {/*      <Grid size={12} direction="row-reverse" sx={{ textAlign: "end" }}>
+        <Button variant="contained">Publicar nueva propiedad</Button>
+      </Grid> */}
+      {properties.map((property, index) => (
+        <Grid key={index} size={{ xs: 12 }}>
+          <DashboardReantailsCard property={property} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
+/*import { Box } from "@mui/material";
 import DashboardReantailsCard from "../components/ui/dashboardReantails/DashboardReantailsCard";
 
-export default function DahboardRentals() {
+
+ export default function DahboardRentals() {
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        paddingLeft: "3rem",
+
+        paddingX: "2rem",
+        width: "100%",
       }}
     >
       <DashboardReantailsCard
@@ -61,3 +84,4 @@ export default function DahboardRentals() {
     </Box>
   );
 }
+ */
