@@ -7,104 +7,239 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Rating from "@mui/material/Rating";
 import Select from "@mui/material/Select";
-import Switch from "@mui/material/Switch";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
-import {
-  MdApartment,
-  MdEmojiObjects,
-  MdHome,
-  MdHomeWork,
-  MdLocationOn,
-  MdWeekend,
-} from "react-icons/md";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { filterLabels } from "../../Data/filterValues";
+import { useForm } from "react-hook-form";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import WeekendOutlinedIcon from '@mui/icons-material/WeekendOutlined';
+import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { useFilters } from "../../hooks/useFilters";
 
 export default function FiltersBar() {
+  const {params, filters, updateFilters, resetFilters} = useFilters();
+  const { register, handleSubmit } = useForm();
+  console.log(params)
+  console.log(filters)
   return (
-    <Container sx={{ height: 800, bgcolor: "pink" }}>
-      <Typography variant="h6" sx={{ textAlign: "start", pt: 3 }}>
+    <Container
+      component="form"
+      onSubmit={handleSubmit(updateFilters)}
+      sx={{ height: 800, bgcolor: "#eee", borderRadius: 1 }}
+    >
+      <Typography variant="h6" sx={{ textAlign: "start", pt: 3, mb: 1 }}>
         Filtrar por:
       </Typography>
-      <FormControl fullWidth sx={{ my: 2 }}>
-        <InputLabel id="category-label">
-          <MdHomeWork /> Categoría
+
+      <FormControl fullWidth sx={{ my: 1 }}>
+        <InputLabel>
+          <LocationOnOutlinedIcon />
+          <span style={{ position: "relative", bottom: 5, marginLeft: 5 }}>
+            {filterLabels.city.label}
+          </span>
         </InputLabel>
-        <Select labelId="category-label" id="category-select" label="Age">
-          <MenuItem value="">
-            <em>Todas</em>
-          </MenuItem>
-          <MenuItem value="house">
-            <MdHome />
-            Casa
-          </MenuItem>
-          <MenuItem value="apartment">
-            <MdApartment />
-            Departamento
-          </MenuItem>
+        <Select
+          defaultValue={filters.city}
+          label={`${filterLabels.city.label}____`}
+          {...register("city")}
+        >
+          {Object.entries(filterLabels.city.cities).map(([key, value]) => (
+            <MenuItem key={key} value={value}>
+              {value !== "" ? key : <em>{key}</em>}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
-      <FormControl fullWidth sx={{}}>
-        <InputLabel id="category-label">
-          <MdLocationOn />
-          Ciudad
+      <FormControl fullWidth sx={{ my: 1 }}>
+        <InputLabel>
+          <HomeOutlinedIcon />
+          <span style={{ position: "relative", bottom: 5, marginLeft: 5 }}>
+            {filterLabels.type.label}
+          </span>
         </InputLabel>
-        <Select labelId="category-label" id="category-select" label="Age">
-          <MenuItem value="">
-            <em>Todas</em>
-          </MenuItem>
-          <MenuItem value="buenosAires">Buenos Aires</MenuItem>
-          <MenuItem value="cordoba">Córdoba</MenuItem>
-          <MenuItem value="rosario">Rosario</MenuItem>
+        <Select
+          defaultValue={filters.property_type}
+          label={`${filterLabels.type.label}____`}
+          {...register("property_type")}
+        >
+          {Object.entries(filterLabels.type.types).map(([key, value]) => (
+            <MenuItem key={key} value={value}>
+              {value !== "" ? key : <em>{key}</em>}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl fullWidth sx={{ my: 1 }}>
+        <InputLabel>
+          <CalendarMonthOutlinedIcon />
+          <span style={{ position: "relative", bottom: 5, marginLeft: 5 }}>
+            {filterLabels.period.label}
+          </span>
+        </InputLabel>
+        <Select
+          defaultValue={filters.rentalPeriod}
+          label={`${filterLabels.period.label}____`}
+          {...register("rentalPeriod")}
+        >
+          {Object.entries(filterLabels.period.periods).map(([key, value]) => (
+            <MenuItem key={key} value={value}>
+              {value !== "" ? key : <em>{key}</em>}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
       <Box
         sx={{
-          mt: 1,
+          my: 1,
           width: "100%",
-          textAlign: "start",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          pl: 1,
         }}
       >
-        <FormLabel sx={{ display: "" }}>
-          <MdEmojiObjects style={{ marginRight: 4 }} />
-          Con Servicios:
+        <FormLabel sx={{ width: "full" }}>
+          <WeekendOutlinedIcon />
+          <span style={{ position: "relative", bottom: 5, marginLeft: 5 }}>
+            {filterLabels.hasFurniture.label}
+          </span>
         </FormLabel>
-        <Switch />
+        <RadioGroup row defaultValue={filters.isFurnished} {...register("isFurnished")}>
+          {Object.entries(filterLabels.hasFurniture.values).map(
+            ([key, value]) => (
+              <FormControlLabel
+              key={key}
+                value={value}
+                control={<Radio size="small" />}
+                label={key}
+              />
+            )
+          )}
+        </RadioGroup>
       </Box>
 
       <Box
         sx={{
           width: "100%",
+          my: 1,
+          pl: 1,
+        }}
+      >
+        <FormLabel>
+          <EmojiObjectsOutlinedIcon />
+          <span style={{ position: "relative", bottom: 5, marginLeft: 5 }}>
+            {filterLabels.hasServices.label}
+          </span>
+        </FormLabel>
+        <RadioGroup
+          row
+          defaultValue={filters.isServicesIncluded}
+          {...register("isServicesIncluded")}
+        >
+          {Object.entries(filterLabels.hasServices.values).map(
+            ([key, value]) => (
+              <FormControlLabel
+              key={key}
+                value={value}
+                control={<Radio size="small" />}
+                label={key}
+              />
+            )
+          )}
+        </RadioGroup>
+      </Box>
+
+      <Box
+        sx={{
+          width: "100%",
+          my: 1,
           textAlign: "start",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "space-evenly",
+          gap: 1,
           alignItems: "center",
         }}
       >
-        <FormLabel sx={{ display: "" }}>
-          <MdWeekend style={{ marginRight: 4 }} />
-          Amueblado:
-        </FormLabel>
-        <Switch />
+        <FormControl variant="outlined">
+          <InputLabel size="small">
+            <span>
+              <AttachMoneyOutlinedIcon fontSize="small" />
+              <span style={{ position: "relative", bottom: 4, left: -3 }}>
+                {filterLabels.minPrice.label}
+              </span>
+            </span>
+          </InputLabel>
+          <OutlinedInput
+          defaultValue={filters.minPrice}
+            {...register("minPrice")}
+            sx={{ maxWidth: 88 }}
+            size="small"
+            label={`${filterLabels.minPrice.label}__`}
+          />
+        </FormControl>
+        —
+        <FormControl variant="outlined">
+          <InputLabel size="small">
+            <span>
+              <AttachMoneyOutlinedIcon fontSize="small" />
+              <span style={{ position: "relative", bottom: 4, left: -3 }}>
+                {filterLabels.maxPrice.label}
+              </span>
+            </span>
+          </InputLabel>
+          <OutlinedInput
+          defaultValue={filters.maxPrice}
+            {...register("maxPrice")}
+            sx={{ maxWidth: 88 }}
+            size="small"
+            label={`${filterLabels.maxPrice.label}__`}
+          />
+        </FormControl>
       </Box>
 
-      <FormControl component="fieldset" sx={{ mt: 0.5, textAlign: "start", width: "100%" }}>
-        <FormLabel>Calificación mínima:</FormLabel>
-        <Rating
-          name="rating"
-          onChange={(_event, newValue) => {
-            console.log(newValue);
-          }}
-          defaultValue={0}
+      <FormControl variant="outlined" fullWidth sx={{ my: 1 }}>
+        <InputLabel size="small">
+          <span>
+            <PersonOutlineOutlinedIcon fontSize="small" />
+            <span style={{ position: "relative", bottom: 4, left: 3 }}>
+              {filterLabels.maxOccupants.label}
+            </span>
+          </span>
+        </InputLabel>
+        <OutlinedInput
+        defaultValue={filters.max_occupants}
+          {...register("max_occupants")}
+          size="small"
+          label={`${filterLabels.maxOccupants.label}___`}
         />
       </FormControl>
-      <Button variant="contained" fullWidth sx={{ my: 2 }}>
+
+      <FormControl
+        component="fieldset"
+        sx={{ my: 1, textAlign: "start", width: "100%", pl: 1 }}
+      >
+        <FormLabel>{filterLabels.rating.label}</FormLabel>
+        <Rating name="rating" />
+      </FormControl>
+
+      <Button type="submit" variant="contained" fullWidth sx={{ my: 1 }}>
         Buscar
       </Button>
-      <Button variant="outlined" color="error" fullWidth sx={{ my: 2 }}>
+      <Button
+        type="reset"
+        onClick={resetFilters}
+        variant="outlined"
+        color="error"
+        fullWidth
+        sx={{ my: 1 }}
+      >
         Reestablecer filtros
       </Button>
     </Container>

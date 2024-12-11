@@ -22,6 +22,7 @@ import {
   AccountPopoverFooter,
   SignOutButton,
   AccountPreviewProps,
+
 } from "@toolpad/core/Account";
 import type { Navigation, Router, Session } from "@toolpad/core/AppProvider";
 import {
@@ -30,6 +31,7 @@ import {
   DashboardProperties,
 } from "../../page";
 import logo from "../../../public/logo_roomieFind.png";
+
 
 const NAVIGATION: Navigation = [
   {
@@ -257,16 +259,19 @@ export default function DashboardLayoutAccountSidebar(props: DemoProps) {
       window={demoWindow}
       authentication={authentication}
       session={session}
+
+
       branding={{
         title: "Roomiefind",
         logo: (
           <img
             src={logo}
             alt="RoomieFind"
-            style={{ height: "40px", marginLeft: "8px" }}
+            
           />
         ),
       }}
+
     >
       <DashboardLayout slots={{ sidebarFooter: SidebarFooterAccount }}>
         <DemoPageContent pathname={pathname} />

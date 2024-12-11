@@ -2,9 +2,9 @@ import { Container, Grid2, Typography, Box } from "@mui/material";
 
 function Footer() {
   return (
-    <Box component="footer" sx={{ backgroundColor: "#201e1e ", padding: 4 ,color:"white" }}>
+    <Box component="footer" sx={{ backgroundColor: "#201e1e ", padding: 8 ,color:"white" }}>
       <Container>
-        <Grid2 container spacing={8}>
+        <Grid2 container spacing={6} justifyContent="center">
           {/* Columna 1: Acerca de */}
           <Grid2 size= {{xs:12, sm:6, md:2}}>
             <Typography variant="h6" gutterBottom>
@@ -43,7 +43,7 @@ function Footer() {
           </Grid2>
 
           {/* Columna 5: Mi cuenta */}
-          <Grid2 size= {{xs:12, sm:6, md:2}}>
+          <Grid2 size= {{xs:12, sm:8, md:2}}>
             <Typography variant="h6" gutterBottom>
               Mi cuenta
             </Typography>
