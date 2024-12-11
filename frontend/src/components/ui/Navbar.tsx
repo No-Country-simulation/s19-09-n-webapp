@@ -13,7 +13,6 @@ import { useNavigate } from "react-router";
 import logo from "../../../public/navBarLogo.png";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import ModalProperties from "./ModalProperties";
 import { useEffect, useState } from "react";
 
 // Styled components
@@ -109,9 +108,6 @@ export default function Navbar() {
                 Ver propiedades
               </Button>
               <NavLink to="login">Publicar mi propiedad</NavLink>
-              <NavLink to="#">
-                <ModalProperties />
-              </NavLink>
               <UserButton></UserButton>
             </Box>
             <IconButton
