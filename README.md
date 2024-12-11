@@ -12,7 +12,6 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 - **Característica:** Un sitio dedicado exclusivamente a conectar estudiantes universitarios con opciones de alojamiento temporales, ya sea con familias locales o en departamentos compartidos, durante periodos de estudio o prácticas.
 
 - **Problema que Resuelve:** Facilita la búsqueda de alojamiento seguro y asequible para estudiantes que se mudan a otras ciudades o países para estudiar, algo que puede ser complicado de coordinar desde lejos y con presupuesto limitado. 
-
   
 ## Tecnologías Utilizadas
 - **Diseño:** 
@@ -27,8 +26,6 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 [![React Link](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB 'React Link')](https://react.dev/)
 [![Material ui Link]([https://img.shields.io/badge/Material_ui?style=for-the-badge&logo=tailwind-css&logoColor=white 'Material UI Link')](https://mui.com/material-ui/all-components/)
  [![Prettier link](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E 'Prettier Link')](https://prettier.io/)
-
-
   
 ## Estructura del Equipo
 Nuestro equipo está compuesto por profesionales con una gran disposición para la colaboración y el aprendizaje continuo.
@@ -39,15 +36,12 @@ Nuestro equipo está compuesto por profesionales con una gran disposición para 
 | Rassiel Mex        | [Rol:  Backend, etc.] | rassiel.mex@gmail.com            |
 | Jonathan Mesach Venegas Santana       | [Rol:  Backend, etc.] | mesach.venegas@hotmail.com           |
 | Jorge Trujillo         | [Rol: Backend, etc.] | jatrujilloch1@gmail.com           |
-| Jaqueline Martínez         | [Rol: Backend, etc.] | jaqui.mz08.jm@gmail.com            |
 | Luis Eduardo Delgado Gallardo         | [Rol: Frontend, etc.] | dev.ledg555@gmail.com            |
 | Maria Teresa Maisterra         | [Rol: Frontend, etc.] | mtmaisterra@gmail.com           |
 | Conrado Carlos Alberto Gonzalez         | [Rol: Frontend, etc.] | conry.203@gmail.com           |
 | Manuel Filgueira         | [Rol: Frontend,  etc.] | manuelfilgueira@gmail.com           |
 | Juan Sincich         | [Rol: Frontend, etc.] | juansincich.design@gmail.com            |
-| Angel Lozada        | [Rol: Frontend, etc.] | amjel105@gmail.com           |
 | Noemí Zalazar         | [Rol: QA Tester, etc.] | noecoast@gmail.com            |
-| Lizbeth Citlalli Zarazua Arroyo         | [Rol: UX/UI, etc.] | lizaraz09@outlook.com           |
 
 
 
