@@ -25,7 +25,7 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 - **Frontend:**
 [![TypeScript Link](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white 'TypeScript Link')](https://www.typescriptlang.org/)
 [![React Link](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB 'React Link')](https://react.dev/)
-[![Material ui Link](https://[img.shields.io/badge/Material_UI-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white 'Material UI Link')](https://mui.com/material-ui/all-components/)
+[![Material ui Link]([https://img.shields.io/badge/Material_ui?style=for-the-badge&logo=tailwind-css&logoColor=white 'Material UI Link')](https://mui.com/material-ui/all-components/)
  [![Prettier link](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E 'Prettier Link')](https://prettier.io/)
 
 
