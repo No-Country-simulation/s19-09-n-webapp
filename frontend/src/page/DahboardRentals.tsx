@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid2";
 import properties from "../Data/properties.json";
 
-import DashboardReantailsCard from "../components/ui/dashboardReantails/DashboardReantailsCard";
+import DashboardReantailsCard from "../components/dashboard/DashboardReantailsCard";
 
 export default function DashboardProperties() {
   return (

@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import theme from "../../../theme/Theme";
+import theme from "../../theme/Theme";
 
 import {
   BathtubOutlined,
