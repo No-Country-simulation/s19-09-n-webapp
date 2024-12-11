@@ -18,7 +18,7 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 [![Figma Link](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white 'Figma Link')](https://www.figma.com/files/recents-and-sharing?fuid=1121329785337751851)
 
 - **Backend:**
-[![NestJS] https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white
+[![NestJS] (https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)]
 
 
 - **Frontend:**
