@@ -90,7 +90,7 @@ function SearchBar() {
         </Select>
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel id="Ubicacion">Universidad (logica)</InputLabel>
+        <InputLabel id="Ubicacion">Universidad</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="Ubicacion"

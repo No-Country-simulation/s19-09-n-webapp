@@ -34,7 +34,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   return (
     <StyledAppBar position="static">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: "space-between", padding: "21px 0" }}>
           {/* Logo section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
