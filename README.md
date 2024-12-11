@@ -18,7 +18,7 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 [![Figma Link](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white 'Figma Link')](https://www.figma.com/files/recents-and-sharing?fuid=1121329785337751851)
 
 - **Backend:**
-[![NestJS] (https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)]
+[![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)]
 [![TypeScript Link](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white 'TypeScript Link')](https://www.typescriptlang.org/)
 [![Postgres Link](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](
 
@@ -27,11 +27,11 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 [![React Link](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB 'React Link')](https://react.dev/)
 [![Material ui Link](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/material-ui/all-components/)
  [![Prettier Link](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E 'Prettier Link')](https://prettier.io/)
-[![NPM Link] (https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white 'NPM Link')
-[![Vite Link] (https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white 'Vite Link')]
-[![Zod Link] (https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white 'Zod Link')]
-[![React Hook Form Link] (https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)]
-  
+[![NPM Link](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white 'NPM Link')
+[![Vite Link](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white 'Vite Link')]
+[![Zod Link](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white 'Zod Link')]
+[![React Hook Form Link](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)]
+[![React Router Dom Link](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)]
 ## Estructura del Equipo
 Nuestro equipo está compuesto por profesionales con una gran disposición para la colaboración y el aprendizaje continuo.
 
