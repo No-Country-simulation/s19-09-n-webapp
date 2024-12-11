@@ -25,9 +25,20 @@ export const propertyRegistrationValues = {
     },
   },
   max_occupants: {label: "Máx. ocupantes"},
-  payment_by_period: {label: "Precio estadía mínima"},
-  min_rental_period: {label: "Estadía mínima"},
+  payment_by_period: {label: "$ estadía mínima (ARS)"},
+  min_rental_period: {label: "Estadía mínima",
+    values: {
+      Semanal: "WEEKLY",
+      Mensual: "MONTHLY",
+      Trimestral: "TRIMESTERLY",
+      Semestral: "HALF_YEARLY",
+      Anual: "YEARLY",
+    },
+  },
   rooms: {label: "Dormitorios"}, //TODO: Preguntar 3 al back
+  is_services_included: {label: "Con servicios",
+    values: {"Sí": true, No: false,}
+  },
   services: {label: "Servicios",
     values: {
       Internet: "INTERNET",
@@ -41,4 +52,5 @@ export const propertyRegistrationValues = {
   is_furnished: {label: "Amueblado",
     values: {"Sí": true, No: false},
   },
+  near_universities: {label: "Universidades cercanas"},
 };
