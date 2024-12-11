@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import UserButton from "./UserButton";
 import { useNavigate } from "react-router";
-import logo from "../../../public/logo_roomieFind.png";
+import logo from "../../../public/navBarLogo.png";
 
 
 // Styled components
@@ -33,7 +33,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   return (
     <StyledAppBar position="static">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: "space-between", padding: "21px 0" }}>
           {/* Logo section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>

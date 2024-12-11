@@ -3,24 +3,17 @@ import ProvinceGrid from "../components/Buscador-img/ProvinceGrid";
 import ReviewCards from "../components/ui/ReviewCards";
 import { Box } from "@mui/system";
 import ExamplePage from "../components/ui/ExamplePage";
-import { Grid2, Typography } from "@mui/material";
-import properties from "../Data/properties.json";
-import PropertyCard from "../components/ui/PropertyCard";
+import HeroCarousel from "../components/ui/HeroCarousel";
 
 function PageHome() {
   return (
-    <div>
-      <Box>
-        <Hero />
-      </Box>
-      <Box sx={{ my: 3 }}>
-        <Typography variant="h4">
-          Publicaciones recientes (prox: titulo y carrusel en mismo cont)
-        </Typography>
-        {/*      <Typography variant="h6" sx={{ padding: "2rem 4rem" }}>
-          La solución confiable para encontrar y compartir hogares..
-        </Typography> */}
+    <Box sx={{}}>
+      <Hero />
 
+      <HeroCarousel title="Publicaciones recientes" />
+
+      {/*       <Box sx={{ my: 3 }}>
+        <Typography variant="h4">Publicaciones recientes</Typography>
         <Grid2 container spacing={2} sx={{ justifyContent: "center" }}>
           {properties.map((property, index) => (
             <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
@@ -39,18 +32,19 @@ function PageHome() {
             </Grid2>
           ))}
         </Grid2>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           minHeight: "507px",
-          my: 3,
           borderRadius: "8px",
           overflow: "hidden",
         }}
       >
         <ExamplePage />
       </Box>
-      <Box sx={{ m: 3 }}>
+      <HeroCarousel title="Publicaciones más visitadas" />
+
+      {/*  <Box sx={{ m: 3 }}>
         <Typography
           variant="h2"
           sx={{ fontWeight: "400", padding: "2rem 4rem" }}
@@ -75,16 +69,16 @@ function PageHome() {
             </Grid2>
           ))}
         </Grid2>
-      </Box>
+      </Box> */}
 
-      <Box sx={{ m: 3 }}>
+      <Box sx={{ paddingTop: "2rem", marginBottom: "2rem" }}>
         <ReviewCards />
       </Box>
 
-      <Box sx={{ m: 3 }}>
+      <Box sx={{ paddingTop: "2rem", marginBottom: "4rem" }}>
         <ProvinceGrid />
       </Box>
-    </div>
+    </Box>
   );
 }
 

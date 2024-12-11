@@ -34,5 +34,29 @@
     "hasWater": true,
     "hasGas": false,
     "imageUrl": "https://http2.mlstatic.com/D_NQ_NP_636587-MLC79039019079_092024-O.webp"
+  },
+  {
+    "price": 150000,
+    "title": "Bonatti 2050",
+    "location": "Casa en Alquiler - Recoleta - Capital Federal",
+    "rooms": 4,
+    "bathrooms": 2,
+    "balconies": 1,
+    "garages": 1,
+    "hasWater": true,
+    "hasGas": true,
+    "imageUrl": "https://http2.mlstatic.com/D_NQ_NP_796660-MLC52128956329_102022-O.webp"
+  },
+  {
+    "price": 180000,
+    "title": "Calle Falsa 123",
+    "location": "Departamento en Venta - Belgrano - Capital Federal",
+    "rooms": 3,
+    "bathrooms": 1,
+    "balconies": 2,
+    "garages": 1,
+    "hasWater": true,
+    "hasGas": true,
+    "imageUrl": "https://http2.mlstatic.com/D_NQ_NP_840003-MLC42365972677_062020-O.webp"
   }
 ]
