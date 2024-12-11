@@ -1,10 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import SearchBar from "./searchBar/SearchBar";
+import theme from "../../theme/Theme";
 
 export default function Hero() {
   return (
     <Box
       sx={{
+        marginBottom: "2rem",
         overflow: "hidden",
         height: "70vh",
         background: `linear-gradient(rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.6)), URL('https://cdn-sl-a1.scape.com/sites/default/files/2024-04/hero%201%20%282%29_1.jpg')`,
@@ -14,17 +16,17 @@ export default function Hero() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
-        padding: "2rem",
+        /*  color: theme.palette.secondary.main, */
       }}
     >
       <SearchBar />
       <Typography
-        variant="h2"
+        /* variant="h2" */
         sx={{
           fontWeight: "400",
-          padding: { xs: "1rem", md: "2rem 4rem" }, // Ajusta el padding según el tamaño
-          fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" }, // Cambia el tamaño de fuente
+          paddingX: { md: "8rem", lg: "14rem" },
+          margin: { xs: "1rem", md: "auto auto" },
+          fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem", lg: "3.8rem" },
         }}
       >
         Conecta con tu nuevo hogar, encuentra a tu roomie ideal
@@ -32,8 +34,13 @@ export default function Hero() {
       <Typography
         variant="h6"
         sx={{
-          padding: { xs: "1rem", md: "2rem 4rem" }, // Ajusta el padding
-          fontSize: { xs: "0.9rem", sm: "1rem", md: "1.25rem" }, // Cambia el tamaño de fuente
+          margin: {
+            xs: "1rem",
+            sm: "auto 2rem auto 2rem",
+            md: "2rem 4rem 5rem 4rem",
+          },
+          fontSize: { xs: "0.9rem", sm: "1.2rem", md: "1.5rem" },
+          letterSpacing: "1.1px",
         }}
       >
         En Roomiefind encontrarás alojamiento para estudiantes: espacios seguros
