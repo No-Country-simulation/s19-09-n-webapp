@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Grid2,
   Button,
@@ -14,51 +13,12 @@ import {
   FormControlLabel,
   Checkbox,
   ImageList,
-  ImageListItem,
+  /* ImageListItem, */
   TextareaAutosize,
-} from '@mui/material';
-
-interface Property {
-  propertyType: string;
-  title: string;
-  address: string;
-  services: string[];
-  nearbyEntities: string[];
-  security: string[];
-  images: File[];
-}
-
-
+} from "@mui/material";
 
 const RegisterProperty: React.FC = () => {
-  const [property, setProperty] = useState<Property>({
-    propertyType: '',
-    title: '',
-    address: '',
-    services: [],
-    nearbyEntities: [],
-    security: [],
-    images: [],
-  });
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setProperty({
-      ...property,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    setProperty((prevProperty) => ({
-      ...prevProperty,
-      [name]: checked
-        ? [...prevProperty[name], event.target.value]
-        : prevProperty[name].filter((value) => value !== event.target.value),
-    }));
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  /* const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newImages = Array.from(event.target.files);
       if (newImages.length + property.images.length <= 10) {
@@ -68,14 +28,7 @@ const RegisterProperty: React.FC = () => {
         alert('Solo puedes subir un máximo de 10 imágenes.');
       }
     }
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Aquí puedes realizar la lógica para enviar los datos del formulario,
-    // como guardar la propiedad en una base de datos.
-    console.log(property);
-  };
+  }; */
 
   return (
     <Container maxWidth="sm">
@@ -83,15 +36,13 @@ const RegisterProperty: React.FC = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Cargar Propiedad
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form>
           <FormControl fullWidth margin="normal">
             <InputLabel id="propertyType-label">Tipo de Propiedad</InputLabel>
             <Select
               labelId="propertyType-label"
               id="propertyType"
               name="propertyType"
-              value={property.propertyType}
-              onChange={handleInputChange}
               label="Tipo de Propiedad"
               required
             >
@@ -104,8 +55,6 @@ const RegisterProperty: React.FC = () => {
           <TextField
             label="Título"
             name="title"
-            value={property.title}
-            onChange={handleInputChange}
             fullWidth
             margin="normal"
             required
@@ -113,117 +62,98 @@ const RegisterProperty: React.FC = () => {
           <TextField
             label="Dirección"
             name="address"
-            value={property.address}
-            onChange={handleInputChange}
             fullWidth
             margin="normal"
             required
           />
 
           <TextareaAutosize
-            label="Descripción de la propiedad"            
-            placeholder="Descripción"           
-            value={property.description}
-            onChange={handleInputChange}
+            /* label="Descripción de la propiedad" */
+            placeholder="Descripción"
             minRows={5}
-            style={{ width: '100%', marginTop: '1rem' }}
-            
+            style={{ width: "100%", marginTop: "1rem" }}
           />
 
           <Grid2 container spacing={1}>
-          <Grid2 item xs={12} sm={9} md={6}>
-
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Amenidades
-          </Typography>
-          <FormGroup>
-            {['Piscina', 'Asaderas', 'Sala de Eventos', 'Co-work', 'Gimnasio', 'Sala de Juegos'].map((service) => (
-              <FormControlLabel
-                key={service}
-                control={
-                  <Checkbox
-                    checked={property.services.includes(service)}
-                    onChange={handleCheckboxChange}
-                    name="services"
-                    value={service}
+            <Grid2 size={{ xs: 12, sm: 9, md: 6 }}>
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Amenidades
+              </Typography>
+              <FormGroup>
+                {[
+                  "Piscina",
+                  "Asaderas",
+                  "Sala de Eventos",
+                  "Co-work",
+                  "Gimnasio",
+                  "Sala de Juegos",
+                ].map((service) => (
+                  <FormControlLabel
+                    key={service}
+                    control={<Checkbox name="services" value={service} />}
+                    label={service}
                   />
-                }
-                label={service}
-              />
-            ))}
-          </FormGroup>
-          </Grid2>
+                ))}
+              </FormGroup>
+            </Grid2>
 
-          
-          <Grid2 item xs={12} sm={6} md={3}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Servicios Activos
-          </Typography>
-          <FormGroup>
-            {['luz', 'agua', 'internet', 'transporte publico', 'metro', 'taxi'].map((service) => (
-              <FormControlLabel
-                key={service}
-                control={
-                  <Checkbox
-                    checked={property.services.includes(service)}
-                    onChange={handleCheckboxChange}
-                    name="services"
-                    value={service}
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Servicios Activos
+              </Typography>
+              <FormGroup>
+                {[
+                  "luz",
+                  "agua",
+                  "internet",
+                  "transporte publico",
+                  "metro",
+                  "taxi",
+                ].map((service) => (
+                  <FormControlLabel
+                    key={service}
+                    control={<Checkbox name="services" value={service} />}
+                    label={service}
                   />
-                }
-                label={service}
-              />
-            ))}
-          </FormGroup>
-          </Grid2>
+                ))}
+              </FormGroup>
+            </Grid2>
 
-          
-          <Grid2 item xs={12} sm={6} md={3}>
-
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Entidades Cercanas
-          </Typography>
-          <FormGroup>
-            {['bancos', 'universidades', 'restaurantes', 'gimnasios', 'parques'].map((entity) => (
-              <FormControlLabel
-                key={entity}
-                control={
-                  <Checkbox
-                    checked={property.nearbyEntities.includes(entity)}
-                    onChange={handleCheckboxChange}
-                    name="nearbyEntities"
-                    value={entity}
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Entidades Cercanas
+              </Typography>
+              <FormGroup>
+                {[
+                  "bancos",
+                  "universidades",
+                  "restaurantes",
+                  "gimnasios",
+                  "parques",
+                ].map((entity) => (
+                  <FormControlLabel
+                    key={entity}
+                    control={<Checkbox name="nearbyEntities" value={entity} />}
+                    label={entity}
                   />
-                }
-                label={entity}
-              />
-            ))}
-          </FormGroup>
-          </Grid2>
+                ))}
+              </FormGroup>
+            </Grid2>
 
-          
-          <Grid2 item xs={12} sm={6} md={3}>
-
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Seguridad
-          </Typography>
-          <FormGroup>
-            {['vigilancia 24/7', 'cctv'].map((security) => (
-              <FormControlLabel
-                key={security}
-                control={
-                  <Checkbox
-                    checked={property.security.includes(security)}
-                    onChange={handleCheckboxChange}
-                    name="security"
-                    value={security}
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Seguridad
+              </Typography>
+              <FormGroup>
+                {["vigilancia 24/7", "cctv"].map((security) => (
+                  <FormControlLabel
+                    key={security}
+                    control={<Checkbox name="security" value={security} />}
+                    label={security}
                   />
-                }
-                label={security}
-              />
-            ))}
-          </FormGroup>
-          </Grid2>
+                ))}
+              </FormGroup>
+            </Grid2>
           </Grid2>
 
           <Button variant="contained" component="label" sx={{ mt: 2 }}>
@@ -233,22 +163,29 @@ const RegisterProperty: React.FC = () => {
               hidden
               accept="image/*"
               multiple
-              onChange={handleImageChange}
+              /* onChange={handleImageChange} */
             />
           </Button>
 
+          <ImageList cols={3} rowHeight={100} sx={{ mt: 2 }}>
+            <img src="" alt="" />
+            {/* {property.images.map((image, index) => (
+              <ImageListItem key={index}>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Imagen ${index + 1}`}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            ))} */}
+          </ImageList>
 
-          {property.images.length > 0 && (
-            <ImageList cols={3} rowHeight={100} sx={{ mt: 2 }}>
-              {property.images.map((image, index) => (
-                <ImageListItem key={index}>
-                  <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} loading="lazy" />
-                </ImageListItem>
-              ))}
-            </ImageList>
-          )}
-
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
             Guardar Propiedad
           </Button>
         </form>

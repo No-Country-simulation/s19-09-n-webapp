@@ -1,6 +1,7 @@
 import { FiltersInterface } from "../types/filtersInterface";
 import { buildUserReq } from "../utils/helpers/requestBuilders";
 import { placeholderProperties } from "../Data/Properties";
+// import { mapProperty } from "../utils/helpers/propertyMapper";
 
 const endpoint = "https://s19-09-n-back.vercel.app/api/v1/real-estate";
 
@@ -13,7 +14,8 @@ export async function getProperties(filters: FiltersInterface, page: number) {
   url.searchParams.append("page", String(page));
   console.log("Enviar al back:",url.href);
   // const res = await fetch(url.href);
-  // const data = await res.json();
+  // const rawData = await res.json();
+  // const data = rawData.map(property => mapProperty(property));
   return placeholderProperties;
 }
 
