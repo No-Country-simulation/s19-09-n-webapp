@@ -8,7 +8,7 @@ import {
 import RegisterProperty from '../../page/RegisterProperty'; // Asegúrate de que la ruta sea correcta
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',

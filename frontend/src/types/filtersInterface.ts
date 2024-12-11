@@ -22,8 +22,8 @@ export interface FiltersInterface {
     | "YEARLY";
   isFurnished?: boolean | string;
   isServicesIncluded?: boolean | string;
-  minPrice?: number | "";
-  maxPrice?: number | "";
-  max_occupants?: number | "";
-  rating?: number | "";
+  minPrice?: number | string;
+  maxPrice?: number | string;
+  max_occupants?: number | string;
+  rating?: number | string;
 }
