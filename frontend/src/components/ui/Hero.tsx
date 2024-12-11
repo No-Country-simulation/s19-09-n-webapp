@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import SearchBar from "./searchBar/SearchBar";
-import theme from "../../theme/Theme";
 
 export default function Hero() {
   return (
