@@ -5,7 +5,6 @@ import UserButton from "./UserButton";
 import { useNavigate } from "react-router";
 import logo from "../../../public/logo_roomieFind.png";
 
-import ModalProperties from "./ModalProperties";
 
 // Styled components
 const StyledAppBar = styled(AppBar)({
@@ -54,10 +53,7 @@ export default function Navbar() {
               Ver propiedades
             </Button>
             <NavLink to="login">Publicar mi propiedad</NavLink>
-            <NavLink to="#">
-              <ModalProperties />
-            </NavLink>
-            <UserButton></UserButton>
+            <UserButton/>
           </Box>
         </Toolbar>
       </Container>
