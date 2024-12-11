@@ -8,6 +8,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RealEstateModule } from './real-estate/real-estate.module';
 import { PhotosModule } from './photos/photos.module';
+import { UniversityModule } from './university/university.module';
+import { ServicesModule } from './services/services.module';
+import { RoomTypesModule } from './room-types/room-types.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { PhotosModule } from './photos/photos.module';
     AuthModule,
     PhotosModule,
     RealEstateModule,
+    UniversityModule,
+    ServicesModule,
+    RoomTypesModule,
   ],
   controllers: [AppController],
   providers: [

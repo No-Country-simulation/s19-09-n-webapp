@@ -146,11 +146,21 @@ model ServicesOnProperty {
 }
 
 model University {
-  id              String         @id @default(uuid())
-  name            String         @db.VarChar(255)
-  latitude        Decimal        @db.Decimal(10, 6)
-  longitud        Decimal        @db.Decimal(10, 6)
+  id         String   @id @default(uuid())
+  name       String   @unique @db.VarChar(255)
+  country    String   @default("AR") @db.Char(2)
+  city       String   @db.VarChar(128)
+  address    String?  @db.VarChar(255)
+  image_url  String?  @db.VarChar(512)
+  latitude   Decimal? @db.Decimal(10, 6)
+  longitude  Decimal? @db.Decimal(10, 6)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   near_properties NearLocation[]
+
+  @@unique([city, country, name])
+  @@index([city, country, name])
 }
 
 model NearLocation {
