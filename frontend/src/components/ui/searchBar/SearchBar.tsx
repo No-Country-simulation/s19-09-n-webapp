@@ -15,16 +15,18 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { locations, timeLapse } from "./constants";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
-	roomType: string;
-	location: string;
+	property_type: string;
+	city: string;
 	university: string;
-	timelapse: string;
+	rentalPeriod: string;
 };
 
 function SearchBar() {
 	const theme = useTheme();
+	const navigate = useNavigate();
 	const [universities, setUniversities] = useState<
 		{ id: number; name: string }[]
 	>([]);
@@ -42,7 +44,17 @@ function SearchBar() {
 	}, []);
 
 	const SearchProperty = (data: FormData) => {
-		console.log(data);
+		const filteredData = Object.fromEntries(
+			Object.entries(data).filter(
+				([, value]) => value !== "" && value !== undefined
+			)
+		);
+
+		const searchParams = new URLSearchParams(
+			filteredData as Record<string, string>
+		).toString();
+
+		navigate(`/properties?${searchParams}`);
 	};
 
 	return (
@@ -62,13 +74,13 @@ function SearchBar() {
 					gap: "8px",
 				}}>
 				<FormControl fullWidth>
-					<InputLabel id="roomType">Tipo de alojamiento</InputLabel>
+					<InputLabel id="property_type">Tipo de alojamiento</InputLabel>
 					<Controller
-						name="roomType"
+						name="property_type"
 						defaultValue=""
 						control={control}
 						render={({ field }) => (
-							<Select labelId="roomType" id="roomType" {...field}>
+							<Select labelId="property_type" id="property_type" {...field}>
 								<MenuItem value="">Todos</MenuItem>
 								<MenuItem value="ROOM">
 									<BedIcon
@@ -105,13 +117,13 @@ function SearchBar() {
 				</FormControl>
 
 				<FormControl fullWidth>
-					<InputLabel id="location">Ubicación</InputLabel>
+					<InputLabel id="city">Ubicación</InputLabel>
 					<Controller
-						name="location"
+						name="city"
 						defaultValue=""
 						control={control}
 						render={({ field }) => (
-							<Select labelId="location" id="location" {...field}>
+							<Select labelId="city" id="city" {...field}>
 								<MenuItem value="">Seleccionar</MenuItem>
 								{locations.map((location: { value: string; label: string }) => (
 									<MenuItem key={location.value} value={location.value}>
@@ -143,13 +155,13 @@ function SearchBar() {
 				</FormControl>
 
 				<FormControl fullWidth>
-					<InputLabel id="timelapse">Estadía</InputLabel>
+					<InputLabel id="rentalPeriod">Estadía</InputLabel>
 					<Controller
-						name="timelapse"
+						name="rentalPeriod"
 						defaultValue=""
 						control={control}
 						render={({ field }) => (
-							<Select labelId="timelapse" id="timelapse" {...field}>
+							<Select labelId="rentalPeriod" id="rentalPeriod" {...field}>
 								<MenuItem value="">Seleccionar</MenuItem>
 								{timeLapse.map(
 									(timeLapse: { value: string; label: string }) => (
