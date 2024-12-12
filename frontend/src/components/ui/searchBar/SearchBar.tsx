@@ -11,15 +11,44 @@ import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Button } from "@mui/material";
 
-/* import Button from "@mui/material"; */
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { locations, timeLapse } from "./constants";
+
+type FormData = {
+	roomType: string;
+	location: string;
+	university: string;
+	timelapse: string;
+};
 
 function SearchBar() {
 	const theme = useTheme();
+	const [universities, setUniversities] = useState<
+		{ id: number; name: string }[]
+	>([]);
+	const { control, handleSubmit } = useForm<FormData>();
+
+	useEffect(() => {
+		axios
+			.get("https://s19-09-n-back.vercel.app/api/v1/univ")
+			.then((res) => {
+				setUniversities(res.data);
+			})
+			.catch((error) => {
+				console.log("Error al obtener los datos:", error);
+			});
+	}, []);
+
+	const SearchProperty = (data: FormData) => {
+		console.log(data);
+	};
 
 	return (
-		<form action="" >
+		<form onSubmit={handleSubmit(SearchProperty)}>
 			<Box
-				component="form"
+				component="div"
 				sx={{
 					position: "relative",
 					display: "flex",
@@ -33,94 +62,104 @@ function SearchBar() {
 					gap: "8px",
 				}}>
 				<FormControl fullWidth>
-					<InputLabel id="alojamiento">Tipo de alojamiento</InputLabel>
-					<Select
-						labelId="alojamiento"
-						id="alojamiento"
-						/*     value={}
-            label={}
-            onChange={} */
-					>
-						<MenuItem value={1}>
-							<BedIcon
-								sx={{
-									fontSize: "medium",
-									color: theme.palette.primary.main,
-									paddingRight: "4px",
-								}}
-							/>
-							Habitación
-						</MenuItem>
-						<MenuItem value={2}>
-							<ApartmentIcon
-								sx={{
-									fontSize: "medium",
-									color: theme.palette.primary.main,
-									paddingRight: "4px",
-								}}
-							/>
-							Departamento
-						</MenuItem>
-						<MenuItem value={3}>
-							<HouseIcon
-								sx={{
-									fontSize: "medium",
-									color: theme.palette.primary.main,
-									paddingRight: "4px",
-								}}
-							/>
-							Casa
-						</MenuItem>
-						<MenuItem value={4}>Todos</MenuItem>
-					</Select>
+					<InputLabel id="roomType">Tipo de alojamiento</InputLabel>
+					<Controller
+						name="roomType"
+						control={control}
+						render={({ field }) => (
+							<Select labelId="roomType" id="roomType" {...field}>
+								<MenuItem value={undefined}>Todos</MenuItem>
+								<MenuItem value="ROOM">
+									<BedIcon
+										sx={{
+											fontSize: "medium",
+											color: theme.palette.primary.main,
+											paddingRight: "4px",
+										}}
+									/>
+									Habitación
+								</MenuItem>
+								<MenuItem value="APARTMENT">
+									<ApartmentIcon
+										sx={{
+											fontSize: "medium",
+											color: theme.palette.primary.main,
+											paddingRight: "4px",
+										}}
+									/>
+									Departamento
+								</MenuItem>
+								<MenuItem value="HOME">
+									<HouseIcon
+										sx={{
+											fontSize: "medium",
+											color: theme.palette.primary.main,
+											paddingRight: "4px",
+										}}
+									/>
+									Casa
+								</MenuItem>
+							</Select>
+						)}></Controller>
 				</FormControl>
+
 				<FormControl fullWidth>
 					<InputLabel id="location">Ubicación</InputLabel>
-					<Select
-						labelId="location"
-						id="location"
-						/*     value={}
-            label={}
-            onChange={} */
-					>
-						<MenuItem value={1}>Buenos Aires</MenuItem>
-						<MenuItem value={2}>Capital</MenuItem>
-						<MenuItem value={3}>Córdoba</MenuItem>
-						<MenuItem value={4}>Santiago de Chile</MenuItem>
-						<MenuItem value={5}>México D.F.</MenuItem>
-					</Select>
+					<Controller
+						name="location"
+						control={control}
+						render={({ field }) => (
+							<Select labelId="location" id="location" {...field}>
+								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								{locations.map((location: { value: string; label: string }) => (
+									<MenuItem key={location.value} value={location.value}>
+										{location.label}
+									</MenuItem>
+								))}
+							</Select>
+						)}></Controller>
 				</FormControl>
+
 				<FormControl fullWidth>
 					<InputLabel id="university">Universidad</InputLabel>
-					<Select
-						labelId="university"
-						id="university"
-						/*     value={}
-            label={}
-            onChange={} */
-					>
-						<MenuItem value={1}>Buenos Aires</MenuItem>
-						<MenuItem value={2}>Capital</MenuItem>
-						<MenuItem value={3}>Córdoba</MenuItem>
-						<MenuItem value={4}>Santiago de Chile</MenuItem>
-						<MenuItem value={5}>México D.F.</MenuItem>
-					</Select>
+					<Controller
+						name="university"
+						control={control}
+						render={({ field }) => (
+							<Select labelId="university" id="university" {...field}>
+								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								{universities.map(
+									(university: { id: number; name: string }) => (
+										<MenuItem key={university.id} value={university.id}>
+											{university.name}
+										</MenuItem>
+									)
+								)}
+							</Select>
+						)}></Controller>
 				</FormControl>
+
 				<FormControl fullWidth>
 					<InputLabel id="timelapse">Estadía</InputLabel>
-					<Select
-						labelId="timelapse"
-						id="timelapse"
-						/*     value={}
-            label={}
-            onChange={} */
-					>
-						<MenuItem value={1}>Hasta 30 días</MenuItem>
-						<MenuItem value={2}>Más de 30 días</MenuItem>
-					</Select>
+					<Controller
+						name="timelapse"
+						control={control}
+						render={({ field }) => (
+							<Select labelId="timelapse" id="timelapse" {...field}>
+								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								{timeLapse.map(
+									(timeLapse: { value: string; label: string }) => (
+										<MenuItem key={timeLapse.value} value={timeLapse.value}>
+											{timeLapse.label}
+										</MenuItem>
+									)
+								)}
+							</Select>
+						)}></Controller>
 				</FormControl>
+
 				<Box
-					component="form"
+					component="div"
 					sx={{
 						display: "flex",
 						flex: 1,
