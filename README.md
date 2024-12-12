@@ -14,16 +14,20 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 - **Problema que Resuelve:** Facilita la búsqueda de alojamiento seguro y asequible para estudiantes que se mudan a otras ciudades o países para estudiar, algo que puede ser complicado de coordinar desde lejos y con presupuesto limitado. 
   
 ## Tecnologías Utilizadas
-- **Diseño:** 
+
+- **Diseño:**
+  
 [![Figma Link](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white 'Figma Link')](https://www.figma.com/files/recents-and-sharing?fuid=1121329785337751851)
 
 - **Backend:**
+  
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 ![Prisma](https://img.shields.io/badge/prisma-000.svg?style=for-the-badge&logo=prisma&logoColor=white)
 ![Prisma](https://img.shields.io/badge/postgresql-4169E1.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 [![TypeScript Link](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white 'TypeScript Link')](https://www.typescriptlang.org/)
 
 - **Frontend:**
+  
 [![TypeScript Link](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white 'TypeScript Link')](https://www.typescriptlang.org/)
 [![React Link](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB 'React Link')](https://react.dev/)
 [![Material ui Link](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/material-ui/all-components/)
@@ -33,28 +37,33 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 ![Zod Link](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white 'Zod Link')
 ![React Hook Form Link](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
 ![React Router Dom Link](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![React Link](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
 ## Estructura del Equipo
 Nuestro equipo está compuesto por profesionales con una gran disposición para la colaboración y el aprendizaje continuo.
 
-| Nombre             | Rol                 | Email                              |
-|--------------------|---------------------|-----------------------------------------------|
-| Sonny Pimentel     | [Rol: Backend, etc.] | spimentelm1201@gmail.com            |
-| Rassiel Mex        | [Rol:  Backend, etc.] | rassiel.mex@gmail.com            |
-| Jonathan Mesach Venegas Santana       | [Rol:  Backend, etc.] | mesach.venegas@hotmail.com           |
-| Jorge Trujillo         | [Rol: Backend, etc.] | jatrujilloch1@gmail.com           |
-| Luis Eduardo Delgado Gallardo         | [Rol: Frontend, etc.] | dev.ledg555@gmail.com            |
-| Maria Teresa Maisterra         | [Rol: Frontend, etc.] | mtmaisterra@gmail.com           |
-| Conrado Carlos Alberto Gonzalez         | [Rol: Frontend, etc.] | conry.203@gmail.com           |
-| Manuel Filgueira         | [Rol: Frontend,  etc.] | manuelfilgueira@gmail.com           |
-| Juan Sincich         | [Rol: Frontend, etc.] | juansincich.design@gmail.com            |
-| Noemí Zalazar         | [Rol: QA Tester, etc.] | noecoast@gmail.com            |
+| Nombre             | Rol                 | Email              |    País           |
+|--------------------|---------------------|--------------------|-------------------|
+| Sonny Pimentel     | [Rol: Backend, etc.] | spimentelm1201@gmail.com            | Perú |
+| Rassiel Mex        | [Rol:  Backend, etc.] | rassiel.mex@gmail.com            | México |
+| Jonathan Mesach Venegas Santana       | [Rol:  Backend, etc.] | mesach.venegas@hotmail.com           | México |
+| Jorge Trujillo         | [Rol: Backend, etc.] | jatrujilloch1@gmail.com           | Ecuador |
+| Luis Eduardo Delgado Gallardo         | [Rol: Frontend, etc.] | dev.ledg555@gmail.com            | México |
+| Maria Teresa Maisterra         | [Rol: Frontend, etc.] | mtmaisterra@gmail.com           | Argentina |
+| Conrado Carlos Alberto Gonzalez         | [Rol: Frontend, etc.] | conry.203@gmail.com           | Argentina |
+| Manuel Filgueira         | [Rol: Frontend,  etc.] | manuelfilgueira@gmail.com           | Venezuela |
+| Juan Sincich         | [Rol: Frontend, etc.] | juansincich.design@gmail.com            | Argentina |
+| Noemí Zalazar         | [Rol: QA Tester, etc.] | noecoast@gmail.com            | Argentina |
 
 
 
 ## Colaboración y Metodología
-Usamos una metodología de scrum para gestionar nuestro progreso. [Describir cómo el equipo colabora, herramientas que usa (como Slack, GitHub, Jira, etc.) y frecuencia de reuniones.]
+Usamos una metodología de scrum para gestionar nuestro progreso. Para reunirnos usamos Discord, Slack. El horario que se utilizó para las reuniones fue el de Argentina, tanto para las daily como las reuniones con el TL. Para comunicarnos con el equipo al que correspondiamos usabamos tanto los canales de texto y de voz. La relación entre todos fue fluida y respetuosa, ayudándonos entre todos para solucionar problemas y dificultades que surgieron durante la simulación.
+
+## Video Presentación
+
+Se realizó un video para reflejar el problema que resuelve esta WebApp
+
+https://youtu.be/84AYOvXpZUI
 
 
 
