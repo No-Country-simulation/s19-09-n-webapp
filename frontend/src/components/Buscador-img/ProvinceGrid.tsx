@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CityUniversity } from "../../types/universityInterface";
 import { getCitiesList } from "../../services/universitiesService";
+import { Box } from "@mui/system";
 
 // const provinces = [
 //   { name: 'Santa Fe', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/01_Ciudad_Universitaria_de_la_UNL.jpg/800px-01_Ciudad_Universitaria_de_la_UNL.jpg' },
@@ -36,6 +37,10 @@ const ProvinceGrid: React.FC = () => {
   };
 
   return (
+    <Box sx={{ mt: 2, mb: 2 }}>
+      <Typography variant="h4" textAlign="center" sx={{  mb: 3 }}> 
+      Tu próximo hogar universitario está aquí.
+      </Typography>
     <Grid2 container spacing={2}>
       {data &&
         data.map((province) => (
@@ -63,6 +68,7 @@ const ProvinceGrid: React.FC = () => {
           </Grid2>
         ))}
     </Grid2>
+    </Box>
   );
 };
 

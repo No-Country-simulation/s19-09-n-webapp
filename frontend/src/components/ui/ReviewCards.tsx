@@ -1,4 +1,5 @@
 import { Card, CardContent, CardMedia, Typography, Grid2 } from "@mui/material";
+import { Box } from "@mui/system";
 
 const reviews = [
   {
@@ -26,28 +27,33 @@ const reviews = [
 
 const ReviewCards = () => {
   return (
-    <Grid2 container spacing={3} justifyContent="center">
-      {reviews.map((review, index) => (
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-          <Card sx={{ height: "100%" }}>
-            <CardMedia
-              component="img"
-              height="200"
-              image={review.image}
-              alt={review.name}
-            />
-            <CardContent>
-              <Typography variant="h6" component="div">
-                {review.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {review.review}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid2>
-      ))}
-    </Grid2>
+    <Box sx={{ mt: 2, mb: 2 }}>
+      <Typography variant="h4" align="center" gutterBottom  sx={{  mb: 4 }}> 
+        Opiniones de nuestros usuarios
+      </Typography>
+      <Grid2 container spacing={3} justifyContent="center">
+        {reviews.map((review, index) => (
+          <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+            <Card sx={{ height: "100%" }}>
+              <CardMedia
+                component="img"
+                height="300"
+                image={review.image}
+                alt={review.name}
+              />
+              <CardContent>
+                <Typography variant="h6" component="div">
+                  {review.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {review.review}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid2>
+        ))}
+      </Grid2>
+    </Box>
   );
 };
 
