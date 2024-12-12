@@ -15,7 +15,7 @@ export interface FrontendProperty {
   user: User;
   rooms: number;
   bathrooms: number;
-  services: string[];
+  services?: string[];
   photos: string[];
   near_universities?: NearUniversity[];
 }

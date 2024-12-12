@@ -1,48 +1,59 @@
 import {
   Dialog,
+  DialogTitle,
   DialogActions,
-  Grid2,
-  Button,
+  DialogContent,
+  Box,
+  Typography,
   TextField,
-  FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Typography,
   FormGroup,
+  FormControl,
   FormControlLabel,
   Checkbox,
+  Button,
+  Switch,
   ImageList,
-  /* ImageListItem, */
-  DialogTitle,
-  DialogContent,
-  Box,
-  Switch
+  ImageListItem,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { propertyRegistrationValues } from "../Data/propertyRegistrationValues";
+import { postProperty, postPropertyImg } from "../services/propertiesService";
 
 interface PropertyFormProps {
+  toggleToast: (state: boolean) => void;
+  token: string;
   open: boolean;
   closeDialog: () => void;
 }
 
-export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
-  const { register } = useForm();
+export default function PropertyForm({
+  toggleToast,
+  open,
+  closeDialog,
+  token,
+}: PropertyFormProps) {
+  const { register: registerFields, watch, getValues: getFields } = useForm();
+  const {
+    register: registerImg,
+    getValues: getImg,
+    watch: watchImg,
+  } = useForm();
   const {
     title,
     address,
     city,
     property_type,
-    // max_occupants,
-    payment_by_period,
     min_rental_period,
-    // rooms,
+    payment_by_period,
+    spaces,
+    is_furnished,
     is_services_included,
     services,
-    is_furnished,
-    // near_universities,
   } = propertyRegistrationValues;
+
   /* const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newImages = Array.from(event.target.files);
@@ -54,6 +65,18 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
       }
     }
   }; */
+
+  async function onSubmit() {
+    const fields = getFields();
+    const img = getImg();
+    console.log(fields);
+    console.log(img);
+    const newProperty = await postProperty(fields, token);
+    const id = newProperty.id;
+    await postPropertyImg(token, img, id);
+    closeDialog();
+    toggleToast(true);
+  }
 
   return (
     <Dialog open={open} maxWidth="sm" fullWidth>
@@ -70,9 +93,10 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
           <FormControl sx={{ my: 1, width: 9 / 20 }}>
             <InputLabel>{property_type.label}</InputLabel>
             <Select
-              {...register("property_type")}
+              {...registerFields("property_type")}
               label={property_type.label}
               required
+              defaultValue=""
             >
               {Object.entries(property_type.values).map(([key, value]) => (
                 <MenuItem key={key} value={value}>
@@ -84,7 +108,12 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
 
           <FormControl sx={{ my: 1, width: 9 / 20 }}>
             <InputLabel>{city.label}</InputLabel>
-            <Select {...register("city")} label={city.label} required>
+            <Select
+              {...registerFields("city")}
+              label={city.label}
+              required
+              defaultValue=""
+            >
               {Object.entries(min_rental_period.values).map(([key, value]) => (
                 <MenuItem key={key} value={value}>
                   {key}
@@ -95,7 +124,7 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
 
           <TextField
             label={title.label}
-            {...register("title")}
+            {...registerFields("title")}
             fullWidth
             required
             sx={{ my: 1 }}
@@ -103,7 +132,7 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
 
           <TextField
             label={address.label}
-            {...register("address")}
+            {...registerFields("address")}
             fullWidth
             required
             sx={{ my: 1 }}
@@ -111,7 +140,12 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
 
           <FormControl fullWidth sx={{ my: 1, width: 9 / 20 }}>
             <InputLabel>{min_rental_period.label}</InputLabel>
-            <Select {...register("min_rental_period")} label={min_rental_period.label} required>
+            <Select
+              {...registerFields("min_rental_period")}
+              label={min_rental_period.label}
+              required
+              defaultValue=""
+            >
               {Object.entries(min_rental_period.values).map(([key, value]) => (
                 <MenuItem key={key} value={value}>
                   {key}
@@ -119,164 +153,184 @@ export default function PropertyForm({ open, closeDialog }: PropertyFormProps) {
               ))}
             </Select>
           </FormControl>
-          
+
           <TextField
             label={payment_by_period.label}
-            {...register("payment_by_period")}
+            {...registerFields("payment_by_period")}
             required
             sx={{ my: 1, width: 9 / 20 }}
           />
 
-          <FormControlLabel
-            {...register("is_furnished")}
-              control={<Switch />}
-              labelPlacement="start"
-              label={is_furnished.label}
-              sx={{ml: 1}}
-              slotProps={{typography: {mr: 1}}}
-            />
-
-            <FormControlLabel
-            {...register("is_services_included")}
-              control={<Switch />}
-              labelPlacement="start"
-              label={is_services_included.label}
-              slotProps={{typography: {mr: 1}}}
-            />
-
-          <Grid2 container columns={3} spacing={1} sx={{ my: 1,  }}>
-
-            <Grid2 size={{ xs: 1 }}>
-              <Typography
-                variant="h6"
-                component="span"
-                gutterBottom
-                sx={{ mt: 2 }}
-              >
-                Básicos
-              </Typography>
-              <FormGroup>
-                {(Object.entries(services.values)).map(([key, value]) => (
-                  <FormControlLabel
-                    key={key}
-                    control={
-                      <Checkbox
-                        defaultChecked={false}
-                        name="services"
-                        value={value}
-                      />
-                    }
-                    label={key}
-                  />
-                ))}
-              </FormGroup>
-            </Grid2>
-
-            <Grid2 size={{ xs: 1 }}>
-              <Typography
-                variant="h6"
-                component="span"
-                gutterBottom
-                sx={{ mt: 2 }}
-              >
-                Amenidades
-              </Typography>
-              <FormGroup>
-                {[
-                  "Piscina",
-                  "Asaderas",
-                  "Estudio",
-                  "Gimnasio",
-                  "Sala de juegos",
-                ].map((service) => (
-                  <FormControlLabel
-                    key={service}
-                    control={
-                      <Checkbox {...register("amenidades")} value={service} />
-                    }
-                    label={service}
-                  />
-                ))}
-              </FormGroup>
-            </Grid2>
-
-            {/* <Grid2 size={{ xs: 1 }}>
+          <Box sx={{ my: 3, width: "100%" }}>
             <Typography
               variant="h6"
-              component="span"
-              gutterBottom
-              sx={{ mt: 2 }}
+              component="p"
+              sx={{ mb: 1, width: "100%" }}
             >
-              Entidades Cercanas
+              {spaces.label}
             </Typography>
-            <FormGroup>
-              {[
-                "bancos",
-                "universidades",
-                "restaurantes",
-                "gimnasios",
-                "parques",
-              ].map((entity) => (
+
+            <FormGroup row>
+              <FormControl
+                size="small"
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 1,
+                  alignItems: "center",
+                  mr: 2,
+                }}
+              >
+                <Select {...registerFields("rooms")} required defaultValue="">
+                  {Object.entries(spaces.space.room.values).map(
+                    ([key, value]) => (
+                      <MenuItem key={key} value={value}>
+                        {key}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                <Typography>{spaces.space.room.label}</Typography>
+              </FormControl>
+
+              <FormControl
+                size="small"
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 1,
+                  alignItems: "center",
+                  mr: 2,
+                }}
+              >
+                <Select
+                  {...registerFields("bathrooms")}
+                  required
+                  defaultValue=""
+                >
+                  {Object.entries(spaces.space.bathroom.values).map(
+                    ([key, value]) => (
+                      <MenuItem key={key} value={value}>
+                        {key}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                <Typography>{spaces.space.bathroom.label}</Typography>
+              </FormControl>
+
+              {Object.entries(spaces.space.nonEssential).map(([key, value]) => (
                 <FormControlLabel
-                  key={entity}
-                  control={<Checkbox name="nearbyEntities" value={entity} />}
-                  label={entity}
+                  key={key}
+                  control={
+                    <Checkbox
+                      {...registerFields("nonEssential")}
+                      value={value}
+                    />
+                  }
+                  label={key}
+                  slotProps={{ typography: { ml: -0.5 } }}
                 />
               ))}
             </FormGroup>
-          </Grid2> */}
+          </Box>
 
-            <Grid2 size={{ xs: 1 }}>
-              <Typography
-                variant="h6"
-                component="span"
-                gutterBottom
-                sx={{ mt: 2 }}
-              >
-                Seguridad
-              </Typography>
-              <FormGroup>
-                {["Vigilancia 24/7", "Cctv"].map((security) => (
-                  <FormControlLabel
-                    key={security}
-                    control={<Checkbox />}
-                    label={security}
-                  />
-                ))}
-              </FormGroup>
-            </Grid2>
-          </Grid2>
-          <Button variant="contained" component="label" sx={{ mt: 2 }}>
-            Subir Imágenes
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-around",
+              mb: 1,
+            }}
+          >
+            <FormControlLabel
+              {...registerFields("is_furnished")}
+              control={<Switch />}
+              labelPlacement="start"
+              label={is_furnished.label}
+              slotProps={{ typography: { mr: 1 } }}
+            />
+
+            <FormControlLabel
+              {...registerFields("is_services_included")}
+              control={<Switch />}
+              labelPlacement="start"
+              label={is_services_included.label}
+              sx={{ mr: 3 }}
+              slotProps={{ typography: { mr: 1 } }}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              mt: 1,
+              mb: 2,
+              width: "100%",
+              display:
+                watch("is_services_included") === true ? "normal" : "none",
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="p"
+              sx={{ mb: 1, width: "100%" }}
+            >
+              {services.label}
+            </Typography>
+
+            <FormGroup row>
+              {Object.entries(services.values).map(([key, value]) => (
+                <FormControlLabel
+                  key={key}
+                  control={
+                    <Checkbox {...registerFields("services")} value={value} />
+                  }
+                  label={key}
+                  slotProps={{ typography: { ml: -0.5 } }}
+                />
+              ))}
+            </FormGroup>
+          </Box>
+
+          <Button variant="text" component="label" sx={{ mt: 2 }}>
+            Cargar fotografía
             <input
+              {...registerImg("file")}
               type="file"
               hidden
               accept="image/*"
-              multiple
               /* onChange={handleImageChange} */
             />
           </Button>
+
           <ImageList cols={3} rowHeight={100} sx={{ mt: 2 }}>
-            <img src="" alt="" />
-            {/* {property.images.map((image, index) => (
-              <ImageListItem key={index}>
+            {watchImg("file") && (
+              <ImageListItem>
                 <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Imagen ${index + 1}`}
+                  src={URL.createObjectURL(watchImg("file"))}
                   loading="lazy"
                 />
               </ImageListItem>
-            ))} */}
+            )}
           </ImageList>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button
           onClick={closeDialog}
-          type="submit"
+          type="button"
+          variant="outlined"
+          color="error"
+          sx={{ margin: 2 }}
+        >
+          Cancelar
+        </Button>
+        <Button
+          onClick={onSubmit}
+          type="button"
           variant="contained"
           color="primary"
-          sx={{ mt: 2 }}
+          sx={{ margin: 2 }}
         >
           Guardar Propiedad
         </Button>
