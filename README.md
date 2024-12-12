@@ -58,6 +58,7 @@ Nuestro equipo está compuesto por profesionales con una gran disposición para 
 
 ## Colaboración y Metodología
 Usamos una metodología de scrum para gestionar nuestro progreso. Para reunirnos usamos Discord, Slack. El horario que se utilizó para las reuniones fue el de Argentina, tanto para las daily como las reuniones con el TL. Para comunicarnos con el equipo al que correspondiamos usabamos tanto los canales de texto y de voz. La relación entre todos fue fluida y respetuosa, ayudándonos entre todos para solucionar problemas y dificultades que surgieron durante la simulación.
+Para la distribución de las tareas a desarrollar se uso Project de GitHub, lo que agilizó nuestro trabajo.
 
 ## Video Presentación
 
