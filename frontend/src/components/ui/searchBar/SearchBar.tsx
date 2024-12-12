@@ -65,10 +65,11 @@ function SearchBar() {
 					<InputLabel id="roomType">Tipo de alojamiento</InputLabel>
 					<Controller
 						name="roomType"
+						defaultValue=""
 						control={control}
 						render={({ field }) => (
 							<Select labelId="roomType" id="roomType" {...field}>
-								<MenuItem value={undefined}>Todos</MenuItem>
+								<MenuItem value="">Todos</MenuItem>
 								<MenuItem value="ROOM">
 									<BedIcon
 										sx={{
@@ -107,10 +108,11 @@ function SearchBar() {
 					<InputLabel id="location">Ubicación</InputLabel>
 					<Controller
 						name="location"
+						defaultValue=""
 						control={control}
 						render={({ field }) => (
 							<Select labelId="location" id="location" {...field}>
-								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								<MenuItem value="">Seleccionar</MenuItem>
 								{locations.map((location: { value: string; label: string }) => (
 									<MenuItem key={location.value} value={location.value}>
 										{location.label}
@@ -124,10 +126,11 @@ function SearchBar() {
 					<InputLabel id="university">Universidad</InputLabel>
 					<Controller
 						name="university"
+						defaultValue=""
 						control={control}
 						render={({ field }) => (
 							<Select labelId="university" id="university" {...field}>
-								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								<MenuItem value="">Seleccionar</MenuItem>
 								{universities.map(
 									(university: { id: number; name: string }) => (
 										<MenuItem key={university.id} value={university.id}>
@@ -143,10 +146,11 @@ function SearchBar() {
 					<InputLabel id="timelapse">Estadía</InputLabel>
 					<Controller
 						name="timelapse"
+						defaultValue=""
 						control={control}
 						render={({ field }) => (
 							<Select labelId="timelapse" id="timelapse" {...field}>
-								<MenuItem value={undefined}>Seleccionar</MenuItem>
+								<MenuItem value="">Seleccionar</MenuItem>
 								{timeLapse.map(
 									(timeLapse: { value: string; label: string }) => (
 										<MenuItem key={timeLapse.value} value={timeLapse.value}>
