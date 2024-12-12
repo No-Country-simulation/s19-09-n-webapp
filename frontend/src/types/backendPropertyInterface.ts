@@ -15,9 +15,9 @@ export interface BackendProperty {
   is_available:         boolean;
   user:                 User;
   rooms:                RoomElement[];
-  services:             ServiceElement[];
+  services?:             ServiceElement[];
   photos:               Photo[];
-  near_universities:    NearUniversity[];
+  near_universities?:    NearUniversity[];
 }
 
 export interface NearUniversity {

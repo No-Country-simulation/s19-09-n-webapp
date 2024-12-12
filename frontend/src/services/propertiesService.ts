@@ -1,6 +1,7 @@
 import { FiltersInterface } from "../types/filtersInterface";
-import { buildUserReq } from "../utils/helpers/requestBuilders";
+import { buildUserImgUploadReq, buildUserReq } from "../utils/helpers/requestBuilders";
 import { placeholderProperties } from "../Data/Properties";
+import { mapRawPropertyToBackend } from "../utils/helpers/rawPropertyMappers";
 // import { mapProperty } from "../utils/helpers/propertyMapper";
 
 const endpoint = "https://s19-09-n-back.vercel.app/api/v1/real-estate";
@@ -31,15 +32,23 @@ export async function getUserProperties(token: string) {
   return data;
 }
 
-export async function postProperty(inputs: object, token: string) {
-  const res = await fetch(`${endpoint}/`, buildUserReq("POST", token, inputs));
+export async function postProperty(rawInputs: object, token: string) {
+  const newProperty = mapRawPropertyToBackend(rawInputs);
+  console.log(newProperty);
+  const res = await fetch(`${endpoint}/creat`, buildUserReq("POST", token, newProperty));
   const data = await res.json();
   return data;
 }
 
+export async function postPropertyImg(token: string, imgInput: object, propertyId: string) {
+  const res = await fetch(`${endpoint}/${propertyId}/uploadS`, buildUserImgUploadReq("POST", token, imgInput));
+  const data = await res.json();
+  console.log(data);
+}
+
 export async function patchProperty(id: number, inputs: object, token: string) {
   const res = await fetch(
-    `${endpoint}//${id}`,
+    `${endpoint}/${id}`,
     buildUserReq("PATCH", token, inputs)
   );
   const data = await res.json();

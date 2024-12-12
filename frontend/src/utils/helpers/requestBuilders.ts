@@ -25,3 +25,18 @@ export function buildUserReq(
   reqInit.headers = reqHeaders;
   return reqInit;
 }
+
+export function buildUserImgUploadReq(method: string, token: string, inputs: object): RequestInit {
+  const body = new FormData();
+  for (const [key, value] of Object.entries(inputs)) body.append(key, value);
+  const reqInit: RequestInit = {
+    method: method,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: body,
+  };
+
+  return reqInit;
+}

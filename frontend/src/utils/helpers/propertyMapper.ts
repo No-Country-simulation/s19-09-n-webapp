@@ -19,7 +19,7 @@ export function mapProperty(backendProperty: BackendProperty): FrontendProperty 
     user: backendProperty.user,
     rooms: backendProperty.rooms[backendProperty.rooms.findIndex((roomsObj: RoomElement) => roomsObj.room.type==="BEDROOM")].room.quantity,
     bathrooms: backendProperty.rooms[backendProperty.rooms.findIndex((roomsObj: RoomElement) => roomsObj.room.type==="BATHROOM")].room.quantity,
-    services: backendProperty.services.map((serviceObj: ServiceElement) => serviceObj.service.type),
+    services: backendProperty.services?.map((serviceObj: ServiceElement) => serviceObj.service.type),
     photos: backendProperty.photos.map((photo: Photo) => photo.photo_url),
     near_universities: backendProperty.near_universities,
   };
