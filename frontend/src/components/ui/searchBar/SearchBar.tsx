@@ -185,7 +185,7 @@ function SearchBar() {
 					<Button type="submit" variant="contained" sx={{ flex: 1 }}>
 						<SearchIcon sx={{ color: "#fff" }} />
 					</Button>
-					<Button type="submit" variant="contained" sx={{ flex: 1 }}>
+					<Button type="button" variant="contained" sx={{ flex: 1 }}>
 						<LocationOnIcon sx={{ color: "#fff" }} />
 					</Button>
 				</Box>
