@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  MODERATOR
+}
+
+enum PropertyType {
+  APARTMENT
+  ROOM
+  HOUSE
+}
+
+enum RentalPeriod {
+  WEEKLY
+  MONTHLY
+  TRIMESTERLY
+  HALF_YEARLY
+  YEARLY
+}
+
+enum RoomType {
+  BEDROOM
+  KITCHEN
+  LIVING
+  DINNING
+  LAUNDRY
+  STUDY
+  GARAGE
+  BATHROOM
+}
+
+enum ServiceType {
+  INTERNET
+  WATER
+  CLEANING
+  WASHING_MACHINE
+  AIR_CONDITIONER
+  HEATER
+}
+
+enum City {
+  CORDOBA
+  BUENOS_AIRES
+  MENDOZA
+  SALTA
+  TUCUMAN
+  JUJUY
+  CHACO
+  MISIONES
+  LA_RIOJA
+  SAN_JUAN
+  SAN_LUIS
+}
+
+model User {
+  id             String     @id @default(uuid())
+  name           String     @db.VarChar(64)
+  last_name      String     @db.VarChar(64)
+  email          String     @unique @db.VarChar(64)
+  email_verified Boolean    @default(false)
+  password       String?    @db.VarChar(255)
+  is_owner       Boolean    @default(false)
+  deleted        Boolean    @default(false)
+  role           Role       @default(USER)
+  remember_token String?
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
+  properties     Property[]
+
+  @@index([email])
+}
+
+model Property {
+  id                   String               @id @default(uuid())
+  title                String               @db.VarChar(255)
+  address              String               @db.VarChar(255)
+  city                 City
+  property_type        PropertyType         @default(ROOM)
+  max_occupants        Int                  @db.SmallInt()
+  payment_by_period    Decimal              @db.Decimal(10, 2)
+  min_rental_period    RentalPeriod         @default(MONTHLY)
+  rooms                RoomsOnProperty[]
+  services             ServicesOnProperty[]
+  is_furnished         Boolean              @default(false)
+  is_services_included Boolean              @default(false)
+  rating               Int?                 @default(0) @db.SmallInt()
+  created_at           DateTime             @default(now())
+  updated_at           DateTime             @updatedAt
+  near_universities    NearLocation[]
+  photos               PropertyPhoto[]
+  is_active            Boolean              @default(true)
+  is_available         Boolean              @default(true)
+  user_id              String
+  user                 User                 @relation(fields: [user_id], references: [id])
+
+  @@index([min_rental_period, payment_by_period, is_furnished, is_services_included, rating, city, property_type])
+}
+
+model Room {
+  id         String            @id @default(uuid())
+  type       RoomType
+  quantity   Int               @default(1) @db.SmallInt
+  properties RoomsOnProperty[]
+
+  @@unique([type, quantity])
+}
+
+model RoomsOnProperty {
+  property_id String
+  property    Property @relation(fields: [property_id], references: [id])
+  room_id     String
+  room        Room     @relation(fields: [room_id], references: [id])
+
+  @@id([property_id, room_id])
+}
+
+model Service {
+  id         String               @id @default(uuid())
+  type       ServiceType          @unique
+  properties ServicesOnProperty[]
+}
+
+model ServicesOnProperty {
+  property_id String
+  property    Property @relation(fields: [property_id], references: [id])
+  service_id  String
+  service     Service  @relation(fields: [service_id], references: [id])
+
+  @@id([property_id, service_id])
+}
+
+model University {
+  id         String   @id @default(uuid())
+  name       String   @unique @db.VarChar(255)
+  country    String   @default("AR") @db.Char(2)
+  city       String   @db.VarChar(128)
+  address    String?  @db.VarChar(255)
+  image_url  String?  @db.VarChar(512)
+  latitude   Decimal? @db.Decimal(10, 6)
+  longitude  Decimal? @db.Decimal(10, 6)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  near_properties NearLocation[]
+
+  @@unique([city, country, name])
+  @@index([city, country, name])
+}
+
+model NearLocation {
+  id            String     @id @default(uuid())
+  distance      Int        @db.Integer()
+  property_id   String
+  property      Property   @relation(fields: [property_id], references: [id])
+  university_id String
+  university    University @relation(fields: [university_id], references: [id])
+
+  @@unique([property_id, university_id])
+}
+
+model PropertyPhoto {
+  id               String   @id @default(uuid())
+  photo_url        String   @db.Text
+  photo_service_id String
+  property_id      String
+  property         Property @relation(fields: [property_id], references: [id])
+}
