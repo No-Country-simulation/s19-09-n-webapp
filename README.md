@@ -73,19 +73,19 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 ## Estructura del Equipo
 Nuestro equipo está compuesto por profesionales con una gran disposición para la colaboración y el aprendizaje continuo.
 
-| Nombre             | Rol                 | Email              |    País           |
-|--------------------|---------------------|--------------------|-------------------|
-| Sonny Pimentel     | [Rol: Backend, etc.] | spimentelm1201@gmail.com            | Perú |
-| Rassiel Mex        | [Rol:  Backend, etc.] | rassiel.mex@gmail.com            | México |
-| Jonathan Mesach Venegas Santana       | [Rol:  Backend, etc.] | mesach.venegas@hotmail.com           | México |
-| Jorge Trujillo         | [Rol: Backend, etc.] | jatrujilloch1@gmail.com           | Ecuador |
-| Luis Eduardo Delgado Gallardo         | [Rol: Frontend, etc.] | dev.ledg555@gmail.com            | México |
-| Maria Teresa Maisterra         | [Rol: Frontend, etc.] | mtmaisterra@gmail.com           | Argentina |
-| Conrado Carlos Alberto Gonzalez         | [Rol: Frontend, etc.] | conry.203@gmail.com           | Argentina |
-| Manuel Filgueira         | [Rol: Frontend,  etc.] | manuelfilgueira@gmail.com           | Venezuela |
-| Juan Sincich         | [Rol: Frontend, etc.] | juansincich.design@gmail.com            | Argentina |
-| Noemí Zalazar         | [Rol: QA Tester, etc.] | noecoast@gmail.com            | Argentina |
-| Fidel Vera         | Team Leader         | fidelvera.tl@gmail.com    | Chile         |
+| Nombre             | Rol                 | Email              |    País           | Linkedln |
+|--------------------|---------------------|--------------------|-------------------|----------|
+| Sonny Pimentel     | Backend | spimentelm1201@gmail.com            | Perú |    |
+| Rassiel Mex        | Backend | rassiel.mex@gmail.com            | México | www.linkedin.com/in/rassielmex |
+| Jonathan Mesach Venegas Santana       | Backend | mesach.venegas@hotmail.com           | México | https://www.linkedin.com/in/mesachvenegas/ |
+| Jorge Trujillo         | Backend | jatrujilloch1@gmail.com           | Ecuador | www.linkedin.com/in/jorge-trujillo-ch |
+| Luis Eduardo Delgado Gallardo         | Frontend| dev.ledg555@gmail.com            | México |    |
+| Maria Teresa Maisterra         | Frontend | mtmaisterra@gmail.com           | Argentina | www.linkedin.com/in/mariateresamaisterra |
+| Conrado Carlos Alberto Gonzalez         | Frontend | conry.203@gmail.com           | Argentina | https://linkedin.com/in/conrado-carlos-alberto-gonzalez-3a4730b4 |
+| Manuel Filgueira         | Frontend | manuelfilgueira@gmail.com           | Venezuela | www.linkedin.com/in/manuel-filgueira-marin-3b304885 |
+| Juan Sincich         | Frontend | juansincich.design@gmail.com            | Argentina | www.linkedin.com/in/juan-sincich-219310245 |
+| Noemí Zalazar         |  QA Tester | noecoast@gmail.com            | Argentina |
+| Fidel Vera         | Team Leader         | fidelvera.tl@gmail.com    | Venezuela |
 
 
 ## Colaboración y Metodología
