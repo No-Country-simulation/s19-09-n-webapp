@@ -1,6 +1,9 @@
 # s19-09-n-webapp
 
+![RoomieFind Logo](https://i.postimg.cc/g22t0CKP/logo-roomie-Find.png)
+
 # Proyecto RoomieFind
+- **Rubro del Producto:** PropTech.
 
 ## Descripción del Proyecto
 
@@ -38,6 +41,31 @@ En pocas palabras, somos el ‘Airbnb’ de la comunidad universitaria, resolvie
 ![React Hook Form Link](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
 ![React Router Dom Link](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 
+### **QA Tester:**
+![Jira](https://img.shields.io/badge/jira-0052CC.svg?style=for-the-badge&logo=jira&logoColor=white)
+![Excel](https://img.shields.io/badge/microsoft_excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white)
+![JMeter](https://img.shields.io/badge/jmeter-D22128.svg?style=for-the-badge&logo=apache-jmeter&logoColor=white)
+![Selenium IDE](https://img.shields.io/badge/Selenium_IDE-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
+
+### **Organización:**
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
+
+### **Deploy:**
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
+### **Documentación:**
+- API: [Swagger](https://s19-09-n-back.vercel.app/api-docs/#/)
+
+### **Plan de Pruebas y Casos de Prueba:**
+- [Plan de Pruebas](https://docs.google.com/document/d/1BOE6bDu54Ps8e9uRPM9wCIHZ1MGsHrou/edit?usp=sharing&ouid=115519544386003290872&rtpof=true&sd=true)
+- [Casos](https://docs.google.com/spreadsheets/d/19X6TgwaSLG9dxh6DPM7DPcUH14HSVI9m/edit?usp=sharing&ouid=115519544386003290872&rtpof=true&sd=true)
+
+### **UX/UI:**
+- [Diseño en Figma](https://www.figma.com/design/T2aPhtkpDFTPS0tBy7Tv3e/prototypes-Real-states-Inmuebles-and-animated-(Community))
+
 ## Estructura del Equipo
 Nuestro equipo está compuesto por profesionales con una gran disposición para la colaboración y el aprendizaje continuo.
 
@@ -53,18 +81,21 @@ Nuestro equipo está compuesto por profesionales con una gran disposición para 
 | Manuel Filgueira         | [Rol: Frontend,  etc.] | manuelfilgueira@gmail.com           | Venezuela |
 | Juan Sincich         | [Rol: Frontend, etc.] | juansincich.design@gmail.com            | Argentina |
 | Noemí Zalazar         | [Rol: QA Tester, etc.] | noecoast@gmail.com            | Argentina |
-
+| Fidel Vera         | Team Leader         | fidelvera.tl@gmail.com    | Chile         |
 
 
 ## Colaboración y Metodología
-Usamos una metodología de scrum para gestionar nuestro progreso. Para reunirnos usamos Discord, Slack. El horario que se utilizó para las reuniones fue el de Argentina, tanto para las daily como las reuniones con el TL. Para comunicarnos con el equipo al que correspondiamos usabamos tanto los canales de texto y de voz. La relación entre todos fue fluida y respetuosa, ayudándonos entre todos para solucionar problemas y dificultades que surgieron durante la simulación.
+Usamos el marco de trabajo Scrum para gestionar nuestro progreso. Para reunirnos usamos Discord, Slack. El horario que se utilizó para las reuniones fue el de Argentina, tanto para las dailies como las reuniones con el TL. Para comunicarnos con el equipo al que correspondiamos usabamos tanto los canales de texto y de voz. La relación entre todos fue fluida y respetuosa, ayudándonos entre todos para solucionar problemas y dificultades que surgieron durante la simulación.
 Para la distribución de las tareas a desarrollar se uso Project de GitHub, lo que agilizó nuestro trabajo.
 
 ## Video Presentación
 
 Se realizó un video para reflejar el problema que resuelve esta WebApp
 
-https://youtu.be/84AYOvXpZUI
+[Ver Video en YouTube](https://youtu.be/84AYOvXpZUI)
+
+## Agradecimientos
+Este proyecto no habría sido posible sin el apoyo de **No Country**, una increíble comunidad que fomenta el crecimiento y desarrollo de talentos en tecnología. Gracias por proporcionar un espacio donde la colaboración, el aprendizaje y la innovación se convierten en el motor de nuestros sueños. 
 
 
 
