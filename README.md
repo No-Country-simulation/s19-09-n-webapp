@@ -75,17 +75,17 @@ Nuestro equipo está compuesto por profesionales con una gran disposición para 
 
 | Nombre             | Rol                 | Email              |    País           | Linkedln |
 |--------------------|---------------------|--------------------|-------------------|----------|
-| Sonny Pimentel     | Backend | spimentelm1201@gmail.com            | Perú |    |
+| Sonny Pimentel     | Backend | spimentelm1201@gmail.com            | Perú | https://www.linkedin.com/in/sonny-pimentel |
 | Rassiel Mex        | Backend | rassiel.mex@gmail.com            | México | www.linkedin.com/in/rassielmex |
-| Jonathan Mesach Venegas Santana       | Backend | mesach.venegas@hotmail.com           | México | https://www.linkedin.com/in/mesachvenegas/ |
+| Jonathan Mesach Venegas Santana       | Backend | mesach.venegas@hotmail.com           | México | https://www.linkedin.com/in/mesachvenegas |
 | Jorge Trujillo         | Backend | jatrujilloch1@gmail.com           | Ecuador | www.linkedin.com/in/jorge-trujillo-ch |
-| Luis Eduardo Delgado Gallardo         | Frontend| dev.ledg555@gmail.com            | México |    |
+| Luis Eduardo Delgado Gallardo         | Frontend| dev.ledg555@gmail.com            | México | https://www.linkedin.com/in/ledg555   |
 | Maria Teresa Maisterra         | Frontend | mtmaisterra@gmail.com           | Argentina | www.linkedin.com/in/mariateresamaisterra |
 | Conrado Carlos Alberto Gonzalez         | Frontend | conry.203@gmail.com           | Argentina | https://linkedin.com/in/conrado-carlos-alberto-gonzalez-3a4730b4 |
 | Manuel Filgueira         | Frontend | manuelfilgueira@gmail.com           | Venezuela | www.linkedin.com/in/manuel-filgueira-marin-3b304885 |
 | Juan Sincich         | Frontend | juansincich.design@gmail.com            | Argentina | www.linkedin.com/in/juan-sincich-219310245 |
-| Noemí Zalazar         |  QA Tester | noecoast@gmail.com            | Argentina |
-| Fidel Vera         | Team Leader         | fidelvera.tl@gmail.com    | Venezuela |
+| Noemí Zalazar         |  QA Tester | noecoast@gmail.com            | Argentina | www.linkedin.com/in/noemizalazar |
+| Fidel Vera         | Team Leader         | fidelvera.tl@gmail.com    | Venezuela | https://www.linkedin.com/in/fverachourio |
 
 
 ## Colaboración y Metodología
