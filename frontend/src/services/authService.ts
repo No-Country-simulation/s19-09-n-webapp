@@ -1,6 +1,6 @@
 import { buildAuthReq } from "../utils/helpers/requestBuilders";
 
-const baseUrl = "https://s19-09-n-back.vercel.app/api/v1/auth"
+const baseUrl = `${import.meta.env.VITE_API_URL}/auth`
 
 export async function signup(registrationFields: object) {
   const res = await fetch(baseUrl+ "/register", buildAuthReq(registrationFields));

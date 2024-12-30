@@ -1,16 +1,19 @@
-const baseUrl = "https://s19-09-n-back.vercel.app/api/v1";
-const univUri = "univ";
-
+const baseUrl = `${import.meta.env.BASE_URL}/univ`;
 
 export async function getCitiesList() {
-  const res = await fetch(`${baseUrl}/${univUri}/cities`);
+  const res = await fetch(`${baseUrl}/cities`);
   const data = await res.json();
   return data;
 }
 
-export async function getUniversitiesByCity(city:string) {
-  const res = await fetch(`${baseUrl}/${univUri}?city=${city}&minimum=false`);
+export async function getUniversitiesByCity(city: string) {
+  const res = await fetch(`${baseUrl}?city=${city}&minimum=false`);
   const data = await res.json();
   return data;
+}
 
+export async function getUniversitiesMin() {
+  const res = await fetch(`${baseUrl}`);
+  const data = await res.json();
+  return data;
 }
