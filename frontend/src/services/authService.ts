@@ -32,7 +32,7 @@ const handleAuthResError = (data:Record<string, unknown>) => {
   if(data.statusCode === 400 && data.message){
     throw new Error(data.message as string);
   }
-  if(data.statusCode !=200 || data.statusCode != 201 ){
+  if(data.statusCode && (data.statusCode !=200 || data.statusCode != 201)){
     throw new Error('Internal server error. Please try again later');
   }
 }
