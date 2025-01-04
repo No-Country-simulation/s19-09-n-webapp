@@ -1,4 +1,4 @@
-const baseUrl = `${import.meta.env.BASE_URL}/univ`;
+const baseUrl = `${import.meta.env.VITE_API_URL}/univ`;
 
 export async function getCitiesList() {
   const res = await fetch(`${baseUrl}/cities`);
