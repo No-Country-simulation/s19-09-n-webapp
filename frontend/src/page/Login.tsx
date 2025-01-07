@@ -1,41 +1,67 @@
 import { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
 import { useUserStore } from "../store/userStore";
-import { login } from "../services/authService";
+import { FormValuesLogin, login } from "../services/authService";
 import { Toast } from "../components/ui/Toast";
 import loginImage from "../../public/login.png";
 import AuthLayout from "../layouts/AuthLayout";
+import { SubmitButtonComponent } from "../components/Auth/SubmitButtonComponent";
 
-type FormValues = {
-  email: string;
-  password: string;
+const passLoginValidations: RegisterOptions<FormValuesLogin, "password"> = {
+  required: {
+    value: true,
+    message: "La contraseña es requerida.",
+  },
+  minLength: {
+    value: 6,
+    message: "La contraseña debe tener al menos 6 caracteres.",
+  },
+  maxLength: {
+    value: 20,
+    message: "La contraseña debe tener menos de 20 caracteres.",
+  },
 };
 
-const loginDescription = 'Encuentra a tu compañero de cuarto ideal o accede a tu cuenta para gestionar tus preferencias y conexiones.'
+const emailLoginValidations: RegisterOptions<FormValuesLogin, "email"> = {
+  required: "El email es obligatorio.",
+  pattern: {
+    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    message: "Ingrese un correo válido.",
+  },
+};
+
+const loginDescription =
+  "Encuentra a tu compañero de cuarto ideal o accede a tu cuenta para gestionar tus preferencias y conexiones.";
 
 function PageLogin() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>();
+  } = useForm<FormValuesLogin>();
   const navigate = useNavigate();
+  const [apiErrorMsg, setApiErrorMsg] = useState("");
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => onLogin(data);
+  const onSubmit: SubmitHandler<FormValuesLogin> = (data) => onLogin(data);
   const logUser = useUserStore((state) => state.logUser);
   const currentUser = useUserStore((state) => state.user);
-  
+
   const [showsToast, setShowsToast] = useState(false);
 
-  async function onLogin(loginFields: FormValues) {
-    const response = await login(loginFields);
-    logUser(response);
-    setShowsToast(true);
-    navigate("/", { replace: true });
+  async function onLogin(loginFields: FormValuesLogin) {
+    try {
+      const response = await login(loginFields);
+      logUser(response);
+      navigate("/", { replace: true });
+    } catch (error:unknown) {
+      if(error instanceof Error) setApiErrorMsg(error.message);
+    } finally {
+      setShowsToast(true);
+    }
   }
 
   if (currentUser.token) return <Navigate to={"/"} replace></Navigate>;
@@ -53,13 +79,7 @@ function PageLogin() {
         maxWidth={500}
       >
         <TextField
-          {...register("email", {
-            required: "El email es obligatorio.",
-            pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: "Ingrese un correo válido.",
-            },
-          })}
+          {...register("email", emailLoginValidations)}
           label="Email"
           type="email"
           variant="outlined"
@@ -68,20 +88,7 @@ function PageLogin() {
           error={!!errors.email}
         />
         <TextField
-          {...register("password", {
-            required: {
-              value: true,
-              message: "La contraseña es requerida.",
-            },
-            minLength: {
-              value: 6,
-              message: "La contraseña debe tener al menos 6 caracteres.",
-            },
-            maxLength: {
-              value: 20,
-              message: "La contraseña debe tener menos de 20 caracteres.",
-            },
-          })}
+          {...register("password", passLoginValidations)}
           label="Contraseña"
           type="password"
           variant="outlined"
@@ -97,35 +104,12 @@ function PageLogin() {
         )}
 
         <Link to="/register">¿Aún no tienes una cuenta? ¡Regístrate aquí!</Link>
-        <Button
-          type="submit"
-          variant="outlined"
-          color="inherit"
-          disabled={isSubmitting}
-          sx={{
-            m: 5,
-            paddingY: 2,
-            paddingX: { xs: 2, md: 12 },
-            backgroundColor: "#6F2DA8",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#6F2DA8",
-              color: "white",
-            },
-            ":disabled": {
-              backgroundColor: "#6F2DA890",
-              cursor: "not-allowed",
-              pointerEvents: "all"
-            },
-          }}
-        >
-          {isSubmitting ? "Por favor espere...": "Iniciar Sesión"}
-        </Button>
+        <SubmitButtonComponent isSubmitting={isSubmitting} message="Iniciar Sesión"/>
         <Toast
           open={showsToast}
           setOpen={setShowsToast}
-          severity="success"
-          message="¡Sesión iniciada!"
+          severity={apiErrorMsg ? "error" : "success"}
+          message={apiErrorMsg ? apiErrorMsg : "¡Sesión iniciada!"}
         />
       </Box>
     </AuthLayout>
