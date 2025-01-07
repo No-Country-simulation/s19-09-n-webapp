@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet } from "react-router-dom";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
@@ -11,8 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { AppProvider } from "@toolpad/core/react-router-dom";
-import { PageContainer } from "@toolpad/core/PageContainer";
+import { AppProvider } from "@toolpad/core/AppProvider";
 import {
   DashboardLayout,
   SidebarFooterProps,
@@ -23,9 +22,16 @@ import {
   AccountPopoverFooter,
   SignOutButton,
   AccountPreviewProps,
+
 } from "@toolpad/core/Account";
-import type { Branding, Navigation, Session } from "@toolpad/core/AppProvider";
+import type { Navigation, Router, Session } from "@toolpad/core/AppProvider";
+import {
+  DashboardData,
+  DashboardRentals,
+  DashboardProperties,
+} from "../../page";
 import logo from "../../../public/logo_roomieFind.png";
+
 
 const NAVIGATION: Navigation = [
   {
@@ -33,26 +39,21 @@ const NAVIGATION: Navigation = [
     title: "Dashboard Roomiefind",
   },
   {
-    segment: "dashboard/user",
+    segment: "dashboard",
     title: "Cambiar datos",
     icon: <DashboardIcon />,
   },
   {
-    segment: "dashboard/properties",
+    segment: "properties",
     title: "Mis propiedades",
     icon: <ShoppingCartIcon />,
   },
   {
-    segment: "dashboard/rentals",
+    segment: "rentals",
     title: "Mis alquileres",
     icon: <ShoppingCartIcon />,
   },
 ];
-
-const BRANDING: Branding = {
-  title: "Roomiefind",
-  logo: <img src={logo} alt="RoomieFind" />,
-};
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -69,6 +70,35 @@ const demoTheme = createTheme({
     },
   },
 });
+
+function DemoPageContent({ pathname }: { pathname: string }) {
+  const renderPageContent = () => {
+    switch (pathname) {
+      case "/dashboard":
+        return <DashboardData />;
+      case "/rentals":
+        return <DashboardRentals />;
+      case "/properties":
+        return <DashboardProperties />;
+      default:
+        return <Typography variant="h4">Page Not Found</Typography>;
+    }
+  };
+
+  return (
+    <Box
+      sx={{
+        py: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        textAlign: "center",
+      }}
+    >
+      {renderPageContent()}
+    </Box>
+  );
+}
 
 function SidebarFooterAccount({ mini }: SidebarFooterProps) {
   const PreviewComponent = React.useMemo(
@@ -182,6 +212,10 @@ const createPreviewComponent = (mini: boolean) => {
   };
 };
 
+interface DemoProps {
+  window?: () => Window;
+}
+
 const demoSession = {
   user: {
     name: "Bharat Kashyap",
@@ -190,7 +224,21 @@ const demoSession = {
   },
 };
 
-export default function DashboardLayoutAccountSidebar() {
+export default function DashboardLayoutAccountSidebar(props: DemoProps) {
+  const { window } = props;
+
+  const [pathname, setPathname] = React.useState("/dashboard");
+
+  const router = React.useMemo<Router>(() => {
+    return {
+      pathname,
+      searchParams: new URLSearchParams(),
+      navigate: (path) => setPathname(String(path)),
+    };
+  }, [pathname]);
+
+  const demoWindow = window !== undefined ? window() : undefined;
+
   const [session, setSession] = React.useState<Session | null>(demoSession);
   const authentication = React.useMemo(() => {
     return {
@@ -206,19 +254,27 @@ export default function DashboardLayoutAccountSidebar() {
   return (
     <AppProvider
       navigation={NAVIGATION}
+      router={router}
       theme={demoTheme}
+      window={demoWindow}
       authentication={authentication}
       session={session}
-      branding={BRANDING}
+
+
+      branding={{
+        title: "Roomiefind",
+        logo: (
+          <img
+            src={logo}
+            alt="RoomieFind"
+            
+          />
+        ),
+      }}
+
     >
-      <DashboardLayout
-        slots={{
-          sidebarFooter: SidebarFooterAccount,
-        }}
-      >
-        <PageContainer>
-          <Outlet />
-        </PageContainer>
+      <DashboardLayout slots={{ sidebarFooter: SidebarFooterAccount }}>
+        <DemoPageContent pathname={pathname} />
       </DashboardLayout>
     </AppProvider>
   );

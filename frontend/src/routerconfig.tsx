@@ -1,21 +1,15 @@
+
 import UniversityList from "./page/UniversityList";
+import DashboardLayout from "./layouts/DashboardLayout";
 import RootLayout from "./layouts/RootLayout";
-import {
-  PageHome,
-  Login,
-  Register,
-  PropertiesPage,
-  PropertyPage,
-  DashboardProperties,
-  DashboardRentals,
-} from "./page";
+import { PageHome, Login, Register, PropertiesPage, PropertyPage, DashboardProperties } from "./page";
 
 import Dashboard from "./page/Dashboard";
-import RegisterProperty from "./page/RegisterProperty";
-import { Navigate, RouteObject } from "react-router-dom";
-import DashboardLayoutAccountSidebar from "./components/ui/Sidebar";
+import RegisterProperty from "./page/RegisterProperty"
 
-export const routes: RouteObject[] = [
+
+
+export const routes = [
   {
     path: "/",
     element: <RootLayout />,
@@ -24,22 +18,19 @@ export const routes: RouteObject[] = [
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/properties", element: <PropertiesPage /> },
-      { path: "/properties/:id", element: <PropertyPage /> },
+      { path: "/properties/:id", element: <PropertyPage/>},
       { path: "/universities/:province", element: <UniversityList /> },
-    ],
+      { path: "/registerproperty", element: <RegisterProperty /> },
+    ],    
   },
   {
-    path: "/dashboard",
-    element: <DashboardLayoutAccountSidebar />,
+    path: "/dashboard" ,   
+    element: <DashboardLayout />,
     children: [
-      { index: true, element: <Navigate to={"user"} /> },
-      { path: "properties/:property?", element: <DashboardProperties /> },
-      { path: "rentals", element: <DashboardRentals /> },
-      { path: "user", element: <Dashboard /> },
-      {
-        path: "registerproperty",
-        element: <RegisterProperty />,
-      },
-    ],
+      { index: true, element: <Dashboard /> },
+      {path: "/dashboard/properties", element: <DashboardProperties/>},
+
+
+    ]
   },
 ];

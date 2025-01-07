@@ -9,10 +9,6 @@ export interface ReturnUniversityDto {
   longitude?: number;
 }
 
-export interface ReturnUniversityMinDto {
-  id: string;
-  name: string;
-}
 
 export interface CityUniversity {
   city: string,

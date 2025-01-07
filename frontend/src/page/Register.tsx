@@ -1,59 +1,23 @@
 import { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useUserStore } from "../store/userStore";
-import { FormValuesRegister, signup } from "../services/authService";
+import { signup } from "../services/authService";
 import { Navigate, useNavigate } from "react-router";
 import { Toast } from "../components/ui/Toast";
 import registerImage from "../../public/registro.png";
 import AuthLayout from "../layouts/AuthLayout";
-import { SubmitButtonComponent } from "../components/Auth/SubmitButtonComponent";
 
 const registerDescription = `Gracias por registrarte en nuestra plataforma. Ahora formas parte de una
   comunidad diseñada para ayudarte a encontrar el compañero de habitación ideal.`;
 
-const passLoginValidations: RegisterOptions<FormValuesRegister, "password"> = {
-  required: {
-    value: true,
-    message: "La contraseña es requerida.",
-  },
-  minLength: {
-    value: 6,
-    message: "La contraseña debe tener al menos 6 caracteres.",
-  },
-  maxLength: {
-    value: 20,
-    message: "La contraseña debe tener menos de 20 caracteres.",
-  },
-};
-
-const emailLoginValidations: RegisterOptions<FormValuesRegister, "email"> = {
-  required: "El email es obligatorio.",
-  pattern: {
-    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-    message: "Ingrese un correo válido.",
-  },
-};
-
-const namesValidations = (
-  field: "nombre" | "apellido"
-): RegisterOptions<FormValuesRegister, "name"> => {
-  return {
-    required: {
-      value: true,
-      message: `El ${field} es requerido.`,
-    },
-    minLength: {
-      value: 6,
-      message: `El ${field} debe tener al menos 6 caracteres.`,
-    },
-    maxLength: {
-      value: 20,
-      message: `El ${field} debe tener menos de 20 caracteres.`,
-    },
-  };
+type FormValues = {
+  email: string;
+  password: string;
+  name: string;
+  last_name: string;
 };
 
 function PageRegister() {
@@ -61,25 +25,24 @@ function PageRegister() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormValuesRegister>();
+  } = useForm<FormValues>();
 
   const navigate = useNavigate();
   const [showsToast, setShowsToast] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const onSubmit: SubmitHandler<FormValuesRegister> = (data) =>
-    onRegister(data);
+  const onSubmit: SubmitHandler<FormValues> = (data) => onRegister(data);
 
   const logUser = useUserStore((state) => state.logUser);
   const currentUser = useUserStore((state) => state.user);
 
-  async function onRegister(registrationFields: FormValuesRegister) {
+  async function onRegister(registrationFields: FormValues) {
     try {
       const response = await signup(registrationFields);
       logUser(response);
       navigate("/", { replace: true });
     } catch (error: unknown) {
-      if (error instanceof Error) setSubmitError(error.message);
+      if(error instanceof Error) setSubmitError(error.message);
     } finally {
       setShowsToast(true);
     }
@@ -99,7 +62,20 @@ function PageRegister() {
         maxWidth={500}
       >
         <TextField
-          {...register("name", namesValidations("nombre"))}
+          {...register("name", {
+            required: {
+              value: true,
+              message: "El nombre es requerida.",
+            },
+            minLength: {
+              value: 6,
+              message: "El nombre debe tener al menos 6 caracteres.",
+            },
+            maxLength: {
+              value: 20,
+              message: "El nombre debe tener menos de 20 caracteres.",
+            },
+          })}
           label="Nombre"
           type="text"
           variant="outlined"
@@ -114,7 +90,20 @@ function PageRegister() {
         )}
 
         <TextField
-          {...register("last_name", namesValidations("apellido"))}
+          {...register("last_name", {
+            required: {
+              value: true,
+              message: "El apellido es requerida.",
+            },
+            minLength: {
+              value: 6,
+              message: "El apellido debe tener al menos 6 caracteres.",
+            },
+            maxLength: {
+              value: 20,
+              message: "El apellido debe tener menos de 20 caracteres.",
+            },
+          })}
           label="Apellido"
           type="text"
           variant="outlined"
@@ -129,7 +118,13 @@ function PageRegister() {
         )}
 
         <TextField
-          {...register("email", emailLoginValidations)}
+          {...register("email", {
+            required: "El email es obligatorio.",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "Ingrese un correo válido.",
+            },
+          })}
           label="Email"
           type="email"
           variant="outlined"
@@ -139,7 +134,20 @@ function PageRegister() {
         />
 
         <TextField
-          {...register("password", passLoginValidations)}
+          {...register("password", {
+            required: {
+              value: true,
+              message: "La contraseña es requerida.",
+            },
+            minLength: {
+              value: 6,
+              message: "La contraseña debe tener al menos 6 caracteres.",
+            },
+            maxLength: {
+              value: 20,
+              message: "La contraseña debe tener menos de 20 caracteres.",
+            },
+          })}
           label="Contraseña"
           type="password"
           variant="outlined"
@@ -154,10 +162,30 @@ function PageRegister() {
         )}
 
         <Link to="/login">¿Ya tienes una cuenta? ¡Inicia sesión aquí!</Link>
-        <SubmitButtonComponent
-          isSubmitting={isSubmitting}
-          message="Registrar Usuario"
-        />
+        <Button
+          type="submit"
+          variant="outlined"
+          color="inherit"
+          disabled={isSubmitting}
+          sx={{
+            m: 5,
+            paddingY: 2,
+            paddingX: { xs: 2, md: 12 },
+            backgroundColor: "#6F2DA8",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#6F2DA8",
+              color: "white",
+            },
+            ":disabled": {
+              backgroundColor: "#6F2DA890",
+              cursor: "not-allowed",
+              pointerEvents: "all"
+            },
+          }}
+        >
+          {isSubmitting ? "Por favor espere...": "Registrar usuario"}
+        </Button>
         <Toast
           open={showsToast}
           setOpen={setShowsToast}
