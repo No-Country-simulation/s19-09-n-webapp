@@ -8,9 +8,10 @@ import {
   PropertyPage,
   DashboardProperties,
   DashboardRentals,
+  DashboardData,
 } from "./page";
 
-import Dashboard from "./page/Dashboard";
+
 import RegisterProperty from "./page/RegisterProperty";
 import { Navigate, RouteObject } from "react-router-dom";
 import DashboardLayoutAccountSidebar from "./components/ui/Sidebar";
@@ -35,7 +36,7 @@ export const routes: RouteObject[] = [
       { index: true, element: <Navigate to={"user"} /> },
       { path: "properties/:property?", element: <DashboardProperties /> },
       { path: "rentals", element: <DashboardRentals /> },
-      { path: "user", element: <Dashboard /> },
+      { path: "user", element: <DashboardData /> },
       {
         path: "registerproperty",
         element: <RegisterProperty />,
